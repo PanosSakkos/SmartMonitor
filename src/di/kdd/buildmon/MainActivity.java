@@ -31,7 +31,7 @@ public class MainActivity extends Activity {
 			samplingRunning = true;
 		}
 		else {
-			Toast.makeText(getApplicationContext(), "Sampling Service is already running!", Toast.LENGTH_SHORT).show();
+			Toast.makeText(getApplicationContext(), "Sampling Service is already running!", Toast.LENGTH_LONG).show();
 		}
 	}
 
