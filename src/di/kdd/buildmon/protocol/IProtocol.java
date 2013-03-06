@@ -1,4 +1,4 @@
-package di.kdd.protocol;
+package di.kdd.buildmon.protocol;
 
 public interface IProtocol {
 	
