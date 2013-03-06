@@ -1,4 +1,4 @@
-package di.kdd.MiddlewareServices;
+package di.kdd.middlewareServices;
 
 public class DataAggregation {
 
