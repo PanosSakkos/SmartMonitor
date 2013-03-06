@@ -16,7 +16,7 @@ import di.kdd.buildmon.Acceleration.AccelerationAxis;
 
 public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 5;
 
 	private static final String DATABASE_NAME = "accelerations.db";
 
@@ -133,7 +133,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		
 		db.close();
 		
-		Log.d(DEBUG_TAG, "stored" + acceleration.getAcceleration() + " " + acceleration.getTimestamp());
+//		Log.d(DEBUG_TAG, "stored" + acceleration.getAcceleration() + " " + acceleration.getTimestamp());
 	}
 
 	/***
