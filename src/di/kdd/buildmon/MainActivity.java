@@ -19,16 +19,6 @@ public class MainActivity extends Activity {
 		accelerationsDb = new AccelerationsSQLiteHelper(this.getApplicationContext());
 	}
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-	}
-
 	/**
 	 * Handler of the startSampling button. 
 	 * Registers the listener of the Accelerometer
