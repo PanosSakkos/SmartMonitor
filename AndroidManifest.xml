@@ -24,7 +24,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-		<service android:enabled="true" android:name="di.kdd.buildmon.AccelerometerListenerService" />
+		<service android:enabled="true" android:name="di.kdd.buildmon.AccelerometerListenerService" android:process=":AccelerometerListenerService" />
     </application>
 
 </manifest>
