@@ -1,0 +1,43 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity" >
+
+    <Button
+        android:id="@+id/connectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="172dp"
+        android:onClick="startCollectingAccelerations"
+        android:text="@string/main_connect" />
+
+    <Button
+        android:id="@+id/startSampling"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="53dp"
+        android:text="@string/main_startSampling" 
+        android:onClick="startSampling"/>
+    <Button
+        android:id="@+id/stopSampling"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="51dp"
+        android:text="@string/main_stopSampling" 
+        android:onClick="stopSampling"/>
+
+    <Button
+        android:id="@+id/plotGraphs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        android:text="@string/main_plotGraphs" 
+        android:onClick="plotGraphs"/>
+
+        />
+
+</RelativeLayout>
