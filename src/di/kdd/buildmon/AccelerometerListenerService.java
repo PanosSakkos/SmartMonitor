@@ -96,6 +96,7 @@ public class AccelerometerListenerService extends Service implements SensorEvent
 	@Override
 	public void onDestroy() {
 		sensorManager.unregisterListener(this);
+		
 		Toast.makeText(this, "Accelerometer Listener Service Destroyed", Toast.LENGTH_LONG).show();
 	}
 	

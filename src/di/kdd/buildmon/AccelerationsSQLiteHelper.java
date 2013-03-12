@@ -30,7 +30,6 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	private static final String COLUMN_ACCELERATION = "acceleration";
 	private static final String COLUMN_TIMESTAMP = "timestamp";
 
-
 	/* SQLite commands to create each Table of the database */
 	
 	private static final String TABLE_X_ACCELERATIONS_CREATE = "create table " + TABLE_X_ACCELERATIONS + 
@@ -60,6 +59,16 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	private static final String DUMP_Y_FILENAME = "y_dump.txt";
 	private static final String DUMP_Z_FILENAME = "z_dump.txt";		
 	
+	/* Buffers for the Accelerations, dump to database for every 
+	 * BUFFER_THRESHOLD Accelerations captured 
+	 * */
+	
+	private static final int BUFFER_THRESHOLD = 1000;
+	
+	private List<Acceleration> xAccelerationsBuffer = new ArrayList<Acceleration>();
+	private List<Acceleration> yAccelerationsBuffer = new ArrayList<Acceleration>();
+	private List<Acceleration> zAccelerationsBuffer = new ArrayList<Acceleration>();
+
 	/***
 	 * Initializes the AccelerationsSQLiteHelper
 	 * @param context The context of the Application that the SQLite Database belongs to
@@ -102,7 +111,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 
 		onCreate(db);
 	}
-
+	
 	/***
 	 * 
 	 * @param acceleration The Acceleration instance to store in the SQLite database
@@ -110,32 +119,116 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	 * @throws Exception If the Axis given is not valid
 	 */
 	
-	public void storeAcceleration(Acceleration acceleration, AccelerationAxis axis) throws Exception {
+	public void storeAcceleration(Acceleration acceleration, AccelerationAxis axis) throws Exception {		
+		switch(axis) {
+		case X:
+			if(xAccelerationsBuffer.size() == BUFFER_THRESHOLD)
+			{
+				SQLiteDatabase db = this.getWritableDatabase();
+				ContentValues values = new ContentValues();
+				
+				values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
+				values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
+	
+				db.insert(TABLE_X_ACCELERATIONS, null, values);
+				db.close();
+				
+				xAccelerationsBuffer.clear();
+			}
+			else
+			{
+				xAccelerationsBuffer.add(acceleration);
+			}
+			break;
+		case Y:
+			if(yAccelerationsBuffer.size() == BUFFER_THRESHOLD)
+			{
+				SQLiteDatabase db = this.getWritableDatabase();
+				ContentValues values = new ContentValues();
+				
+				values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
+				values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
+	
+				db.insert(TABLE_Y_ACCELERATIONS, null, values);
+				db.close();
+				
+				yAccelerationsBuffer.clear();
+			}
+			else
+			{
+				yAccelerationsBuffer.add(acceleration);
+			}
+			break;
+		case Z:
+			if(zAccelerationsBuffer.size() == BUFFER_THRESHOLD)
+			{
+				SQLiteDatabase db = this.getWritableDatabase();
+				ContentValues values = new ContentValues();
+				
+				values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
+				values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
+	
+				db.insert(TABLE_Z_ACCELERATIONS, null, values);
+				db.close();
+				
+				zAccelerationsBuffer.clear();
+			}
+			else
+			{
+				zAccelerationsBuffer.add(acceleration);
+			}
+			break;
+		default:
+			throw new Exception("Not valid axis");
+		}
+	}
+	
+	/***
+	 *  Dumps the accelerations that are not stored to the SQLite Database. 
+	 */
+	
+	public void dumpAccelerationBuffers() {
 		SQLiteDatabase db = this.getWritableDatabase();
 		ContentValues values = new ContentValues();
-		
-		values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
-		values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
 
-		switch(axis) {
-			case X:
-				db.insert(TABLE_X_ACCELERATIONS, null, values);
-				break;
-			case Y:
-				db.insert(TABLE_Y_ACCELERATIONS, null, values);
-				break;
-			case Z:
-				db.insert(TABLE_Z_ACCELERATIONS, null, values);
-				break;
-			default:
-				throw new Exception("Not valid axis");
+		/* Dump Accelerations buffer for X axis */
+		
+		for(Acceleration acceleration : xAccelerationsBuffer) {
+			values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
+			values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
+			
+			db.insert(TABLE_X_ACCELERATIONS, null, values);
 		}
-		
-		db.close();
-		
-//		Log.d(DEBUG_TAG, "stored" + acceleration.getAcceleration() + " " + acceleration.getTimestamp());
-	}
 
+		xAccelerationsBuffer.clear();
+
+		/* Dump Accelerations buffer for Y axis */
+
+		for(Acceleration acceleration : yAccelerationsBuffer) {
+			values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
+			values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
+			
+			db.insert(TABLE_Y_ACCELERATIONS, null, values);
+		}
+
+		yAccelerationsBuffer.clear();
+
+		/* Dump Accelerations buffer for Z axis */		
+		
+		for(Acceleration acceleration : zAccelerationsBuffer) {
+			values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
+			values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
+			
+			db.insert(TABLE_Z_ACCELERATIONS, null, values);
+		}
+
+		zAccelerationsBuffer.clear();
+				
+		db.close();
+
+		Log.d(DEBUG_TAG, "Dumped buffers to database");
+	}
+	
 	/***
 	 * Queries the SLQite database for an Acceleration at a given time
 	 * 
