@@ -19,6 +19,11 @@ public class MainActivity extends Activity {
 		accelerationsDb = new AccelerationsSQLiteHelper(this.getApplicationContext());
 	}
 
+	@Override
+	protected void onDestroy() {
+		accelerationsDb.dumpAccelerationBuffers();
+	}
+	
 	/**
 	 * Handler of the startSampling button. 
 	 * Registers the listener of the Accelerometer
