@@ -119,64 +119,64 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	 * @throws Exception If the Axis given is not valid
 	 */
 	
-	public void storeAcceleration(Acceleration acceleration, AccelerationAxis axis) throws Exception {		
+	public void storeAcceleration(Acceleration newAcceleration, AccelerationAxis axis) throws Exception {		
 		switch(axis) {
 		case X:
-			if(xAccelerationsBuffer.size() == BUFFER_THRESHOLD)
-			{
+			if(xAccelerationsBuffer.size() == BUFFER_THRESHOLD) {
 				SQLiteDatabase db = this.getWritableDatabase();
 				ContentValues values = new ContentValues();
+
+				for(Acceleration acceleration : xAccelerationsBuffer) {					
+					values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
+					values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
+		
+					db.insert(TABLE_X_ACCELERATIONS, null, values);
+				}
 				
-				values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
-				values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
-	
-				db.insert(TABLE_X_ACCELERATIONS, null, values);
 				db.close();
 				
 				xAccelerationsBuffer.clear();
 			}
-			else
-			{
-				xAccelerationsBuffer.add(acceleration);
-			}
+				
+			xAccelerationsBuffer.add(newAcceleration);			
 			break;
 		case Y:
-			if(yAccelerationsBuffer.size() == BUFFER_THRESHOLD)
-			{
+			if(yAccelerationsBuffer.size() == BUFFER_THRESHOLD) {
 				SQLiteDatabase db = this.getWritableDatabase();
 				ContentValues values = new ContentValues();
+
+				for(Acceleration acceleration : yAccelerationsBuffer) {					
+					values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
+					values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
+		
+					db.insert(TABLE_Y_ACCELERATIONS, null, values);
+				}
 				
-				values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
-				values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
-	
-				db.insert(TABLE_Y_ACCELERATIONS, null, values);
 				db.close();
 				
 				yAccelerationsBuffer.clear();
 			}
-			else
-			{
-				yAccelerationsBuffer.add(acceleration);
-			}
+				
+			yAccelerationsBuffer.add(newAcceleration);			
 			break;
 		case Z:
-			if(zAccelerationsBuffer.size() == BUFFER_THRESHOLD)
-			{
+			if(zAccelerationsBuffer.size() == BUFFER_THRESHOLD) {
 				SQLiteDatabase db = this.getWritableDatabase();
 				ContentValues values = new ContentValues();
+
+				for(Acceleration acceleration : zAccelerationsBuffer) {					
+					values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
+					values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
+		
+					db.insert(TABLE_Z_ACCELERATIONS, null, values);
+				}
 				
-				values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
-				values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
-	
-				db.insert(TABLE_Z_ACCELERATIONS, null, values);
 				db.close();
 				
 				zAccelerationsBuffer.clear();
 			}
-			else
-			{
-				zAccelerationsBuffer.add(acceleration);
-			}
+				
+			zAccelerationsBuffer.add(newAcceleration);			
 			break;
 		default:
 			throw new Exception("Not valid axis");
