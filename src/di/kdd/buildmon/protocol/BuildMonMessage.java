@@ -1,5 +1,7 @@
 package di.kdd.buildmon.protocol;
 
+import di.kdd.buildmon.protocol.IProtocol.Tag;
+
 /***
  * The message that is exchanged in every communication under
  * the BuildMondProtocol.
@@ -8,7 +10,7 @@ package di.kdd.buildmon.protocol;
 
 public class BuildMonMessage {
 
-	private String tag;
+	private Tag tag;
 	private String payload;
 	
 	/***
@@ -18,7 +20,7 @@ public class BuildMonMessage {
 	 * @return The message's tag
 	 */
 	
-	public String getTag() {
+	public Tag getTag() {
 		return tag;
 	}
 	
@@ -42,33 +44,8 @@ public class BuildMonMessage {
 	 * @throws InvalidTagException 
 	 */
 	
-	public BuildMonMessage(String tag, String payload) throws InvalidTagException {
-		assertTag(tag);
-		
+	public BuildMonMessage(Tag tag, String payload) throws InvalidTagException {
 		this.tag = tag;
 		this.payload = payload;
-	}
-
-	/***
-	 * Asserts that the tag is valid, according to the tags
-	 * that are defined in the di.kdd.protocol.IProtocol interface.
-	 * 
-	 * @param The tag that needs to be asserted.
-	 */
-	
-	private void assertTag(String tag) throws InvalidTagException {
-		if(tag.equals(IProtocol.HEARTBEAT_TAG)) {
-			return;
-		}
-		
-		if(tag.equals(IProtocol.KNOCK_KNOCK_TAG)) {
-			return;
-		}
-		
-		if(tag.equals(IProtocol.GET_PEAKS)) {
-			return;
-		}
-		
-		throw new InvalidTagException();
 	}
 }
