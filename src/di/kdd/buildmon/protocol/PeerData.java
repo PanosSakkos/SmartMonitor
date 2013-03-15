@@ -29,4 +29,15 @@ public class PeerData {
 	public synchronized String getLowestIP() {
 		return Collections.min(peerIPs);
 	}
+	
+	@Override
+	public synchronized String toString() {
+		String string = new String();
+		
+		for(String ip : peerIPs) {
+			string += ip + '\n';
+		}
+		
+		return string;
+	}
 }
