@@ -41,8 +41,17 @@
         android:layout_alignLeft="@+id/plotGraphs"
         android:layout_below="@+id/plotGraphs"
         android:layout_marginTop="25dp"
-        android:onClick="startCollectingAccelerations"
+        android:onClick="connect"
         android:text="@string/main_connect" />
+
+    <Button
+        android:id="@+id/button1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/connectButton"
+        android:layout_below="@+id/connectButton"
+        android:onClick="disconnect"
+        android:text="@string/main_disconnect"/>
 
         />
 
