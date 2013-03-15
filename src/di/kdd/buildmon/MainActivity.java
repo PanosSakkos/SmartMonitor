@@ -1,5 +1,6 @@
 package di.kdd.buildmon;
 
+import di.kdd.buildmon.protocol.BuildMonProtocol;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -8,8 +9,13 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
+	/* States */
+	
+	private boolean connected;
 	private boolean samplingRunning;
+	
 	private AccelerationsSQLiteHelper accelerationsDb;
+	private BuildMonProtocol buildMonProtocol = new BuildMonProtocol();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +49,7 @@ public class MainActivity extends Activity {
 	/**
 	 * Handler of the stopSampling button. 
 	 * Unregisters the listener of the Accelerometer
-	 * @param view
+	 * @param ignored
 	 */	
 	
 	public void stopSampling(View _)	{
@@ -57,8 +63,38 @@ public class MainActivity extends Activity {
 	}	
 	
 	/***
+	 * Handler for the connect button. 
+	 * @param ignored
+	 */
+	
+	public void connect(View _) {
+		if(!connected) {
+			buildMonProtocol.start();
+			connected = true;
+		}
+		else {			
+			Toast.makeText(this, "Already connected!", Toast.LENGTH_LONG).show();
+		}
+	}
+	
+	/***
+	 * Handler for the disconnect button. 
+	 * @param ignored
+	 */
+	
+	public void disconnect(View _) {
+		if(connected) {
+			buildMonProtocol.end();
+			connected = false;
+		}
+		else {			
+			Toast.makeText(this, "Not connected!", Toast.LENGTH_LONG).show();
+		}
+	}
+		
+	/***
 	 * Dumps the stored Accelerations into 3 files, one for each Axis
-	 * @param view
+	 * @param ignored
 	 * @throws Exception
 	 */
 	
@@ -68,7 +104,6 @@ public class MainActivity extends Activity {
 		}
 		else {
 			Toast.makeText(this, "Stop Sampling!", Toast.LENGTH_LONG).show();
-
 		}
 	}	
 }
