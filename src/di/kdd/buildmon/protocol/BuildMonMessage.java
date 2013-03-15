@@ -46,4 +46,13 @@ public class BuildMonMessage {
 		this.tag = tag;
 		this.payload = payload;
 	}
+	
+	/***
+	 * Returns the tag and the payload, seperated by a new line character.
+	 */
+	
+	@Override
+	public String toString() {
+		return payload != null ? tag.name() + "\n" + payload : tag.name();
+	}
 }
