@@ -11,12 +11,12 @@ import java.util.TreeSet;
 public class PeerData {
 	private Set<String> peerIPs = new TreeSet<String>();
 	
-	public void addPeerIP(String ip) {
+	public synchronized void addPeerIP(String ip) {
 		//TODO FIXME assert ip validity
 		peerIPs.add(ip);
 	}
 	
-	public void removePeerIP(String ip) {
+	public synchronized void removePeerIP(String ip) {
 		peerIPs.remove(ip);
 	}
 	
@@ -26,7 +26,7 @@ public class PeerData {
 	 * @return The lowest of the peer IP addresses.
 	 */
 	
-	public String getLowestIP() {
+	public synchronized String getLowestIP() {
 		return Collections.min(peerIPs);
 	}
 }
