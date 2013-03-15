@@ -1,24 +1,16 @@
 package di.kdd.buildmon.protocol;
 
-public class BuildMonProtocol implements IProtocol , Runnable {
+public class BuildMonProtocol implements IProtocol , Runnable {	
 	private boolean isCaptain;
-	
-	/* Threads */
-	
-	private Thread commandThread;
-	private Thread knockKnockListenerThread;
-	
 	private PeerData peerData = new PeerData();
-	private KnockKnockListener knockKnockListener;
+	
+	private Thread protocolThread;
+	private KnockKnockThread knockKnockThread;
 	
 	@Override
 	public void start() {
-		commandThread = new Thread(this);
-		commandThread.start();
-
-		knockKnockListener = new KnockKnockListener(peerData);
-		knockKnockListenerThread = new Thread(knockKnockListener);
-		knockKnockListenerThread.start();
+		protocolThread = new Thread(this);
+		protocolThread.start();
 	}
 
 	@Override
@@ -36,8 +28,11 @@ public class BuildMonProtocol implements IProtocol , Runnable {
 	
 	@Override
 	public void end() {
-		knockKnockListenerThread.interrupt();
-		commandThread.interrupt();
+		if(knockKnockThread != null) {
+			knockKnockThread.interrupt();
+		}
+		
+		protocolThread.interrupt();
 	}
 
 	/***
@@ -47,6 +42,6 @@ public class BuildMonProtocol implements IProtocol , Runnable {
 	
 	@Override
 	public void run() {
-		//TODO		
+		//TODO try to enter the distributed network		
 	}
 }
