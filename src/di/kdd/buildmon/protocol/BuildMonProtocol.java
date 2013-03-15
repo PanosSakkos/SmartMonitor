@@ -1,5 +1,7 @@
 package di.kdd.buildmon.protocol;
 
+import java.net.Socket;
+
 public class BuildMonProtocol implements IProtocol , Runnable {	
 	private boolean isCaptain;
 	private PeerData peerData = new PeerData();
@@ -42,6 +44,21 @@ public class BuildMonProtocol implements IProtocol , Runnable {
 	
 	@Override
 	public void run() {
-		//TODO try to enter the distributed network		
+		BuildMonMessage message;
+		String ipPrefix = "192.168.1."; //TODO FIXME
+				
+		for(int i = 1; i < 255; ++i) {
+			try{
+				Socket socket = new Socket(ipPrefix + Integer.toString(i), IProtocol.KNOCK_KNOCK_PORT);
+			}
+			catch(Exception IOException) {
+				continue;
+			}
+			
+			/* I found the Captain, send the knock-knock message */
+		
+			
+		}
+			
 	}
 }
