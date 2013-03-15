@@ -33,6 +33,20 @@ public interface IProtocol {
 	public void start();
 	
 	/***
+	 * Returns if the node is Captain of the distributed network.
+	 * @return if it's captain or not
+	 */
+	
+	public boolean isCaptain();
+	
+	/***
+	 * Returns the IP address of the Captain node
+	 * @return Captain's IP address
+	 */
+	
+	public String getCaptain();
+	
+	/***
 	 * Abandon the distributed network.
 	 */
 	

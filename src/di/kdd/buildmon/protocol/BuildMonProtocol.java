@@ -1,16 +1,32 @@
 package di.kdd.buildmon.protocol;
 
 public class BuildMonProtocol implements IProtocol , Runnable {
+	private boolean isCaptain;
+	private Thread commandThread;	
 	private PeerData peerData = new PeerData();
 	
 	@Override
 	public void start() {
-		new Thread(this).start();
+		commandThread = new Thread(this);
+		commandThread.start();
 	}
 
 	@Override
+	public boolean isCaptain() {
+		return isCaptain;
+	}
+	
+	@Override
+	public String getCaptain() {
+		
+		/* Captain is the peer with the lowest IP address */
+		
+		return peerData.getLowestIP();
+	}
+	
+	@Override
 	public void end() {
-		//TODO 
+		commandThread.interrupt();
 	}
 
 	/***
@@ -22,5 +38,4 @@ public class BuildMonProtocol implements IProtocol , Runnable {
 	public void run() {
 		//TODO		
 	}
-
 }
