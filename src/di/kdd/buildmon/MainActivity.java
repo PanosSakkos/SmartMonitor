@@ -30,7 +30,7 @@ public class MainActivity extends Activity {
 	 * @param view
 	 */
 	
-	public void startSampling(View view) {		
+	public void startSampling(View _) {		
 		if(!samplingRunning) {
 			startService(new Intent(this, AccelerometerListenerService.class));
 			samplingRunning = true;
@@ -46,7 +46,7 @@ public class MainActivity extends Activity {
 	 * @param view
 	 */	
 	
-	public void stopSampling(View view)	{
+	public void stopSampling(View _)	{
 		if(samplingRunning) {
 			stopService(new Intent(this, AccelerometerListenerService.class));
 			samplingRunning = false;
@@ -62,7 +62,7 @@ public class MainActivity extends Activity {
 	 * @throws Exception
 	 */
 	
-	public void plotGraphs(View view) throws Exception {
+	public void plotGraphs(View _) throws Exception {
 		if(!samplingRunning) {
 			accelerationsDb.dumpToFile();
 		}
