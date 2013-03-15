@@ -27,7 +27,7 @@ public interface IProtocol {
 	public enum Tag { KNOCK_KNOCK, HEARTBEAT, TIME_SYNC, AGGREGATE_PEAKS };
 		
 	/***
-	 * Entry point of the protocol. Dispatch in a new thread.
+	 * Entry point of the protocol. Creates a new thread that is running the protocol.
 	 */
 	
 	public void start();
