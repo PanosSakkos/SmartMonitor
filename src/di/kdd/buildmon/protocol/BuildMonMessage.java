@@ -5,11 +5,9 @@ import di.kdd.buildmon.protocol.IProtocol.Tag;
 /***
  * The message that is exchanged in every communication under
  * the BuildMondProtocol.
- *
  */
 
 public class BuildMonMessage {
-
 	private Tag tag;
 	private String payload;
 	
@@ -44,7 +42,7 @@ public class BuildMonMessage {
 	 * @throws InvalidTagException 
 	 */
 	
-	public BuildMonMessage(Tag tag, String payload) throws InvalidTagException {
+	public BuildMonMessage(Tag tag, String payload) {
 		this.tag = tag;
 		this.payload = payload;
 	}
