@@ -10,7 +10,7 @@ public interface IProtocol {
 	
 	/* The port that the knock knock messages are sent */
 	
-	static final int KNOCK_KNOCK_PORT = 4631;	
+	static final int KNOCK_KNOCK_PORT = 4631;
 
 	/* The port which the heartbeat messages are sent */
 
@@ -31,4 +31,10 @@ public interface IProtocol {
 	 */
 	
 	public void start();
+	
+	/***
+	 * Abandon the distributed network.
+	 */
+	
+	public void end();
 }
