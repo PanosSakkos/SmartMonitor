@@ -2,8 +2,6 @@ package di.kdd.buildmon.protocol;
 
 public interface IProtocol {
 	
-	static final String DEBUG_TAG = "protocol";
-	
 	/* The period of the heartbeat messages (in seconds) */
 	
 	static final int HEARTBEAT_PERIOD = 5;
