@@ -1,5 +1,9 @@
 package di.kdd.buildmon.protocol;
 
+import java.io.IOException;
+import java.util.Date;
+import java.util.List;
+
 public interface IProtocol {
 	
 	/* The period of the heartbeat messages (in seconds) */
@@ -22,13 +26,23 @@ public interface IProtocol {
 	
 	/* Message tags */
 	
-	public enum Tag { KNOCK_KNOCK, HEARTBEAT, TIME_SYNC, AGGREGATE_PEAKS };
+	public enum Tag { KNOCK_KNOCK, NEW_PEER, HEARTBEAT, TIME_SYNC, AGGREGATE_PEAKS };
 		
 	/***
 	 * Entry point of the protocol. Creates a new thread that is running the protocol.
 	 */
 	
 	public void start();
+	
+	/***
+	 * If the message receiver is the Captain node, asks for the peaks of the peers
+	 * and computes the building's signature.
+	 * @param from Starting sample time
+	 * @param to Ending sample time
+	 * @throws NotCaptainException If the asked node is not the Captain node
+	 */
+	
+	public void computeBuildingSignature(Date from, Date to) throws NotCaptainException, IOException;
 	
 	/***
 	 * Returns if the node is Captain of the distributed network.
@@ -43,7 +57,7 @@ public interface IProtocol {
 	 */
 	
 	public String getCaptain();
-	
+		
 	/***
 	 * Abandon the distributed network.
 	 */

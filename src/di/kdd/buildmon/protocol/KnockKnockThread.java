@@ -27,13 +27,14 @@ public class KnockKnockThread extends Thread {
 		Tag tag;
 		BufferedReader in;
 		DataOutputStream out;
+		Message message;
 		
 		try {
 			while(true) {
 					Socket connectionSocket = welcomeSocket.accept();
-					in = new BufferedReader(new InputStreamReader(connectionSocket.getInputStream()));
+					in = Protocol.receive(connectionSocket);
 
-					/* Assert thqt the tag of the message is valid */
+					/* Assert tag of the message is valid */
 					
 					tag = Tag.valueOf(in.readLine());
 
@@ -41,13 +42,13 @@ public class KnockKnockThread extends Thread {
 						Log.d(DEBUG_TAG, "Invalid tag");
 						continue;
 					}
-			
+
 					/* Send the peer data to the node that wants to join the distributed network */
 					
-					out = new DataOutputStream(connectionSocket.getOutputStream());
-					out.writeChars(tag.name() + '\n' + peerData.toString());
+					message = new Message(Tag.KNOCK_KNOCK, peerData.toString());
+					Protocol.send(connectionSocket, message);
 					
-					//TODO time synchronization
+					/* Update the peer data with the new IP address */
 					
 					peerData.addPeerIP(connectionSocket.getRemoteSocketAddress().toString());
 					Log.d(DEBUG_TAG, "Added " + connectionSocket.getRemoteSocketAddress().toString() + "to peer data");

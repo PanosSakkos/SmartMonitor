@@ -1,6 +1,6 @@
 package di.kdd.buildmon;
 
-import di.kdd.buildmon.protocol.BuildMonProtocol;
+import di.kdd.buildmon.protocol.Protocol;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -15,7 +15,7 @@ public class MainActivity extends Activity {
 	private boolean samplingRunning;
 	
 	private AccelerationsSQLiteHelper accelerationsDb;
-	private BuildMonProtocol buildMonProtocol = new BuildMonProtocol();
+	private Protocol buildMonProtocol = new Protocol();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {

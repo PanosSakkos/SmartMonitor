@@ -6,15 +6,37 @@ import java.util.TreeSet;
 
 /***
  * The data that each peer holds for each peer.
+ * Thread-safe.
  */
 
 public class PeerData {
+	private Protocol protocolThread;
 	private Set<String> peerIPs = new TreeSet<String>();
 	
-	public synchronized void addPeerIP(String ip) {
-		//TODO FIXME assert ip validity
-		peerIPs.add(ip);
+	/***
+	 * @param protocolThread The Protocol instance that will 
+	 * be notified for thew new IP addresses.
+	 */
+	
+	public PeerData(Protocol protocolThread) {
+		this.protocolThread = protocolThread;
 	}
+	
+	/***
+	 * Adds an IP address of a new peer
+	 * @param ip The new peer's IP address
+	 */
+	
+	public synchronized void addPeerIP(String ip) {
+		//TODO check ip validity
+		peerIPs.add(ip);		
+		protocolThread.newPeerAdded(ip);
+	}
+	
+	/***
+	 * Removes the IP address of a fallen peer
+	 * @param ip The IP address to remove
+	 */
 	
 	public synchronized void removePeerIP(String ip) {
 		peerIPs.remove(ip);
@@ -29,6 +51,10 @@ public class PeerData {
 	public synchronized String getLowestIP() {
 		return Collections.min(peerIPs);
 	}
+	
+	/***
+	 * Return the IP addresses of the peers, separated by a new line character
+	 */
 	
 	@Override
 	public synchronized String toString() {
