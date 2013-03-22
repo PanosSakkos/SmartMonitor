@@ -1,5 +1,8 @@
 package di.kdd.buildmon.protocol;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+
 import di.kdd.buildmon.protocol.IProtocol.Tag;
 
 /***
@@ -38,7 +41,7 @@ public class Message {
 	 * and payload.
 	 * 
 	 * @param tag The message's tag
-	 * @param payload The message's paylaod
+	 * @param payload The message's payload
 	 * @throws InvalidTagException 
 	 */
 	
@@ -48,11 +51,27 @@ public class Message {
 	}
 	
 	/***
-	 * Returns the tag and the payload, seperated by a new line character.
+	 * Initializes a Message instance, given a BufferedReader, which is
+	 * a socket's input stream, from within the system.
+	 * @param in The socket's Buffered
+	 * @throws IOException 
+	 */
+	
+	public Message(BufferedReader in) throws IOException {
+		String line;
+		this.tag = Tag.valueOf(in.readLine());
+
+		while((line = in.readLine()) != null) {
+			this.payload += line + '\n';
+		}
+	}
+	
+	/***
+	 * Returns the tag and the payload, separated by a new line character.
 	 */
 	
 	@Override
 	public String toString() {
-		return payload != null ? tag.name() + "\n" + payload : tag.name();
+		return payload == null ? tag.name() : tag.name() + "\n" + payload;
 	}
 }

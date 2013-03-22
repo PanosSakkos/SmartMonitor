@@ -2,7 +2,8 @@ package di.kdd.buildmon.protocol;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.List;
+
+import di.kdd.buildmon.protocol.exceptions.NotCaptainException;
 
 public interface IProtocol {
 	
@@ -24,6 +25,10 @@ public interface IProtocol {
 
 	static final int COMMAND_PORT = 4633;
 	
+	/* The (maximum?) number of peaks that each peers returns to the Captain */
+	
+	static final int NO_PEAKS = 5;
+	
 	/* Message tags */
 	
 	public enum Tag { KNOCK_KNOCK, NEW_PEER, HEARTBEAT, TIME_SYNC, AGGREGATE_PEAKS };
@@ -33,7 +38,7 @@ public interface IProtocol {
 	 */
 	
 	public void start();
-	
+		
 	/***
 	 * If the message receiver is the Captain node, asks for the peaks of the peers
 	 * and computes the building's signature.
@@ -56,7 +61,7 @@ public interface IProtocol {
 	 * @return Captain's IP address
 	 */
 	
-	public String getCaptain();
+	public String getCaptainIP();
 		
 	/***
 	 * Abandon the distributed network.

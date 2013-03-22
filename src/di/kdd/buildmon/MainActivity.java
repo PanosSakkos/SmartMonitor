@@ -1,6 +1,6 @@
 package di.kdd.buildmon;
 
-import di.kdd.buildmon.protocol.Protocol;
+import di.kdd.buildmon.protocol.DistributedSystem;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -15,7 +15,7 @@ public class MainActivity extends Activity {
 	private boolean samplingRunning;
 	
 	private AccelerationsSQLiteHelper accelerationsDb;
-	private Protocol buildMonProtocol = new Protocol();
+	private DistributedSystem distributedSystem = new DistributedSystem();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,7 @@ public class MainActivity extends Activity {
 	
 	public void connect(View _) {
 		if(!connected) {
-			buildMonProtocol.start();
+			distributedSystem.start();
 			connected = true;
 		}
 		else {			
@@ -84,7 +84,7 @@ public class MainActivity extends Activity {
 	
 	public void disconnect(View _) {
 		if(connected) {
-			buildMonProtocol.end();
+			distributedSystem.end();
 			connected = false;
 		}
 		else {			

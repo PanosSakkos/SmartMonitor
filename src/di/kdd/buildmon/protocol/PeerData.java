@@ -1,5 +1,7 @@
 package di.kdd.buildmon.protocol;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
@@ -10,16 +12,18 @@ import java.util.TreeSet;
  */
 
 public class PeerData {
-	private Protocol protocolThread;
+	private CaptainNode captainNode;
 	private Set<String> peerIPs = new TreeSet<String>();
+
+	public PeerData() {		
+	}
 	
 	/***
-	 * @param protocolThread The Protocol instance that will 
-	 * be notified for thew new IP addresses.
+	 * @param captainNode The Captain node to notify when a new peer is added from the KnockKnock thread
 	 */
 	
-	public PeerData(Protocol protocolThread) {
-		this.protocolThread = protocolThread;
+	public PeerData(CaptainNode captainNode) {
+		this.captainNode = captainNode;
 	}
 	
 	/***
@@ -29,8 +33,18 @@ public class PeerData {
 	
 	public synchronized void addPeerIP(String ip) {
 		//TODO check ip validity
-		peerIPs.add(ip);		
-		protocolThread.newPeerAdded(ip);
+
+		if(peerIPs.contains(ip) == false) {
+			peerIPs.add(ip);		
+
+			/* Notify the Captain node about the new peer's IP address
+			 * in order to broadcast the new IP to the peers.
+			 */
+			
+			if(captainNode != null) {
+				captainNode.newPeerAdded(ip);
+			}
+		}
 	}
 	
 	/***
@@ -50,6 +64,14 @@ public class PeerData {
 	
 	public synchronized String getLowestIP() {
 		return Collections.min(peerIPs);
+	}
+	
+	public void addPeersFromStream(BufferedReader in) throws IOException {
+		String peerDataLine;
+
+		while((peerDataLine = in.readLine()) != null) {
+			addPeerIP(peerDataLine);
+		}		
 	}
 	
 	/***

@@ -21,7 +21,7 @@ public class AccelerometerListenerService extends Service implements SensorEvent
 
 	private AccelerationsSQLiteHelper accelerationsDb;
 
-	private static final String DEBUG_TAG = "listener service";
+	private static final String TAG = "listener service";
 	
 	/**
 	 * @return Counted events of the accelerometer sensor
@@ -65,7 +65,7 @@ public class AccelerometerListenerService extends Service implements SensorEvent
 			}		
 		}
 		catch(Exception exception) {
-			Log.e(DEBUG_TAG, exception.getMessage());			
+			Log.e(TAG, exception.getMessage());			
 		}
 
 		accelerationsCounted++;

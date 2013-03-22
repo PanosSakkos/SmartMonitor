@@ -1,8 +1,8 @@
-package di.kdd.buildmon.protocol;
+package di.kdd.buildmon.protocol.exceptions;
 
 public class NotCaptainException extends Exception {
 	@Override
 	public String getMessage() {
-		return "I am not the Captain node";
+		return "This node is not the Captain";
 	}
 }
