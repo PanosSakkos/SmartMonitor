@@ -12,7 +12,7 @@ import android.util.Log;
 import di.kdd.buildmon.MainActivity;
 import di.kdd.buildmon.protocol.exceptions.NotCaptainException;
 
-public class DistributedSystem extends AsyncTask<Void, Void, Void> implements IProtocol {
+public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements IProtocol {
 	private MainActivity view;
 	private DistributedSystemNode node;
 	
@@ -33,15 +33,15 @@ public class DistributedSystem extends AsyncTask<Void, Void, Void> implements IP
 	 */
 
 	@Override
-	protected Void doInBackground(Void... arg0) {
+	protected Boolean doInBackground(Void... arg0) {
 		Socket socket;
 		String ipPrefix = "192.168.1."; //TODO FIXME
 		
 		android.os.Debug.waitForDebugger();
 
 		/* Look for the Captain in the first 255 local IP addresses */
-		
-		for(int i = 1; i < 256; ++i) {
+		//TODO parallelize it
+		for(int i = 1; i < 2; ++i) {
 			try{
 				Log.d(TAG, "Trying to connect to :" + ipPrefix + Integer.toString(i));
 				socket = new Socket(ipPrefix + Integer.toString(i), IProtocol.KNOCK_KNOCK_PORT);
@@ -53,17 +53,25 @@ public class DistributedSystem extends AsyncTask<Void, Void, Void> implements IP
 			/* Captain found */
 			
 			node = new PeerNode(socket);
-			view.showMessage("Connected as Peer");
 			
-			return null;
+			return true;
 		}
 		
 		/* No response, I am the first node of the distributed system and the Captain */
 		
 		node = new CaptainNode(); 
-		view.showMessage("Connected as Captain");
 
-		return null;
+		return false;
+	}
+	
+	@Override
+	protected void onPostExecute(Boolean becamePeer) {
+		if(becamePeer) {
+			view.showMessage("Connected as Peer");			
+		}
+		else {
+			view.showMessage("Connected as Captain");			
+		}
 	}
 	
 	@Override
