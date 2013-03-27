@@ -41,7 +41,7 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 
 		/* Look for the Captain in the first 255 local IP addresses */
 		//TODO parallelize it
-		for(int i = 1; i < 2; ++i) {
+		for(int i = 1; i < 256; ++i) {
 			try{
 				Log.d(TAG, "Trying to connect to :" + ipPrefix + Integer.toString(i));
 				socket = new Socket(ipPrefix + Integer.toString(i), IProtocol.KNOCK_KNOCK_PORT);
