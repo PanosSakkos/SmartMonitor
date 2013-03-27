@@ -37,7 +37,7 @@ public interface IProtocol {
 	 * Entry point of the protocol. Creates a new thread that is running the protocol.
 	 */
 	
-	public void start();
+	public void connect();
 		
 	/***
 	 * If the message receiver is the Captain node, asks for the peaks of the peers

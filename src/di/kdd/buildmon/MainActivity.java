@@ -14,6 +14,8 @@ public class MainActivity extends Activity {
 	private boolean connected;
 	private boolean samplingRunning;
 	
+	Thread distributedSystemThread;
+	
 	private AccelerationsSQLiteHelper accelerationsDb;
 	private DistributedSystem distributedSystem = new DistributedSystem();
 	
@@ -69,8 +71,8 @@ public class MainActivity extends Activity {
 	
 	public void connect(View _) {
 		if(!connected) {
-			distributedSystem.start();
-			connected = true;
+				distributedSystem.connect();				
+				connected = true;
 		}
 		else {			
 			Toast.makeText(this, "Already connected!", Toast.LENGTH_LONG).show();

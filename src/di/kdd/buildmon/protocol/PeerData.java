@@ -6,6 +6,8 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.TreeSet;
 
+import android.util.Log;
+
 /***
  * The data that each peer holds for each peer.
  * Thread-safe.
@@ -15,6 +17,8 @@ public class PeerData {
 	private CaptainNode captainNode;
 	private Set<String> peerIPs = new TreeSet<String>();
 
+	private static final String TAG = "peer data";
+	
 	public PeerData() {		
 	}
 	
@@ -36,7 +40,8 @@ public class PeerData {
 
 		if(peerIPs.contains(ip) == false) {
 			peerIPs.add(ip);		
-
+			Log.d(TAG, "Added " + ip);
+			
 			/* Notify the Captain node about the new peer's IP address
 			 * in order to broadcast the new IP to the peers.
 			 */
@@ -71,7 +76,8 @@ public class PeerData {
 
 		while((peerDataLine = in.readLine()) != null) {
 			addPeerIP(peerDataLine);
-		}		
+			Log.d(TAG, "Added " + peerDataLine + " from input stream");
+		}
 	}
 	
 	/***

@@ -14,15 +14,24 @@ public class KnockKnockThread extends Thread {
 	
 	private static final String TAG = "knock knock listener";
 	
-	public KnockKnockThread(PeerData peerData) throws IOException {
+	public KnockKnockThread(PeerData peerData) {
 		this.peerData = peerData;
-		welcomeSocket = new ServerSocket(IProtocol.KNOCK_KNOCK_PORT);
 	}
 	
 	@Override
 	public void run() {
 		Message message;
+				
+		android.os.Debug.waitForDebugger();
 		
+		try {
+			welcomeSocket = new ServerSocket(IProtocol.KNOCK_KNOCK_PORT);
+		} 
+		catch (IOException e) {
+			Log.d(TAG, "Could not bind socket at the knock knock port");
+			e.printStackTrace();
+		}
+
 		try {
 			while(true) {
 					Socket connectionSocket = welcomeSocket.accept();
@@ -43,8 +52,9 @@ public class KnockKnockThread extends Thread {
 					
 					DistributedSystemNode.send(connectionSocket, new TimeSynchronizationMessage());
 			}
-		} 
-		catch (IOException e) {
+		}
+		catch(IOException e) {
+			Log.d(TAG, "Error while communicating with a peer");
 			e.printStackTrace();
 		}
 	}

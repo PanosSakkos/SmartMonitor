@@ -25,7 +25,7 @@ public final class CaptainNode extends DistributedSystemNode {
 
 	private static final String TAG = "captain";	
 	
-	public CaptainNode() throws IOException {
+	public CaptainNode() {
 		commandThread = new Thread(this);
 
 		/* Start accepting nodes that want to join the distributed system */
@@ -44,8 +44,7 @@ public final class CaptainNode extends DistributedSystemNode {
 	
 	private void broadcast(Message message) throws IOException {
 		for(Socket peer : commandSockets) {
-			DataOutputStream out = new DataOutputStream(peer.getOutputStream());
-			out.writeChars(message.toString());				
+			DistributedSystemNode.send(peer, message);
 		}		
 	}
 	
@@ -57,7 +56,7 @@ public final class CaptainNode extends DistributedSystemNode {
 	
 	protected void newPeerAdded(String ip) {
 		try {
-			/* Open a connection with this peer */
+			/* Connect to the peer, in order to have a communication channel for commands */
 			
 			Socket commandSocket = new Socket(ip, IProtocol.COMMAND_PORT);
 			commandSockets.add(commandSocket);

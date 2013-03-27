@@ -6,8 +6,10 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
+import android.util.Log;
+
 public abstract class DistributedSystemNode extends Thread {
-	protected PeerData peerData;
+	protected PeerData peerData = new PeerData();
 
 	/*
 	 * The captain uses this thread in order to send commands to the peers
@@ -15,7 +17,9 @@ public abstract class DistributedSystemNode extends Thread {
 	 */
 	
 	protected Thread commandThread;
-		
+
+	private static final String TAG = "node";
+	
 	public abstract void end();
 	
 	public abstract boolean isCaptain();
@@ -30,6 +34,7 @@ public abstract class DistributedSystemNode extends Thread {
 	 */
 	
 	protected static void send(Socket socket, Message message) throws IOException {
+		Log.d(TAG, message.toString());
 		DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 		out.writeChars(message.toString());		
 	}
@@ -42,6 +47,7 @@ public abstract class DistributedSystemNode extends Thread {
 	 */
 	
 	protected static BufferedReader receive(Socket socket) throws IOException {
+		Log.d(TAG, "Receiving");
 		return new BufferedReader(new InputStreamReader(socket.getInputStream()));		
 	}
 }

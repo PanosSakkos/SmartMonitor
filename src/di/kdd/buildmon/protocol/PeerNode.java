@@ -21,7 +21,7 @@ public final class PeerNode extends DistributedSystemNode {
 	public PeerNode(Socket socket) {		
 		Message message;
 		BufferedReader in;
-		
+
 		try {
 			/* The Captain was found, send the knock-knock message */
 			
@@ -56,6 +56,8 @@ public final class PeerNode extends DistributedSystemNode {
 	public void run() {
 		Socket captainSocket;
 		BufferedReader in;
+
+		android.os.Debug.waitForDebugger();
 		
 		try {
 			peerCommandSocket = new ServerSocket(IProtocol.COMMAND_PORT);		
@@ -96,6 +98,7 @@ public final class PeerNode extends DistributedSystemNode {
 		}
 		catch(IOException e) {
 			//TODO REVIEW captain is down?
+			e.printStackTrace();
 		}		
 	}
 	
