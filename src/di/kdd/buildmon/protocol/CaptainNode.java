@@ -103,10 +103,4 @@ public final class CaptainNode extends DistributedSystemNode {
 	public boolean isCaptain() {
 		return true;
 	}
-
-	@Override
-	public String getCaptainIP() {
-		return peerData.getLowestIP();
-	}
-
 }

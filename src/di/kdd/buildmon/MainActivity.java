@@ -17,7 +17,7 @@ public class MainActivity extends Activity {
 	Thread distributedSystemThread;
 	
 	private AccelerationsSQLiteHelper accelerationsDb;
-	private DistributedSystem distributedSystem = new DistributedSystem();
+	private DistributedSystem distributedSystem;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -25,11 +25,16 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		accelerationsDb = new AccelerationsSQLiteHelper(this.getApplicationContext());
+		distributedSystem = new DistributedSystem(this);
 	}
 
 	@Override
 	protected void onDestroy() {
 		accelerationsDb.dumpAccelerationBuffers();
+	}
+	
+	public void showMessage(String message) {		
+		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
 	}
 	
 	/**

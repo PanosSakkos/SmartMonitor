@@ -69,6 +69,7 @@ public final class PeerNode extends DistributedSystemNode {
 		}
 		
 		/* Listen on captainSocket for incoming commands from the Captain */
+		
 		try {		
 			while(true) {
 				Message message;
@@ -105,11 +106,6 @@ public final class PeerNode extends DistributedSystemNode {
 	@Override
 	public boolean isCaptain() {
 		return false;
-	}
-
-	@Override
-	public String getCaptainIP() {
-		return peerData.getLowestIP();
 	}
 
 	@Override

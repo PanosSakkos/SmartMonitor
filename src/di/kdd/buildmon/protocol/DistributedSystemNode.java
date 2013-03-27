@@ -24,7 +24,9 @@ public abstract class DistributedSystemNode extends Thread {
 	
 	public abstract boolean isCaptain();
 	
-	public abstract String getCaptainIP();
+	public String getCaptainIP() {
+		return peerData.getLowestIP();
+	}
 	
 	/***
 	 * Given an open socket and a message, sends the message

@@ -5,16 +5,23 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Date;
 
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import di.kdd.buildmon.MainActivity;
 import di.kdd.buildmon.protocol.exceptions.NotCaptainException;
 
 public class DistributedSystem extends AsyncTask<Void, Void, Void> implements IProtocol {
+	private MainActivity view;
 	private DistributedSystemNode node;
 	
 	private static final String TAG = "distributed system";
 		
+	public DistributedSystem(MainActivity view) {
+		this.view = view;
+	}
+	
 	public void connect() {
 		this.execute();
 	}
@@ -36,7 +43,7 @@ public class DistributedSystem extends AsyncTask<Void, Void, Void> implements IP
 		
 		for(int i = 1; i < 256; ++i) {
 			try{
-				Log.d(TAG, "Trying to connect to :" + ipPrefix + Integer.toString(i));			//TODO REVIEW timeout
+				Log.d(TAG, "Trying to connect to :" + ipPrefix + Integer.toString(i));
 				socket = new Socket(ipPrefix + Integer.toString(i), IProtocol.KNOCK_KNOCK_PORT);
 			}
 			catch(IOException e) {
@@ -46,14 +53,15 @@ public class DistributedSystem extends AsyncTask<Void, Void, Void> implements IP
 			/* Captain found */
 			
 			node = new PeerNode(socket);
-			Log.d(TAG, "Peer!");
+			view.showMessage("Connected as Peer");
+			
 			return null;
 		}
 		
 		/* No response, I am the first node of the distributed system and the Captain */
 		
 		node = new CaptainNode(); 
-		Log.d(TAG, "Captain!");
+		view.showMessage("Connected as Captain");
 
 		return null;
 	}
