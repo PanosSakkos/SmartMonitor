@@ -15,14 +15,14 @@
         android:text="@string/main_stopSampling" />
 
     <Button
-        android:id="@+id/plotGraphs"
+        android:id="@+id/exportToFile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="78dp"
-        android:onClick="plotGraphs"
-        android:text="@string/main_plotGraphs" />
+        android:onClick="exportToFile"
+        android:text="@string/main_exportToFile" />
 
     <Button
         android:id="@+id/startSampling"
