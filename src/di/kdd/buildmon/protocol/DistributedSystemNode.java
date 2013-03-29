@@ -20,7 +20,7 @@ public abstract class DistributedSystemNode extends Thread {
 
 	private static final String TAG = "node";
 	
-	public abstract void end();
+	public abstract void disconnect();
 	
 	public abstract boolean isCaptain();
 	

@@ -12,7 +12,7 @@ import di.kdd.buildmon.protocol.IProtocol.Tag;
 public final class PeerNode extends DistributedSystemNode {
 	/* The socket that the peer holds in order to get commands from the Captain */
 	
-	private ServerSocket peerCommandSocket;
+	private ServerSocket commandsServerSocket;
 
 	private TimeSynchronization timeSync = new TimeSynchronization();
 
@@ -60,8 +60,8 @@ public final class PeerNode extends DistributedSystemNode {
 		android.os.Debug.waitForDebugger();
 		
 		try {
-			peerCommandSocket = new ServerSocket(IProtocol.COMMAND_PORT);		
-			captainSocket = peerCommandSocket.accept();
+			commandsServerSocket = new ServerSocket(IProtocol.COMMAND_PORT);		
+			captainSocket = commandsServerSocket.accept();
 		}
 		catch(IOException e) {
 			Log.d(TAG, "Failed to accept command socket");
@@ -99,19 +99,20 @@ public final class PeerNode extends DistributedSystemNode {
 		}
 		catch(IOException e) {
 			//TODO REVIEW captain is down?
+			Log.d(TAG, "Mwre les? :P");
 			e.printStackTrace();
 		}		
+	}
+
+	@Override
+	public void disconnect() {
+		if(commandThread != null) {
+			commandThread.interrupt();
+		}
 	}
 	
 	@Override
 	public boolean isCaptain() {
 		return false;
-	}
-
-	@Override
-	public void end() {
-		if(commandThread != null) {
-			commandThread.interrupt();
-		}
 	}
 }

@@ -67,5 +67,5 @@ public interface IProtocol {
 	 * Abandon the distributed network.
 	 */
 	
-	public void end();
+	public void disconnect();
 }

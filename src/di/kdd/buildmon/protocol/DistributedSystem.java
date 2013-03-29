@@ -1,11 +1,9 @@
 package di.kdd.buildmon.protocol;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.Date;
 
-import android.app.Activity;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -29,7 +27,7 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 	/***
 	 * Sends Knock-Knock messages to the first 255 local IP addresses and
 	 * according to if it will get a response or not, the node becomes
-	 * a peer or a Captain respectively.
+	 * a peer or a Captain respectively 
 	 */
 
 	@Override
@@ -94,7 +92,7 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 	}
 
 	@Override
-	public void end() {
-		node.end();
+	public void disconnect() {
+		node.disconnect();
 	}
 }

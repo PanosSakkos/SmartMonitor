@@ -73,7 +73,7 @@ public final class CaptainNode extends DistributedSystemNode {
 	}
 	
 	@Override
-	public void end() {
+	public void disconnect() {
 		if(knockKnockThread != null) {
 			knockKnockThread.interrupt();
 		}
@@ -83,6 +83,11 @@ public final class CaptainNode extends DistributedSystemNode {
 		}		
 	}
 	
+	@Override
+	public boolean isCaptain() {
+		return true;
+	}
+
 	public void computeBuildingSignature(Date from, Date to) throws NotCaptainException, IOException {
 		Message message = new Message(Tag.AGGREGATE_PEAKS, 
 								Long.toString(from.getTime()) + "\n" + 
@@ -98,9 +103,5 @@ public final class CaptainNode extends DistributedSystemNode {
 			
 			//TODO
 		}
-	}
-	
-	public boolean isCaptain() {
-		return true;
-	}
+	}	
 }
