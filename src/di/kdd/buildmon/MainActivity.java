@@ -14,8 +14,6 @@ public class MainActivity extends Activity {
 	private boolean connected;
 	private boolean samplingRunning;
 	
-	Thread distributedSystemThread;
-	
 	private AccelerationsSQLiteHelper accelerationsDb;
 	private DistributedSystem distributedSystem;
 	
@@ -25,7 +23,6 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		
 		accelerationsDb = new AccelerationsSQLiteHelper(this.getApplicationContext());
-		distributedSystem = new DistributedSystem(this);
 	}
 
 	@Override
@@ -76,6 +73,7 @@ public class MainActivity extends Activity {
 	
 	public void connect(View _) {
 		if(!connected) {
+				distributedSystem = new DistributedSystem(this);
 				distributedSystem.connect();				
 				connected = true;
 		}
@@ -91,7 +89,7 @@ public class MainActivity extends Activity {
 	
 	public void disconnect(View _) {
 		if(connected) {
-			distributedSystem.end();
+			distributedSystem.disconnect();
 			connected = false;
 		}
 		else {			
@@ -105,7 +103,7 @@ public class MainActivity extends Activity {
 	 * @throws Exception
 	 */
 	
-	public void plotGraphs(View _) throws Exception {
+	public void exportToFile(View _) throws Exception {
 		if(!samplingRunning) {
 			accelerationsDb.dumpToFile();
 		}
