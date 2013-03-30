@@ -18,7 +18,7 @@ public abstract class DistributedSystemNode extends Thread {
 	
 	protected Thread commandThread;
 
-	private static final String TAG = "node";
+	private static final String TAG = "distributed system node";
 	
 	public abstract void disconnect();
 	
