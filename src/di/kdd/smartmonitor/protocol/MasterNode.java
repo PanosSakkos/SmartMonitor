@@ -21,7 +21,7 @@ public final class MasterNode extends DistributedSystemNode {
 	 * nodes in the system.
 	 */
 	
-	private KnockKnockThread knockKnockThread;
+	private JoinThread knockKnockThread;
 
 	private static final String TAG = "Master";	
 	
@@ -30,7 +30,7 @@ public final class MasterNode extends DistributedSystemNode {
 
 		/* Start accepting nodes that want to join the distributed system */
 		
-		knockKnockThread = new KnockKnockThread(peerData);
+		knockKnockThread = new JoinThread(peerData);
 
 		commandThread.start();
 		knockKnockThread.start();

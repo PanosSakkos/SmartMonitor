@@ -8,13 +8,13 @@ import android.util.Log;
 import di.kdd.smartmonitor.middlewareServices.TimeSynchronizationMessage;
 import di.kdd.smartmonitor.protocol.IProtocol.Tag;
 
-public class KnockKnockThread extends Thread {
+public class JoinThread extends Thread {
 	private PeerData peerData;
 	private ServerSocket welcomeSocket;
 	
 	private static final String TAG = "knock knock listener";
 	
-	public KnockKnockThread(PeerData peerData) {
+	public JoinThread(PeerData peerData) {
 		this.peerData = peerData;
 	}
 	

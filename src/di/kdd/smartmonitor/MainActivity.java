@@ -97,7 +97,7 @@ public class MainActivity extends Activity {
 	
 	public void connect(View _) {
 		if(distributedSystem.isConnected() == false) {
-				/* Reallocate instance, because AsyncTask can be run only once =/ */
+				/* Reallocate instance, because AsyncTask can be ran only once =/ */
 			
 				distributedSystem = new DistributedSystem(this);
 				distributedSystem.connect();				
