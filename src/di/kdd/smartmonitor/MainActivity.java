@@ -50,8 +50,14 @@ public class MainActivity extends Activity {
 		}
 	}	
 	
+	/***
+	 * Starts the sampling service, if is not already running
+	 */
+	
 	public void startSamplingService() {
-		startService(new Intent(this, AccelerometerListenerService.class));		
+		if(distributedSystem.isSampling() == false) {
+			startService(new Intent(this, AccelerometerListenerService.class));		
+		}
 	}	
 	
 	/**
@@ -74,8 +80,14 @@ public class MainActivity extends Activity {
 		}
 	}	
 	
+	/***
+	 * Stops the sampling service, if is running 
+	 */
+	
 	public void stopSamplingService() {
-		stopService(new Intent(this, AccelerometerListenerService.class));		
+		if(distributedSystem.isSampling()) {		
+			stopService(new Intent(this, AccelerometerListenerService.class));		
+		}
 	}
 	
 	/***
