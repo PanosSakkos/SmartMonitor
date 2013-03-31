@@ -10,7 +10,7 @@ import java.util.List;
 
 import android.util.Log;
 import di.kdd.smartmonitor.protocol.IProtocol.Tag;
-import di.kdd.smartmonitor.protocol.exceptions.NotMasterException;
+import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 
 public final class MasterNode extends DistributedSystemNode {
 	/* List of open sockets with the peers, in order to send them commands */
@@ -88,7 +88,7 @@ public final class MasterNode extends DistributedSystemNode {
 		return true;
 	}
 
-	public void computeBuildingSignature(Date from, Date to) throws NotMasterException, IOException {
+	public void computeBuildingSignature(Date from, Date to) throws MasterException, IOException {
 		Message message = new Message(Tag.SEND_PEAKS, 
 								Long.toString(from.getTime()) + "\n" + 
 								Long.toString(to.getTime()));

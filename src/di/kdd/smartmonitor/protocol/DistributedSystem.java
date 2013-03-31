@@ -8,7 +8,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import di.kdd.smartmonitor.MainActivity;
-import di.kdd.smartmonitor.protocol.exceptions.NotMasterException;
+import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 
 public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements IProtocol {
 	private MainActivity view;
@@ -73,9 +73,9 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 	}
 	
 	@Override
-	public void computeBuildingSignature(Date from, Date to) throws NotMasterException, IOException {
+	public void computeBuildingSignature(Date from, Date to) throws MasterException, IOException {
 		if(node.isMaster() == false) {
-			throw new NotMasterException();
+			throw new MasterException();
 		}
 		
 		((MasterNode) node).computeBuildingSignature(from, to);

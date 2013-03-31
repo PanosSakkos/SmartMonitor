@@ -3,7 +3,7 @@ package di.kdd.smartmonitor.protocol;
 import java.io.IOException;
 import java.util.Date;
 
-import di.kdd.smartmonitor.protocol.exceptions.NotMasterException;
+import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 
 public interface IProtocol {
 	
@@ -50,10 +50,10 @@ public interface IProtocol {
 	 * and computes the building's signature.
 	 * @param from Starting sample time
 	 * @param to Ending sample time
-	 * @throws NotMasterException If the asked node is not the Master node
+	 * @throws MasterException If the asked node is not the Master node
 	 */
 	
-	public void computeBuildingSignature(Date from, Date to) throws NotMasterException, IOException;
+	public void computeBuildingSignature(Date from, Date to) throws MasterException, IOException;
 	
 	/***
 	 * Returns if the node is Master of the distributed network.
