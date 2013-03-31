@@ -74,10 +74,11 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 			throw new MasterException();
 		}
 		
-		//TODO
+		//TODO Broadcast START_SAMPLING
 		
+		view.startSamplingService();
+		samplingStarted = System.currentTimeMillis();		
 		isSampling = true;
-		samplingStarted = System.currentTimeMillis();
 	}
 
 	public void stopSampling() throws MasterException {
@@ -85,10 +86,11 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 			throw new MasterException();
 		}
 
-		//TODO
-		
+		//TODO Broadcast STOP_SAMPLING
+
+		view.stopSamplingService();
+		samplingEnded = System.currentTimeMillis();		
 		isSampling = false;
-		samplingEnded = System.currentTimeMillis();
 	}
 	
 	public boolean isSampling() {

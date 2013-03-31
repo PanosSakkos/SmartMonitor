@@ -2,6 +2,7 @@ package di.kdd.smartmonitor;
 
 import di.kdd.buildmon.R;
 import di.kdd.smartmonitor.protocol.DistributedSystem;
+import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -36,12 +37,21 @@ public class MainActivity extends Activity {
 	 */
 	
 	public void startSampling(View _) {		
-		if(distributedSystem.isSampling() == false) {
-			startService(new Intent(this, AccelerometerListenerService.class));
+		try {			
+			if(distributedSystem.isSampling() == false) {
+				distributedSystem.startSampling();
+			}
+			else {
+				Toast.makeText(getApplicationContext(), "Sampling Service is already running!", Toast.LENGTH_LONG).show();
+			}
 		}
-		else {
-			Toast.makeText(getApplicationContext(), "Sampling Service is already running!", Toast.LENGTH_LONG).show();
+		catch(MasterException e) {
+			Toast.makeText(getApplicationContext(), "This action can be done only from the Master node!", Toast.LENGTH_LONG).show();			
 		}
+	}	
+	
+	public void startSamplingService() {
+		startService(new Intent(this, AccelerometerListenerService.class));		
 	}	
 	
 	/**
@@ -51,13 +61,22 @@ public class MainActivity extends Activity {
 	 */	
 	
 	public void stopSampling(View _)	{
-		if(distributedSystem.isSampling()) {
-			stopService(new Intent(this, AccelerometerListenerService.class));
+		try {			
+			if(distributedSystem.isSampling()) {
+				distributedSystem.stopSampling();
+			}
+			else {
+				Toast.makeText(this, "Node is not sampling!", Toast.LENGTH_LONG).show();
+			}
 		}
-		else {
-			Toast.makeText(this, "Node is not sampling!", Toast.LENGTH_LONG).show();
+		catch(MasterException e) {
+			Toast.makeText(getApplicationContext(), "This action can be done only from the Master node!", Toast.LENGTH_LONG).show();			
 		}
 	}	
+	
+	public void stopSamplingService() {
+		stopService(new Intent(this, AccelerometerListenerService.class));		
+	}
 	
 	/***
 	 * Handler for the connect button. 
