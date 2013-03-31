@@ -12,7 +12,6 @@ public class MainActivity extends Activity {
 
 	/* States */
 	
-	private boolean connected;
 	private boolean samplingRunning;
 	
 	private AccelerationsSQLiteHelper accelerationsDb;
@@ -73,10 +72,11 @@ public class MainActivity extends Activity {
 	 */
 	
 	public void connect(View _) {
-		if(!connected) {
+		if(distributedSystem.isConnected() == false) {
+				/* Reallocate instance, because AsyncTask can be run only once =/ */
+			
 				distributedSystem = new DistributedSystem(this);
 				distributedSystem.connect();				
-				connected = true;
 		}
 		else {			
 			Toast.makeText(this, "Already connected!", Toast.LENGTH_LONG).show();
@@ -89,9 +89,8 @@ public class MainActivity extends Activity {
 	 */
 	
 	public void disconnect(View _) {
-		if(connected) {
+		if(distributedSystem.isConnected()) {
 			distributedSystem.disconnect();
-			connected = false;
 		}
 		else {			
 			Toast.makeText(this, "Not connected!", Toast.LENGTH_LONG).show();

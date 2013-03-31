@@ -52,6 +52,14 @@ public interface IProtocol {
 	
 	public void connectAt(String ip);
 	
+	
+	/***
+	 * Asks if the node is connected to the distributed system
+	 * @return boolean indicating if the node is connected to the system
+	 */
+	
+	public boolean isConnected();
+	
 	/***
 	 * Disconnect from the system.
 	 */

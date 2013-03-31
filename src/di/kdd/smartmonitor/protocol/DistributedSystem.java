@@ -11,8 +11,14 @@ import di.kdd.smartmonitor.MainActivity;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 
 public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements IProtocol {
+
+	/* The view that is interested to our events */
+	
 	private MainActivity view;
+
 	private DistributedSystemNode node;
+	
+	private boolean isConnected;
 	
 	private static final String TAG = "distributed system";
 		
@@ -27,28 +33,36 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 	@Override
 	public void connectAsMaster() {
 		node = new MasterNode(); 
+		isConnected = true;
 		
 		view.showMessage("Connected as Master");			
 	}
 
 	@Override
-	public void connectAt(String ip){
+	public void connectAt(String ip) {
 		Socket socket;
 
 		try{
 			socket = new Socket(ip, IProtocol.JOIN_PORT);
 			node = new PeerNode(socket);
-			
+			isConnected = true;
+		
 			view.showMessage("Connected as Peer");						
 		}
 		catch(IOException e) {
-			view.showMessage("Failed to connect as Peer");						
+			view.showMessage("Failed to connect as Peer");
 		}		
 	}	
 	
 	@Override
+	public boolean isConnected() {
+		return isConnected;
+	}
+	
+	@Override
 	public void disconnect() {
 		node.disconnect();
+		isConnected = false;
 	}
 
 	public void startSampling() throws MasterException {
@@ -101,13 +115,15 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 			/* Master found */
 			
 			node = new PeerNode(socket);
+			isConnected = true;
 			
 			return true;
 		}
 		
 		/* No response, I am the first node of the distributed system and the Master */
 		
-		node = new MasterNode(); 
+		node = new MasterNode();
+		isConnected = true;
 
 		return false;
 	}
