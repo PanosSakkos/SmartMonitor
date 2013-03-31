@@ -1,4 +1,4 @@
-package di.kdd.buildmon;
+package di.kdd.smartmonitor;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -12,11 +12,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 import android.util.Log;
-import di.kdd.buildmon.Acceleration.AccelerationAxis;
+import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
 
 public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	
-	private static final int DATABASE_VERSION = 5;
+	private static final int DATABASE_VERSION = 11;
 
 	private static final String DATABASE_NAME = "accelerations.db";
 
@@ -47,7 +47,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 													", " + COLUMN_ACCELERATION + " float not null" +
 													", " + COLUMN_TIMESTAMP + " long not null);";
 
-	private static final String DEBUG_TAG = "database";
+	private static final String TAG = "database";
 
 	/* The folder that the dump files are placed under */
 	
@@ -77,21 +77,21 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	public AccelerationsSQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 
-		Log.d(DEBUG_TAG, "Constructor called with name " + DATABASE_NAME + " and version " + DATABASE_VERSION);
+		Log.d(TAG, "Constructor called with name " + DATABASE_NAME + " and version " + DATABASE_VERSION);
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {	
-		Log.d(DEBUG_TAG, "onCreate called");
+		Log.d(TAG, "onCreate called");
 		
 		db.execSQL(TABLE_X_ACCELERATIONS_CREATE);
-		Log.d(DEBUG_TAG, TABLE_X_ACCELERATIONS_CREATE);
+		Log.d(TAG, TABLE_X_ACCELERATIONS_CREATE);
 		
 		db.execSQL(TABLE_Y_ACCELERATIONS_CREATE);
-		Log.d(DEBUG_TAG, TABLE_Y_ACCELERATIONS_CREATE);
+		Log.d(TAG, TABLE_Y_ACCELERATIONS_CREATE);
 
 		db.execSQL(TABLE_Z_ACCELERATIONS_CREATE);
-		Log.d(DEBUG_TAG, TABLE_Z_ACCELERATIONS_CREATE);
+		Log.d(TAG, TABLE_Z_ACCELERATIONS_CREATE);
 	}
 
 	/***
@@ -100,13 +100,13 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.d(DEBUG_TAG, "Dropping " + TABLE_X_ACCELERATIONS);
+		Log.d(TAG, "Dropping " + TABLE_X_ACCELERATIONS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_X_ACCELERATIONS);
 
-		Log.d(DEBUG_TAG, "Dropping " + TABLE_Y_ACCELERATIONS);
+		Log.d(TAG, "Dropping " + TABLE_Y_ACCELERATIONS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_Y_ACCELERATIONS);
 
-		Log.d(DEBUG_TAG, "Dropping " + TABLE_Z_ACCELERATIONS);
+		Log.d(TAG, "Dropping " + TABLE_Z_ACCELERATIONS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_Z_ACCELERATIONS);
 
 		onCreate(db);
@@ -226,7 +226,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 				
 		db.close();
 
-		Log.d(DEBUG_TAG, "Dumped buffers to database");
+		Log.d(TAG, "Dumped buffers to database");
 	}
 	
 	/***
@@ -265,7 +265,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		}
 		
 		if(cursor == null) { 
-			Log.d(DEBUG_TAG, "No results found");
+			Log.d(TAG, "No results found");
 
 			return null;
 		}
@@ -273,7 +273,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		cursor.moveToFirst();
 		
 		acceleration = new Acceleration(cursor.getFloat(1), timestamp);
-		Log.d(DEBUG_TAG, "Selected " + acceleration.getAcceleration() + " " + acceleration.getTimestamp());
+		Log.d(TAG, "Selected " + acceleration.getAcceleration() + " " + acceleration.getTimestamp());
 		
 		db.close();
 		
@@ -310,7 +310,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		}
 		
 		if(cursor == null) {
-			Log.d(DEBUG_TAG, "No results found");
+			Log.d(TAG, "No results found");
 
 			return null;
 		}
@@ -339,7 +339,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		Cursor cursor;
 		SQLiteDatabase db = this.getReadableDatabase();
 		List<Acceleration> accelerations = new ArrayList<Acceleration>();
-		
+				
 		switch(axis) {
 			case X:
 				cursor = db.rawQuery("SELECT " + COLUMN_ACCELERATION + ", " + COLUMN_TIMESTAMP +  
@@ -364,7 +364,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		}
 		
 		if(cursor == null) {
-			Log.d(DEBUG_TAG, "No results found");
+			Log.d(TAG, "No results found");
 
 			return null;
 		}
@@ -418,7 +418,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		
 		printWriter.close();
 		
-		Log.d(DEBUG_TAG, "Wrote " + DUMP_X_FILENAME);
+		Log.d(TAG, "Wrote " + DUMP_X_FILENAME);
 		
 		/* Dump Y axis accelerations */
 
@@ -433,7 +433,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		
 		printWriter.close();
 
-		Log.d(DEBUG_TAG, "Wrote " + DUMP_Y_FILENAME);		
+		Log.d(TAG, "Wrote " + DUMP_Y_FILENAME);		
 		
 		/* Dump Z axis accelerations */
 
@@ -448,6 +448,6 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		
 		printWriter.close();
 
-		Log.d(DEBUG_TAG, "Wrote " + DUMP_Z_FILENAME);
+		Log.d(TAG, "Wrote " + DUMP_Z_FILENAME);
 	}
 }

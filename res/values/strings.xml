@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">BuildMon</string>
+    <string name="app_name">SmartMonitor</string>
     <string name="menu_settings">Settings</string>
     <string name="main_connect">Connect</string>
+    <string name="main_disconnect">Disconnect</string>
     <string name="main_startSampling">Start Sampling</string>
     <string name="main_stopSampling">Stop Sampling</string>
-    <string name="main_plotGraphs">Plot Graphs</string>
+    <string name="main_exportToFile">Export To File</string>
 </resources>

@@ -1,4 +1,4 @@
-package di.kdd.buildmon;
+package di.kdd.smartmonitor;
 
 import android.app.Service;
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
-import di.kdd.buildmon.Acceleration.AccelerationAxis;
+import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
 
 public class AccelerometerListenerService extends Service implements SensorEventListener {
 	
@@ -21,7 +21,7 @@ public class AccelerometerListenerService extends Service implements SensorEvent
 
 	private AccelerationsSQLiteHelper accelerationsDb;
 
-	private static final String DEBUG_TAG = "listener service";
+	private static final String TAG = "listener service";
 	
 	/**
 	 * @return Counted events of the accelerometer sensor
@@ -65,7 +65,7 @@ public class AccelerometerListenerService extends Service implements SensorEvent
 			}		
 		}
 		catch(Exception exception) {
-			Log.e(DEBUG_TAG, exception.getMessage());			
+			Log.e(TAG, exception.getMessage());			
 		}
 
 		accelerationsCounted++;

@@ -1,5 +1,7 @@
-package di.kdd.buildmon;
+package di.kdd.smartmonitor;
 
+import di.kdd.buildmon.R;
+import di.kdd.smartmonitor.protocol.DistributedSystem;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -8,8 +10,13 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 
+	/* States */
+	
+	private boolean connected;
 	private boolean samplingRunning;
+	
 	private AccelerationsSQLiteHelper accelerationsDb;
+	private DistributedSystem distributedSystem;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,13 +31,17 @@ public class MainActivity extends Activity {
 		accelerationsDb.dumpAccelerationBuffers();
 	}
 	
+	public void showMessage(String message) {		
+		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+	}
+	
 	/**
 	 * Handler of the startSampling button. 
 	 * Registers the listener of the Accelerometer
 	 * @param view
 	 */
 	
-	public void startSampling(View view) {		
+	public void startSampling(View _) {		
 		if(!samplingRunning) {
 			startService(new Intent(this, AccelerometerListenerService.class));
 			samplingRunning = true;
@@ -43,10 +54,10 @@ public class MainActivity extends Activity {
 	/**
 	 * Handler of the stopSampling button. 
 	 * Unregisters the listener of the Accelerometer
-	 * @param view
+	 * @param ignored
 	 */	
 	
-	public void stopSampling(View view)	{
+	public void stopSampling(View _)	{
 		if(samplingRunning) {
 			stopService(new Intent(this, AccelerometerListenerService.class));
 			samplingRunning = false;
@@ -57,18 +68,49 @@ public class MainActivity extends Activity {
 	}	
 	
 	/***
+	 * Handler for the connect button. 
+	 * @param ignored
+	 */
+	
+	public void connect(View _) {
+		if(!connected) {
+				distributedSystem = new DistributedSystem(this);
+				distributedSystem.connect();				
+				connected = true;
+		}
+		else {			
+			Toast.makeText(this, "Already connected!", Toast.LENGTH_LONG).show();
+		}
+	}
+	
+	/***
+	 * Handler for the disconnect button. 
+	 * @param ignored
+	 */
+	
+	public void disconnect(View _) {
+		if(connected) {
+			distributedSystem.disconnect();
+			connected = false;
+		}
+		else {			
+			Toast.makeText(this, "Not connected!", Toast.LENGTH_LONG).show();
+		}
+	}
+		
+	/***
 	 * Dumps the stored Accelerations into 3 files, one for each Axis
-	 * @param view
+	 * @param ignored
 	 * @throws Exception
 	 */
 	
-	public void plotGraphs(View view) throws Exception {
+	public void exportToFile(View _) throws Exception {
 		if(!samplingRunning) {
+			accelerationsDb.dumpAccelerationBuffers();
 			accelerationsDb.dumpToFile();
 		}
 		else {
 			Toast.makeText(this, "Stop Sampling!", Toast.LENGTH_LONG).show();
-
 		}
 	}	
 }
