@@ -25,6 +25,28 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 	}
 
 	@Override
+	public void connectAsMaster() {
+		node = new MasterNode(); 
+		
+		view.showMessage("Connected as Master");			
+	}
+
+	@Override
+	public void connectAt(String ip){
+		Socket socket;
+
+		try{
+			socket = new Socket(ip, IProtocol.JOIN_PORT);
+			node = new PeerNode(socket);
+			
+			view.showMessage("Connected as Peer");						
+		}
+		catch(IOException e) {
+			view.showMessage("Failed to connect as Peer");						
+		}		
+	}	
+	
+	@Override
 	public void disconnect() {
 		node.disconnect();
 	}
@@ -51,6 +73,7 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 		//TODO
 	}
 	
+
 	/***
 	 * Sends Knock-Knock messages to the first 255 local IP addresses and
 	 * according to if it will get a response or not, the node becomes
@@ -89,10 +112,16 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 		return false;
 	}
 	
+	/***
+	 * Runs after the doInBackground methods returns. The became peer
+	 * parameter indicates if the node connected as a Master or as a Peer and
+	 * sends a notification to the subscribed view.
+	 */
+	
 	@Override
 	protected void onPostExecute(Boolean becamePeer) {
 		if(becamePeer) {
-			view.showMessage("Connected as Peer");			
+			view.showMessage("Connected as Peer");		
 		}
 		else {
 			view.showMessage("Connected as Master");			

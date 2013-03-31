@@ -40,6 +40,19 @@ public interface IProtocol {
 	public void connect();
 		
 	/***
+	 * Forces the node to connect to the system as Master.
+	 */
+	
+	public void connectAsMaster();
+	
+	/***
+	 * Forces the node to connect to the system as Peer.
+	 * @param ip The Master's node IP address
+	 */
+	
+	public void connectAt(String ip);
+	
+	/***
 	 * Disconnect from the system.
 	 */
 	
