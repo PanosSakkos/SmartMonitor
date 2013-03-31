@@ -46,6 +46,22 @@ public interface IProtocol {
 	public void disconnect();
 
 	/***
+	 * Broadcast a START_SAMPLING command to all the peers and 
+	 * starts sampling itself. 
+	 * @throws MasterException If the asked node is not the Master node
+	 */
+	
+	public void startSampling() throws MasterException;
+
+	/***
+	 * Broadcast a STOP_SAMPLING command to all the peers and 
+	 * stops sampling itself. 
+	 * @throws MasterException If the asked node is not the Master node
+	 */
+	
+	public void stopSampling() throws MasterException;
+	
+	/***
 	 * If the message receiver is the Master node, asks for the peaks of the peers
 	 * and computes the building's signature.
 	 * @param from Starting sample time

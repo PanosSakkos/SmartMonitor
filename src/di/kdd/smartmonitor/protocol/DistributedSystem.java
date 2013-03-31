@@ -23,6 +23,33 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 	public void connect() {
 		this.execute();
 	}
+
+	@Override
+	public void disconnect() {
+		node.disconnect();
+	}
+
+	public void startSampling() throws MasterException {
+		if(node.isMaster() == false) {
+			throw new MasterException();
+		}
+
+		//TODO
+	}
+
+	/***
+	 * Broadcast a STOP_SAMPLING command to all the peers and 
+	 * stops sampling itself. 
+	 * @throws MasterException If the asked node is not the Master node
+	 */
+	
+	public void stopSampling() throws MasterException {
+		if(node.isMaster() == false) {
+			throw new MasterException();
+		}
+
+		//TODO
+	}
 	
 	/***
 	 * Sends Knock-Knock messages to the first 255 local IP addresses and
@@ -89,10 +116,5 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 	@Override
 	public String getMasterIP() {
 		return node.getMasterIP();
-	}
-
-	@Override
-	public void disconnect() {
-		node.disconnect();
 	}
 }
