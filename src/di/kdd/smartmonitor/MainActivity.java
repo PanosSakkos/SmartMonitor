@@ -8,12 +8,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {
-
-	/* States */
-	
-	private boolean samplingRunning;
-	
+public class MainActivity extends Activity {	
 	private AccelerationsSQLiteHelper accelerationsDb;
 	private DistributedSystem distributedSystem;
 	
@@ -21,7 +16,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		
+			
 		accelerationsDb = new AccelerationsSQLiteHelper(this.getApplicationContext());
 	}
 
@@ -41,15 +36,14 @@ public class MainActivity extends Activity {
 	 */
 	
 	public void startSampling(View _) {		
-		if(!samplingRunning) {
+		if(distributedSystem.isSampling() == false) {
 			startService(new Intent(this, AccelerometerListenerService.class));
-			samplingRunning = true;
 		}
 		else {
 			Toast.makeText(getApplicationContext(), "Sampling Service is already running!", Toast.LENGTH_LONG).show();
 		}
-	}
-
+	}	
+	
 	/**
 	 * Handler of the stopSampling button. 
 	 * Unregisters the listener of the Accelerometer
@@ -57,12 +51,11 @@ public class MainActivity extends Activity {
 	 */	
 	
 	public void stopSampling(View _)	{
-		if(samplingRunning) {
+		if(distributedSystem.isSampling()) {
 			stopService(new Intent(this, AccelerometerListenerService.class));
-			samplingRunning = false;
 		}
 		else {
-			Toast.makeText(this, "Sampling Service is not running!", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Node is not sampling!", Toast.LENGTH_LONG).show();
 		}
 	}	
 	
@@ -104,12 +97,12 @@ public class MainActivity extends Activity {
 	 */
 	
 	public void exportToFile(View _) throws Exception {
-		if(!samplingRunning) {
+		if(distributedSystem.isSampling() == false) {
 			accelerationsDb.dumpAccelerationBuffers();
 			accelerationsDb.dumpToFile();
 		}
 		else {
-			Toast.makeText(this, "Stop Sampling!", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "The node is sampling!", Toast.LENGTH_LONG).show();
 		}
 	}	
 }

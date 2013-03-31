@@ -81,6 +81,13 @@ public interface IProtocol {
 	 */
 	
 	public void stopSampling() throws MasterException;
+
+	/***
+	 * Asks the node if is in sampling state
+	 * @return if the node is sampling or not
+	 */
+	
+	public boolean isSampling();
 	
 	/***
 	 * If the message receiver is the Master node, asks for the peaks of the peers

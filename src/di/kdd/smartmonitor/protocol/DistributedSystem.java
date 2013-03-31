@@ -11,14 +11,18 @@ import di.kdd.smartmonitor.MainActivity;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 
 public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements IProtocol {
-
 	/* The view that is interested to our events */
 	
 	private MainActivity view;
 
 	private DistributedSystemNode node;
 	
+	private long samplingStarted, samplingEnded;
+	
+	/* States */
+	
 	private boolean isConnected;
+	private boolean isSampling;
 	
 	private static final String TAG = "distributed system";
 		
@@ -69,27 +73,30 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 		if(node.isMaster() == false) {
 			throw new MasterException();
 		}
-
+		
 		//TODO
+		
+		isSampling = true;
+		samplingStarted = System.currentTimeMillis();
 	}
 
-	/***
-	 * Broadcast a STOP_SAMPLING command to all the peers and 
-	 * stops sampling itself. 
-	 * @throws MasterException If the asked node is not the Master node
-	 */
-	
 	public void stopSampling() throws MasterException {
 		if(node.isMaster() == false) {
 			throw new MasterException();
 		}
 
 		//TODO
+		
+		isSampling = false;
+		samplingEnded = System.currentTimeMillis();
 	}
 	
-
+	public boolean isSampling() {
+		return isSampling;
+	}
+	
 	/***
-	 * Sends Knock-Knock messages to the first 255 local IP addresses and
+	 * Sends JOIN messages to the first 255 local IP addresses and
 	 * according to if it will get a response or not, the node becomes
 	 * a peer or a Master respectively 
 	 */
