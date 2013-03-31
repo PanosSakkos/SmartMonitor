@@ -1,4 +1,4 @@
-package di.kdd.buildmon;
+package di.kdd.smartmonitor;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -12,11 +12,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 import android.util.Log;
-import di.kdd.buildmon.Acceleration.AccelerationAxis;
+import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
 
 public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	
-	private static final int DATABASE_VERSION = 5;
+	private static final int DATABASE_VERSION = 11;
 
 	private static final String DATABASE_NAME = "accelerations.db";
 
@@ -339,7 +339,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		Cursor cursor;
 		SQLiteDatabase db = this.getReadableDatabase();
 		List<Acceleration> accelerations = new ArrayList<Acceleration>();
-		
+				
 		switch(axis) {
 			case X:
 				cursor = db.rawQuery("SELECT " + COLUMN_ACCELERATION + ", " + COLUMN_TIMESTAMP +  

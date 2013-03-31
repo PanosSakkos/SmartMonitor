@@ -1,4 +1,4 @@
-package di.kdd.buildmon.protocol;
+package di.kdd.smartmonitor.protocol;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -12,8 +12,8 @@ public abstract class DistributedSystemNode extends Thread {
 	protected PeerData peerData = new PeerData();
 
 	/*
-	 * The captain uses this thread in order to send commands to the peers
-	 * and the peers use this thread to receive commands from the Captain.
+	 * The Master uses this thread in order to send commands to the peers
+	 * and the peers use this thread to receive commands from the Master.
 	 */
 	
 	protected Thread commandThread;
@@ -22,9 +22,9 @@ public abstract class DistributedSystemNode extends Thread {
 	
 	public abstract void disconnect();
 	
-	public abstract boolean isCaptain();
+	public abstract boolean isMaster();
 	
-	public String getCaptainIP() {
+	public String getMasterIP() {
 		return peerData.getLowestIP();
 	}
 	

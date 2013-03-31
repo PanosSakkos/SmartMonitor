@@ -1,12 +1,12 @@
-package di.kdd.buildmon.protocol;
+package di.kdd.smartmonitor.protocol;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 import android.util.Log;
-import di.kdd.buildmon.middlewareServices.TimeSynchronizationMessage;
-import di.kdd.buildmon.protocol.IProtocol.Tag;
+import di.kdd.smartmonitor.middlewareServices.TimeSynchronizationMessage;
+import di.kdd.smartmonitor.protocol.IProtocol.Tag;
 
 public class KnockKnockThread extends Thread {
 	private PeerData peerData;
@@ -25,7 +25,7 @@ public class KnockKnockThread extends Thread {
 		android.os.Debug.waitForDebugger();
 		
 		try {
-			welcomeSocket = new ServerSocket(IProtocol.KNOCK_KNOCK_PORT);
+			welcomeSocket = new ServerSocket(IProtocol.JOIN_PORT);
 		} 
 		catch (IOException e) {
 			Log.d(TAG, "Could not bind socket at the knock knock port");
@@ -39,7 +39,7 @@ public class KnockKnockThread extends Thread {
 
 					/* Send the peer data to the node that wants to join the distributed network */
 					
-					message = new Message(Tag.KNOCK_KNOCK, peerData.toString());
+					message = new Message(Tag.JOIN, peerData.toString());
 					DistributedSystemNode.send(connectionSocket, message);
 					
 					/* Update the peer data with the new IP address */

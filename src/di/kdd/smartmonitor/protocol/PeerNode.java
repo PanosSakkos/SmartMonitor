@@ -1,4 +1,4 @@
-package di.kdd.buildmon.protocol;
+package di.kdd.smartmonitor.protocol;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,11 +6,11 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import android.util.Log;
-import di.kdd.buildmon.middlewareServices.TimeSynchronization;
-import di.kdd.buildmon.protocol.IProtocol.Tag;
+import di.kdd.smartmonitor.middlewareServices.TimeSynchronization;
+import di.kdd.smartmonitor.protocol.IProtocol.Tag;
 
 public final class PeerNode extends DistributedSystemNode {
-	/* The socket that the peer holds in order to get commands from the Captain */
+	/* The socket that the peer holds in order to get commands from the Master */
 	
 	private ServerSocket commandsServerSocket;
 
@@ -23,9 +23,9 @@ public final class PeerNode extends DistributedSystemNode {
 		BufferedReader in;
 
 		try {
-			/* The Captain was found, send the knock-knock message */
+			/* The Master was found, send the knock-knock message */
 			
-			message = new Message(Tag.KNOCK_KNOCK, null);
+			message = new Message(Tag.JOIN, null);
 
 			/* Send request to join the distributed network */
 
@@ -49,46 +49,52 @@ public final class PeerNode extends DistributedSystemNode {
 	}
 	
 	/***
-	 * Accepts a socket connection on the COMMAND_PORT and waits for commands from the Captain
+	 * Accepts a socket connection on the COMMAND_PORT and waits for commands from the Master
 	 */
 	
 	@Override
 	public void run() {
-		Socket captainSocket;
+		Socket MasterSocket;
 		BufferedReader in;
 
 		android.os.Debug.waitForDebugger();
 		
 		try {
 			commandsServerSocket = new ServerSocket(IProtocol.COMMAND_PORT);		
-			captainSocket = commandsServerSocket.accept();
+			MasterSocket = commandsServerSocket.accept();
 		}
 		catch(IOException e) {
 			Log.d(TAG, "Failed to accept command socket");
 			return;
 		}
 		
-		/* Listen on captainSocket for incoming commands from the Captain */
+		/* Listen on MasterSocket for incoming commands from the Master */
 		
 		try {		
 			while(true) {
 				Message message;
 			
-				in = receive(captainSocket);
+				in = receive(MasterSocket);
 				message = new Message(in);				
 			
 				switch(message.getTag()) {
 					case NEW_PEER:
-						/* A new peer was accepted form the Captain, get his IP address */										
+						/* A new peer was accepted form the Master, get his IP address */										
 	
 						peerData.addPeerIP(message.getPayload());
 						break;
-					case TIME_SYNC:
-						/* The Captain sent a message with its shipment timestamp */
+					case SYNC:
+						/* The Master sent a message with its shipment timestamp */
 						
 						timeSync.timeReference(Long.parseLong(message.getPayload()));
 						break;
-					case AGGREGATE_PEAKS:
+					case START_SAMPLING:
+
+						break;
+					case STOP_SAMPLING:
+						
+						break;
+					case SEND_PEAKS:
 							
 						break;
 					default:
@@ -98,8 +104,6 @@ public final class PeerNode extends DistributedSystemNode {
 			}
 		}
 		catch(IOException e) {
-			//TODO REVIEW captain is down?
-			Log.d(TAG, "Mwre les? :P");
 			e.printStackTrace();
 		}		
 	}
@@ -112,7 +116,7 @@ public final class PeerNode extends DistributedSystemNode {
 	}
 	
 	@Override
-	public boolean isCaptain() {
+	public boolean isMaster() {
 		return false;
 	}
 }

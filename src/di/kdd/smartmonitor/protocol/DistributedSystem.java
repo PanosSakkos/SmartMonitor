@@ -1,4 +1,4 @@
-package di.kdd.buildmon.protocol;
+package di.kdd.smartmonitor.protocol;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -7,8 +7,8 @@ import java.util.Date;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import di.kdd.buildmon.MainActivity;
-import di.kdd.buildmon.protocol.exceptions.NotCaptainException;
+import di.kdd.smartmonitor.MainActivity;
+import di.kdd.smartmonitor.protocol.exceptions.NotMasterException;
 
 public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements IProtocol {
 	private MainActivity view;
@@ -27,7 +27,7 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 	/***
 	 * Sends Knock-Knock messages to the first 255 local IP addresses and
 	 * according to if it will get a response or not, the node becomes
-	 * a peer or a Captain respectively 
+	 * a peer or a Master respectively 
 	 */
 
 	@Override
@@ -37,27 +37,27 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 		
 		android.os.Debug.waitForDebugger();
 
-		/* Look for the Captain in the first 255 local IP addresses */
+		/* Look for the Master in the first 255 local IP addresses */
 		//TODO parallelize it
 		for(int i = 1; i < 256; ++i) {
 			try{
 				Log.d(TAG, "Trying to connect to :" + ipPrefix + Integer.toString(i));
-				socket = new Socket(ipPrefix + Integer.toString(i), IProtocol.KNOCK_KNOCK_PORT);
+				socket = new Socket(ipPrefix + Integer.toString(i), IProtocol.JOIN_PORT);
 			}
 			catch(IOException e) {
 				continue;
 			}
 
-			/* Captain found */
+			/* Master found */
 			
 			node = new PeerNode(socket);
 			
 			return true;
 		}
 		
-		/* No response, I am the first node of the distributed system and the Captain */
+		/* No response, I am the first node of the distributed system and the Master */
 		
-		node = new CaptainNode(); 
+		node = new MasterNode(); 
 
 		return false;
 	}
@@ -68,27 +68,27 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 			view.showMessage("Connected as Peer");			
 		}
 		else {
-			view.showMessage("Connected as Captain");			
+			view.showMessage("Connected as Master");			
 		}
 	}
 	
 	@Override
-	public void computeBuildingSignature(Date from, Date to) throws NotCaptainException, IOException {
-		if(node.isCaptain() == false) {
-			throw new NotCaptainException();
+	public void computeBuildingSignature(Date from, Date to) throws NotMasterException, IOException {
+		if(node.isMaster() == false) {
+			throw new NotMasterException();
 		}
 		
-		((CaptainNode) node).computeBuildingSignature(from, to);
+		((MasterNode) node).computeBuildingSignature(from, to);
 	}
 
 	@Override
-	public boolean isCaptain() {
-		return node.isCaptain();
+	public boolean isMaster() {
+		return node.isMaster();
 	}
 
 	@Override
-	public String getCaptainIP() {
-		return node.getCaptainIP();
+	public String getMasterIP() {
+		return node.getMasterIP();
 	}
 
 	@Override

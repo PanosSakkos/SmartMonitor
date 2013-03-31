@@ -1,4 +1,4 @@
-package di.kdd.buildmon;
+package di.kdd.smartmonitor;
 
 import android.app.Service;
 import android.content.Context;
@@ -10,7 +10,7 @@ import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
-import di.kdd.buildmon.Acceleration.AccelerationAxis;
+import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
 
 public class AccelerometerListenerService extends Service implements SensorEventListener {
 	

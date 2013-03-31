@@ -1,4 +1,4 @@
-package di.kdd.buildmon.protocol;
+package di.kdd.smartmonitor.protocol;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +14,7 @@ import android.util.Log;
  */
 
 public class PeerData {
-	private CaptainNode captainNode;
+	private MasterNode captainNode;
 	private Set<String> peerIPs = new TreeSet<String>();
 
 	private static final String TAG = "peer data";
@@ -26,7 +26,7 @@ public class PeerData {
 	 * @param captainNode The Captain node to notify when a new peer is added from the KnockKnock thread
 	 */
 	
-	public PeerData(CaptainNode captainNode) {
+	public PeerData(MasterNode captainNode) {
 		this.captainNode = captainNode;
 	}
 	

@@ -1,6 +1,7 @@
-package di.kdd.buildmon;
+package di.kdd.smartmonitor;
 
-import di.kdd.buildmon.protocol.DistributedSystem;
+import di.kdd.buildmon.R;
+import di.kdd.smartmonitor.protocol.DistributedSystem;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -105,6 +106,7 @@ public class MainActivity extends Activity {
 	
 	public void exportToFile(View _) throws Exception {
 		if(!samplingRunning) {
+			accelerationsDb.dumpAccelerationBuffers();
 			accelerationsDb.dumpToFile();
 		}
 		else {

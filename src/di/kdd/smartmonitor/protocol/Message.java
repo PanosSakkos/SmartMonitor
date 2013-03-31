@@ -1,9 +1,9 @@
-package di.kdd.buildmon.protocol;
+package di.kdd.smartmonitor.protocol;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import di.kdd.buildmon.protocol.IProtocol.Tag;
+import di.kdd.smartmonitor.protocol.IProtocol.Tag;
 
 /***
  * The message that is exchanged in every communication under

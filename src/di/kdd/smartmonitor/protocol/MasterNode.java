@@ -1,4 +1,4 @@
-package di.kdd.buildmon.protocol;
+package di.kdd.smartmonitor.protocol;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -9,23 +9,23 @@ import java.util.Date;
 import java.util.List;
 
 import android.util.Log;
-import di.kdd.buildmon.protocol.IProtocol.Tag;
-import di.kdd.buildmon.protocol.exceptions.NotCaptainException;
+import di.kdd.smartmonitor.protocol.IProtocol.Tag;
+import di.kdd.smartmonitor.protocol.exceptions.NotMasterException;
 
-public final class CaptainNode extends DistributedSystemNode {
+public final class MasterNode extends DistributedSystemNode {
 	/* List of open sockets with the peers, in order to send them commands */
 	
 	private List<Socket> commandSockets = new ArrayList<Socket>();
 	
-	/* This thread is used only from the Captain, in order to accept new 
+	/* This thread is used only from the Master, in order to accept new 
 	 * nodes in the system.
 	 */
 	
 	private KnockKnockThread knockKnockThread;
 
-	private static final String TAG = "captain";	
+	private static final String TAG = "Master";	
 	
-	public CaptainNode() {
+	public MasterNode() {
 		commandThread = new Thread(this);
 
 		/* Start accepting nodes that want to join the distributed system */
@@ -84,12 +84,12 @@ public final class CaptainNode extends DistributedSystemNode {
 	}
 	
 	@Override
-	public boolean isCaptain() {
+	public boolean isMaster() {
 		return true;
 	}
 
-	public void computeBuildingSignature(Date from, Date to) throws NotCaptainException, IOException {
-		Message message = new Message(Tag.AGGREGATE_PEAKS, 
+	public void computeBuildingSignature(Date from, Date to) throws NotMasterException, IOException {
+		Message message = new Message(Tag.SEND_PEAKS, 
 								Long.toString(from.getTime()) + "\n" + 
 								Long.toString(to.getTime()));
 		broadcast(message);

@@ -1,4 +1,4 @@
-package di.kdd.buildmon;
+package di.kdd.smartmonitor;
 
 public class Acceleration {
 
