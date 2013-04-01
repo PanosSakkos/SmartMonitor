@@ -112,16 +112,13 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	 */
 	
 	private void dumpXAccelerationsBuffer() {
-		ContentValues values = new ContentValues();
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		/* Dump Accelerations buffer for X axis */
 		
 		for(Acceleration acceleration : xAccelerationsBuffer) {
-			values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
-			values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
-			
-			db.insert(TABLE_X_ACCELERATIONS, null, values);
+			db.execSQL("INSERT INTO " + TABLE_X_ACCELERATIONS + " (" + COLUMN_TIMESTAMP + ", " + COLUMN_ACCELERATION + ")" +
+						" VALUES (" + Long.toString(acceleration.getTimestamp()) + ", " + Double.toString(acceleration.getAcceleration()) + ")");			
 		}
 
 		xAccelerationsBuffer.clear();		
@@ -133,16 +130,13 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	 */
 
 	private void dumpYAccelerationsBuffer() {
-		ContentValues values = new ContentValues();
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		/* Dump Accelerations buffer for Y axis */
 
 		for(Acceleration acceleration : yAccelerationsBuffer) {
-			values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
-			values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
-			
-			db.insert(TABLE_Y_ACCELERATIONS, null, values);
+			db.execSQL("INSERT INTO " + TABLE_Y_ACCELERATIONS + " (" + COLUMN_TIMESTAMP + ", " + COLUMN_ACCELERATION + ")" +
+					" VALUES (" + Long.toString(acceleration.getTimestamp()) + ", " + Double.toString(acceleration.getAcceleration()) + ")");			
 		}
 
 		yAccelerationsBuffer.clear();		
@@ -154,16 +148,13 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	 */
 
 	private void dumpZAccelerationsBuffer() {
-		ContentValues values = new ContentValues();
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		/* Dump Accelerations buffer for Z axis */		
 		
 		for(Acceleration acceleration : zAccelerationsBuffer) {
-			values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
-			values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
-			
-			db.insert(TABLE_Z_ACCELERATIONS, null, values);
+			db.execSQL("INSERT INTO " + TABLE_Z_ACCELERATIONS + " (" + COLUMN_TIMESTAMP + ", " + COLUMN_ACCELERATION + ")" +
+					" VALUES (" + Long.toString(acceleration.getTimestamp()) + ", " + Double.toString(acceleration.getAcceleration()) + ")");			
 		}
 
 		zAccelerationsBuffer.clear();				
