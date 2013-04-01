@@ -83,6 +83,8 @@ public class SamplingService extends Service implements SensorEventListener {
 		sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_FASTEST);	
+
+		Log.i(TAG, "Created sampling service");
 	}
 	
 	/***
@@ -94,6 +96,8 @@ public class SamplingService extends Service implements SensorEventListener {
 	public void onDestroy() {
 		accelerationsDb.close();
 		sensorManager.unregisterListener(this);		
+
+		Log.i(TAG, "Destroyed sampling service");
 	}
 	
 	@Override
