@@ -71,21 +71,21 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		this.view = view;
 		this.context = context;
 		
-		Log.d(TAG, "Constructor called with name " + DATABASE_NAME + " and version " + DATABASE_VERSION);
+		Log.i(TAG, "Constructor called with name " + DATABASE_NAME + " and version " + DATABASE_VERSION);
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {	
-		Log.d(TAG, "onCreate called");
+		Log.i(TAG, "onCreate called");
 		
 		db.execSQL(TABLE_X_ACCELERATIONS_CREATE);
-		Log.d(TAG, TABLE_X_ACCELERATIONS_CREATE);
+		Log.i(TAG, TABLE_X_ACCELERATIONS_CREATE);
 		
 		db.execSQL(TABLE_Y_ACCELERATIONS_CREATE);
-		Log.d(TAG, TABLE_Y_ACCELERATIONS_CREATE);
+		Log.i(TAG, TABLE_Y_ACCELERATIONS_CREATE);
 
 		db.execSQL(TABLE_Z_ACCELERATIONS_CREATE);
-		Log.d(TAG, TABLE_Z_ACCELERATIONS_CREATE);
+		Log.i(TAG, TABLE_Z_ACCELERATIONS_CREATE);
 	}
 
 	/***
@@ -94,13 +94,13 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.d(TAG, "Dropping " + TABLE_X_ACCELERATIONS);
+		Log.i(TAG, "Dropping " + TABLE_X_ACCELERATIONS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_X_ACCELERATIONS);
 
-		Log.d(TAG, "Dropping " + TABLE_Y_ACCELERATIONS);
+		Log.i(TAG, "Dropping " + TABLE_Y_ACCELERATIONS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_Y_ACCELERATIONS);
 
-		Log.d(TAG, "Dropping " + TABLE_Z_ACCELERATIONS);
+		Log.i(TAG, "Dropping " + TABLE_Z_ACCELERATIONS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_Z_ACCELERATIONS);
 
 		onCreate(db);
@@ -113,6 +113,8 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	private void dumpXAccelerationsBuffer() {
 		SQLiteDatabase db = this.getWritableDatabase();
 
+		Log.i(TAG, "Flushing buffer of X axis to database");
+		
 		/* Dump Accelerations buffer for X axis */
 		
 		for(Acceleration acceleration : xAccelerationsBuffer) {
@@ -131,6 +133,8 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	private void dumpYAccelerationsBuffer() {
 		SQLiteDatabase db = this.getWritableDatabase();
 
+		Log.i(TAG, "Flushing buffer of Y axis to database");
+
 		/* Dump Accelerations buffer for Y axis */
 
 		for(Acceleration acceleration : yAccelerationsBuffer) {
@@ -148,6 +152,8 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 
 	private void dumpZAccelerationsBuffer() {
 		SQLiteDatabase db = this.getWritableDatabase();
+
+		Log.i(TAG, "Flushing buffer of Z axis to database");
 
 		/* Dump Accelerations buffer for Z axis */		
 		
@@ -241,7 +247,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		}
 		
 		if(cursor == null) { 
-			Log.d(TAG, "No results found");
+			Log.i(TAG, "No results found");
 			db.close();
 
 			return null;
@@ -250,7 +256,6 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		cursor.moveToFirst();
 		
 		acceleration = new Acceleration(cursor.getFloat(1), timestamp);
-		Log.d(TAG, "Selected " + acceleration.getAcceleration() + " " + acceleration.getTimestamp());
 		
 		db.close();
 		
@@ -287,7 +292,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		}
 		
 		if(cursor == null) {
-			Log.d(TAG, "No results found");
+			Log.i(TAG, "No results found");
 			db.close();
 
 			return null;
@@ -342,7 +347,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		}
 		
 		if(cursor == null) {
-			Log.d(TAG, "No results found");
+			Log.i(TAG, "No results found");
 			db.close();
 
 			return null;
@@ -368,6 +373,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	public void dumpToFile() {		
 		DumpDatabaseTask dumper = new DumpDatabaseTask(view);
 		dumper.execute();
+		Log.i(TAG, "Dumping database to filesystem");
 	}
 	
 	/***
@@ -376,5 +382,6 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	
 	public void deleteDatabase() {
 		context.deleteDatabase(DATABASE_NAME);		
+		Log.i(TAG, "Deleted database");
 	}
 }

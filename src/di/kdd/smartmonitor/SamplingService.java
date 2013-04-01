@@ -65,8 +65,8 @@ public class SamplingService extends Service implements SensorEventListener {
 
 			accelerationsCounted++;
 		}
-		catch(Exception exception) {
-			Log.e(TAG, exception.getMessage());			
+		catch(Exception e) {
+			e.printStackTrace();
 		}
 	}
 
