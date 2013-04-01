@@ -115,7 +115,6 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		}
 
 		xAccelerationsBuffer.clear();		
-		db.close();		
 	}
 	
 	/***
@@ -135,7 +134,6 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		}
 
 		yAccelerationsBuffer.clear();		
-		db.close();		
 	}
 	
 	/***
@@ -155,7 +153,6 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		}
 
 		zAccelerationsBuffer.clear();				
-		db.close();		
 	}
 	
 	/***
@@ -242,7 +239,6 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		
 		if(cursor == null) { 
 			Log.i(TAG, "No results found");
-			db.close();
 
 			return null;
 		}
@@ -250,9 +246,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		cursor.moveToFirst();
 		
 		acceleration = new Acceleration(cursor.getFloat(1), timestamp);
-		
-		db.close();
-		
+				
 		return acceleration;
 	}
 
@@ -289,7 +283,6 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		
 		if(cursor == null) {
 			Log.i(TAG, "No results found");
-			db.close();
 
 			return null;
 		}
@@ -299,9 +292,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		while(cursor.moveToNext()) {
 			accelerations.add(new Acceleration(cursor.getFloat(0), cursor.getLong(1)));
 		}
-		
-		db.close();
-		
+				
 		return accelerations;
 	}
 	
@@ -346,7 +337,6 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		
 		if(cursor == null) {
 			Log.i(TAG, "No results found");
-			db.close();
 
 			return null;
 		}
@@ -356,8 +346,6 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		while(cursor.moveToNext()) {
 			accelerations.add(new Acceleration(cursor.getFloat(0), cursor.getLong(1)));
 		}
-		
-		db.close();
 		
 		return accelerations;
 	}
@@ -382,7 +370,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	 */
 	
 	public void deleteDatabase() {
-		Log.i(TAG, "Deleted database");
+		Log.i(TAG, "Deleting database");
 
 		xAccelerationsBuffer.clear();
 		yAccelerationsBuffer.clear();
