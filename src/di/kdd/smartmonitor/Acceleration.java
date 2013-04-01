@@ -30,9 +30,7 @@ public class Acceleration {
 	 */
 	
 	public Acceleration(float acceleration, long timestamp){
-
 		this.timestamp = timestamp;
-
 		this.acceleration = acceleration;
 	}
 
