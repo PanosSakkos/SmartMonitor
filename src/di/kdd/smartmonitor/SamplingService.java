@@ -16,7 +16,7 @@ public class SamplingService extends Service implements SensorEventListener {
 	private Sensor accelerometer;
 	private SensorManager sensorManager;
 
-	private long accelerationsCounted = 0;
+	private long accelerationsEventsCaptured = 0;
 
 	private AccelerationsSQLiteHelper accelerationsDb;
 
@@ -27,7 +27,7 @@ public class SamplingService extends Service implements SensorEventListener {
 	 */
 	
 	public long getAccelerationsCounted() {
-		return accelerationsCounted;
+		return accelerationsEventsCaptured;
 	}
 			
 	/***
@@ -57,7 +57,7 @@ Log.d(TAG, Long.toString(timestamp));
 				accelerationsDb.storeAcceleration(zAcceleration, AccelerationAxis.Z);						
 			}		
 
-			accelerationsCounted++;
+			accelerationsEventsCaptured++;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
