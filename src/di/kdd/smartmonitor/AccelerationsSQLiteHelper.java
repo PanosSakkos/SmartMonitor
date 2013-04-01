@@ -89,13 +89,10 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.i(TAG, "Dropping " + TABLE_X_ACCELERATIONS);
+		Log.i(TAG, "Upgrading database");
+		
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_X_ACCELERATIONS);
-
-		Log.i(TAG, "Dropping " + TABLE_Y_ACCELERATIONS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_Y_ACCELERATIONS);
-
-		Log.i(TAG, "Dropping " + TABLE_Z_ACCELERATIONS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_Z_ACCELERATIONS);
 
 		onCreate(db);

@@ -40,7 +40,6 @@ public class SamplingService extends Service implements SensorEventListener {
 		long timestamp = System.currentTimeMillis();
 
 		try {
-		
 			/* Ignore 0 values */
 			
 			if(event.values[0] != 0) {
