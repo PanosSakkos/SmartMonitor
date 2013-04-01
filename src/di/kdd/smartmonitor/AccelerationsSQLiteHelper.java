@@ -43,7 +43,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 													", " + COLUMN_ACCELERATION + " float not null" +
 													", " + COLUMN_TIMESTAMP + " long not null);";
 
-	/* Buffers for the Accelerations, dump to database for every 
+	/* Buffers for the Accelerations, flush to database for every 
 	 * BUFFER_THRESHOLD Accelerations captured 
 	 * */
 	
@@ -107,7 +107,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 
 		Log.i(TAG, "Flushing buffer of X axis to database");
 		
-		/* Dump Accelerations buffer for X axis */
+		/* Flush Accelerations buffer for X axis */
 		
 		for(Acceleration acceleration : xAccelerationsBuffer) {
 			db.execSQL("INSERT INTO " + TABLE_X_ACCELERATIONS + " (" + COLUMN_TIMESTAMP + ", " + COLUMN_ACCELERATION + ")" +
@@ -127,7 +127,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 
 		Log.i(TAG, "Flushing buffer of Y axis to database");
 
-		/* Dump Accelerations buffer for Y axis */
+		/* Flush Accelerations buffer for Y axis */
 
 		for(Acceleration acceleration : yAccelerationsBuffer) {
 			db.execSQL("INSERT INTO " + TABLE_Y_ACCELERATIONS + " (" + COLUMN_TIMESTAMP + ", " + COLUMN_ACCELERATION + ")" +
@@ -147,7 +147,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 
 		Log.i(TAG, "Flushing buffer of Z axis to database");
 
-		/* Dump Accelerations buffer for Z axis */		
+		/* Flush Accelerations buffer for Z axis */		
 		
 		for(Acceleration acceleration : zAccelerationsBuffer) {
 			db.execSQL("INSERT INTO " + TABLE_Z_ACCELERATIONS + " (" + COLUMN_TIMESTAMP + ", " + COLUMN_ACCELERATION + ")" +
@@ -159,7 +159,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	}
 	
 	/***
-	 *  Dumps the accelerations that are not stored to the SQLite Database. 
+	 *  Flushes the accelerations that are not stored to the SQLite Database. 
 	 */
 	
 	public void flushAccelerationBuffers() {
