@@ -59,7 +59,7 @@ public class MainActivity extends Activity {
 	
 	public void startSamplingService() {
 		if(distributedSystem.isSampling() == false) {
-			startService(new Intent(this, AccelerometerListenerService.class));		
+			startService(new Intent(this, SamplingService.class));		
 		}
 	}	
 	
@@ -91,7 +91,7 @@ public class MainActivity extends Activity {
 	
 	public void stopSamplingService() {
 		if(distributedSystem.isSampling()) {		
-			stopService(new Intent(this, AccelerometerListenerService.class));		
+			stopService(new Intent(this, SamplingService.class));		
 		}
 	}
 	

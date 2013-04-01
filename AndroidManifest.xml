@@ -26,7 +26,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-		<service android:enabled="true" android:name="di.kdd.smartmonitor.AccelerometerListenerService" android:process=":AccelerometerListenerService" />
+		<service android:enabled="true" android:name="di.kdd.smartmonitor.SamplingService" android:process=":AccelerometerListenerService" />
     </application>
 
 </manifest>

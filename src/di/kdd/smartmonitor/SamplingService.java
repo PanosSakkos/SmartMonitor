@@ -11,7 +11,7 @@ import android.os.IBinder;
 import android.util.Log;
 import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
 
-public class AccelerometerListenerService extends Service implements SensorEventListener {
+public class SamplingService extends Service implements SensorEventListener {
 	
 	private Sensor accelerometer;
 	private SensorManager sensorManager;
@@ -43,7 +43,7 @@ public class AccelerometerListenerService extends Service implements SensorEvent
 	@Override
 	public void onSensorChanged(SensorEvent event) {
 		long timestamp = System.currentTimeMillis();
-
+Log.d(TAG, Long.toString(timestamp));
 		try {
 		
 			/* Ignore 0 values */
