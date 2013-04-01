@@ -16,20 +16,10 @@ public class SamplingService extends Service implements SensorEventListener {
 	private Sensor accelerometer;
 	private SensorManager sensorManager;
 
-	private long accelerationsEventsCaptured = 0;
-
 	private AccelerationsSQLiteHelper accelerationsDb;
 
 	private static final String TAG = "listener service";
-	
-	/**
-	 * @return Counted events of the accelerometer sensor
-	 */
-	
-	public long getAccelerationsCounted() {
-		return accelerationsEventsCaptured;
-	}
-			
+
 	/***
 	 * Handler of the accelerometer values.
 	 * Stores the non-zero values of acceleration into the SQLite database
@@ -38,7 +28,7 @@ public class SamplingService extends Service implements SensorEventListener {
 	@Override
 	public void onSensorChanged(SensorEvent event) {
 		long timestamp = System.currentTimeMillis();
-Log.d(TAG, Long.toString(timestamp));
+
 		try {
 			/* Ignore 0 values */
 			
@@ -56,8 +46,6 @@ Log.d(TAG, Long.toString(timestamp));
 				Acceleration zAcceleration = new Acceleration(event.values[2], timestamp);
 				accelerationsDb.storeAcceleration(zAcceleration, AccelerationAxis.Z);						
 			}		
-
-			accelerationsEventsCaptured++;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
