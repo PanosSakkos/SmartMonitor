@@ -8,4 +8,5 @@
     <string name="main_startSampling">Start Sampling</string>
     <string name="main_stopSampling">Stop Sampling</string>
     <string name="main_exportToFile">Export To File</string>
+    <string name="main_deleteDatabase">Delete database</string>
 </resources>

@@ -141,4 +141,8 @@ public class MainActivity extends Activity {
 			Toast.makeText(this, "The node is sampling!", Toast.LENGTH_LONG).show();
 		}
 	}	
+	
+	public void deleteDatabase(View _) {
+		accelerationsDb.deleteDatabase();
+	}
 }

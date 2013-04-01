@@ -13,7 +13,7 @@ import di.kdd.smartmonitor.exceptions.AxisException;
 
 public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	
-	private static final int DATABASE_VERSION = 17;
+	private static final int DATABASE_VERSION = 18;
 
 	private static final String DATABASE_NAME = "accelerations.db";
 
@@ -58,6 +58,8 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	
 	private MainActivity view;
 	
+	private Context context;
+	
 	private static final String TAG = "database";
 	
 	/***
@@ -68,6 +70,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	public AccelerationsSQLiteHelper(MainActivity view, Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		this.view = view;
+		this.context = context;
 		
 		Log.d(TAG, "Constructor called with name " + DATABASE_NAME + " and version " + DATABASE_VERSION);
 	}
@@ -361,5 +364,9 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	public void dumpToFile() {		
 		DumpDatabaseTask dumper = new DumpDatabaseTask(view);
 		dumper.execute();
+	}
+	
+	public void deleteDatabase() {
+		context.deleteDatabase("accelerations.db");		
 	}
 }

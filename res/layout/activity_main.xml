@@ -25,16 +25,6 @@
         android:text="@string/main_exportToFile" />
 
     <Button
-        android:id="@+id/startSampling"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/plotGraphs"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="64dp"
-        android:onClick="startSampling"
-        android:text="@string/main_startSampling" />
-
-    <Button
         android:id="@+id/connectButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,6 +42,26 @@
         android:layout_below="@+id/connectButton"
         android:onClick="disconnect"
         android:text="@string/main_disconnect"/>
+
+    <Button
+        android:id="@+id/startSampling"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/connectButton"
+        android:layout_marginLeft="20dp"
+        android:layout_toRightOf="@+id/button1"
+        android:onClick="startSampling"
+        android:text="@string/main_startSampling" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/exportToFile"
+        android:layout_marginTop="40dp"
+        android:layout_toRightOf="@+id/button1"
+		android:onClick="deleteDatabase"
+        android:text="@string/main_deleteDatabase" />
 
         />
 
