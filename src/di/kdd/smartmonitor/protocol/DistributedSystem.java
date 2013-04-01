@@ -70,7 +70,7 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 	}
 
 	public void startSampling() throws MasterException {
-		if(node.isMaster() == false) {
+		if(node != null && node.isMaster() == false) {
 			throw new MasterException();
 		}
 		
@@ -82,7 +82,7 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 	}
 
 	public void stopSampling() throws MasterException {
-		if(node.isMaster() == false) {
+		if(node != null && node.isMaster() == false) {
 			throw new MasterException();
 		}
 
@@ -155,7 +155,7 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 	
 	@Override
 	public void computeBuildingSignature(Date from, Date to) throws MasterException, IOException {
-		if(node.isMaster() == false) {
+		if(node != null && node.isMaster() == false) {
 			throw new MasterException();
 		}
 		
