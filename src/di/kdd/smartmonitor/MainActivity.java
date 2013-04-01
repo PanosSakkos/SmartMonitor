@@ -144,5 +144,6 @@ public class MainActivity extends Activity {
 	
 	public void deleteDatabase(View _) {
 		accelerationsDb.deleteDatabase();
+		Toast.makeText(this, "Deleted database", Toast.LENGTH_LONG).show();
 	}
 }
