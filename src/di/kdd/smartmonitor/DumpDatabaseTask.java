@@ -24,7 +24,7 @@ public class DumpDatabaseTask extends AsyncTask<Void, Void, Boolean> {
 	private MainActivity view;
 	
 	private static final String TAG = "db dumper";
-		
+			
 	public DumpDatabaseTask(MainActivity view) {
 		this.view = view;
 	}

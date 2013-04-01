@@ -363,9 +363,10 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	 */
 	
 	public void dumpToFile() {		
+		Log.i(TAG, "Dumping database to filesystem");
+
 		DumpDatabaseTask dumper = new DumpDatabaseTask(view);
 		dumper.execute();
-		Log.i(TAG, "Dumping database to filesystem");
 	}
 	
 	/***
@@ -373,7 +374,8 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	 */
 	
 	public void deleteDatabase() {
-		context.deleteDatabase(DATABASE_NAME);		
 		Log.i(TAG, "Deleted database");
+
+		context.deleteDatabase(DATABASE_NAME);		
 	}
 }
