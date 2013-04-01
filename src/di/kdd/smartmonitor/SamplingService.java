@@ -30,11 +30,6 @@ public class SamplingService extends Service implements SensorEventListener {
 		return accelerationsCounted;
 	}
 			
-	@Override
-	public void onAccuracyChanged(Sensor sensor, int accuracy) {
-		// TODO Auto-generated method stub		
-	}
-
 	/***
 	 * Handler of the accelerometer values.
 	 * Stores the non-zero values of acceleration into the SQLite database
@@ -104,6 +99,11 @@ public class SamplingService extends Service implements SensorEventListener {
 	public IBinder onBind(Intent arg0) {
 		/* This is an unbound service */
 		return null;
+	}
+
+	@Override
+	public void onAccuracyChanged(Sensor sensor, int accuracy) {
+		// TODO Auto-generated method stub		
 	}
 
 }
