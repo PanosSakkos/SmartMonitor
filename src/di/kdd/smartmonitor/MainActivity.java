@@ -18,7 +18,8 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 			
-		accelerationsDb = new AccelerationsSQLiteHelper(this.getApplicationContext());
+		distributedSystem = new DistributedSystem(this);
+		accelerationsDb = new AccelerationsSQLiteHelper(this, this.getApplicationContext());
 	}
 
 	@Override
@@ -40,6 +41,8 @@ public class MainActivity extends Activity {
 		try {			
 			if(distributedSystem.isSampling() == false) {
 				distributedSystem.startSampling();
+				
+				Toast.makeText(this, "Accelerometer Listener Service Created", Toast.LENGTH_LONG).show();		
 			}
 			else {
 				Toast.makeText(getApplicationContext(), "Sampling Service is already running!", Toast.LENGTH_LONG).show();
@@ -70,6 +73,8 @@ public class MainActivity extends Activity {
 		try {			
 			if(distributedSystem.isSampling()) {
 				distributedSystem.stopSampling();
+
+				Toast.makeText(this, "Accelerometer Listener Service Destroyed", Toast.LENGTH_LONG).show();
 			}
 			else {
 				Toast.makeText(this, "Node is not sampling!", Toast.LENGTH_LONG).show();

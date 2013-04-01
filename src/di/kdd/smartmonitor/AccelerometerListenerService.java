@@ -9,7 +9,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
 
 public class AccelerometerListenerService extends Service implements SensorEventListener {
@@ -79,13 +78,11 @@ public class AccelerometerListenerService extends Service implements SensorEvent
 	
 	@Override
 	public void onCreate() {
-		accelerationsDb = new AccelerationsSQLiteHelper(this.getApplicationContext());
+		accelerationsDb = new AccelerationsSQLiteHelper(null, this.getApplicationContext());
 		
 		sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_FASTEST);	
-
-		Toast.makeText(this, "Accelerometer Listener Service Created", Toast.LENGTH_LONG).show();		
 	}
 	
 	/***
@@ -95,9 +92,7 @@ public class AccelerometerListenerService extends Service implements SensorEvent
 	
 	@Override
 	public void onDestroy() {
-		sensorManager.unregisterListener(this);
-		
-		Toast.makeText(this, "Accelerometer Listener Service Destroyed", Toast.LENGTH_LONG).show();
+		sensorManager.unregisterListener(this);		
 	}
 	
 	@Override
