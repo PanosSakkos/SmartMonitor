@@ -38,7 +38,7 @@ public class SamplingService extends Service implements SensorEventListener {
 	@Override
 	public void onSensorChanged(SensorEvent event) {
 		long timestamp = System.currentTimeMillis();
-
+Log.d(TAG, Long.toString(timestamp));
 		try {
 			/* Ignore 0 values */
 			
@@ -72,13 +72,13 @@ public class SamplingService extends Service implements SensorEventListener {
 	
 	@Override
 	public void onCreate() {
+		Log.i(TAG, "Creating sampling service");
+
 		accelerationsDb = new AccelerationsSQLiteHelper(null, this.getApplicationContext());
 		
 		sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 		accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 		sensorManager.registerListener(this, accelerometer, SensorManager.SENSOR_DELAY_FASTEST);	
-
-		Log.i(TAG, "Created sampling service");
 	}
 	
 	/***
@@ -88,10 +88,10 @@ public class SamplingService extends Service implements SensorEventListener {
 	
 	@Override
 	public void onDestroy() {
+		Log.i(TAG, "Destroying sampling service");
+
 		accelerationsDb.close();
 		sensorManager.unregisterListener(this);		
-
-		Log.i(TAG, "Destroyed sampling service");
 	}
 	
 	@Override
