@@ -108,12 +108,12 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	}
 		
 	private void dumpXAccelerationsBuffer() {
+		ContentValues values = new ContentValues();
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		/* Dump Accelerations buffer for X axis */
 		
 		for(Acceleration acceleration : xAccelerationsBuffer) {
-			ContentValues values = new ContentValues();
 			values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
 			values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
 			
@@ -125,13 +125,12 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	}
 	
 	private void dumpYAccelerationsBuffer() {
+		ContentValues values = new ContentValues();
 		SQLiteDatabase db = this.getWritableDatabase();
-
 
 		/* Dump Accelerations buffer for Y axis */
 
 		for(Acceleration acceleration : yAccelerationsBuffer) {
-			ContentValues values = new ContentValues();
 			values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
 			values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
 			
@@ -143,12 +142,12 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	}
 	
 	private void dumpZAccelerationsBuffer() {
+		ContentValues values = new ContentValues();
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		/* Dump Accelerations buffer for Z axis */		
 		
 		for(Acceleration acceleration : zAccelerationsBuffer) {
-			ContentValues values = new ContentValues();
 			values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
 			values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
 			
