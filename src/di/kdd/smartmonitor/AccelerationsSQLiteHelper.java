@@ -1,8 +1,5 @@
 package di.kdd.smartmonitor;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import android.content.ContentValues;
@@ -10,13 +7,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.os.Environment;
 import android.util.Log;
 import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
+import di.kdd.smartmonitor.exceptions.AxisException;
 
 public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	
-	private static final int DATABASE_VERSION = 11;
+	private static final int DATABASE_VERSION = 17;
 
 	private static final String DATABASE_NAME = "accelerations.db";
 
@@ -47,36 +44,31 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 													", " + COLUMN_ACCELERATION + " float not null" +
 													", " + COLUMN_TIMESTAMP + " long not null);";
 
-	private static final String TAG = "database";
-
-	/* The folder that the dump files are placed under */
-	
-	private static final String BUILD_MON_FOLDER = "BuildMon";
-	
-	/* Names of the dump files */
-	
-	private static final String DUMP_X_FILENAME = "x_dump.txt";
-	private static final String DUMP_Y_FILENAME = "y_dump.txt";
-	private static final String DUMP_Z_FILENAME = "z_dump.txt";		
-	
 	/* Buffers for the Accelerations, dump to database for every 
 	 * BUFFER_THRESHOLD Accelerations captured 
 	 * */
 	
-	private static final int BUFFER_THRESHOLD = 1000;
+	private static final int BUFFER_THRESHOLD = 10;
 	
 	private List<Acceleration> xAccelerationsBuffer = new ArrayList<Acceleration>();
 	private List<Acceleration> yAccelerationsBuffer = new ArrayList<Acceleration>();
 	private List<Acceleration> zAccelerationsBuffer = new ArrayList<Acceleration>();
 
+	/* The view to send UI notifications to */
+	
+	private MainActivity view;
+	
+	private static final String TAG = "database";
+	
 	/***
 	 * Initializes the AccelerationsSQLiteHelper
 	 * @param context The context of the Application that the SQLite Database belongs to
 	 */
 	
-	public AccelerationsSQLiteHelper(Context context) {
+	public AccelerationsSQLiteHelper(MainActivity view, Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-
+		this.view = view;
+		
 		Log.d(TAG, "Constructor called with name " + DATABASE_NAME + " and version " + DATABASE_VERSION);
 	}
 
@@ -111,6 +103,68 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 
 		onCreate(db);
 	}
+		
+	private void dumpXAccelerationsBuffer() {
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		/* Dump Accelerations buffer for X axis */
+		
+		for(Acceleration acceleration : xAccelerationsBuffer) {
+			ContentValues values = new ContentValues();
+			values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
+			values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
+			
+			db.insert(TABLE_X_ACCELERATIONS, null, values);
+		}
+
+		xAccelerationsBuffer.clear();		
+		db.close();		
+	}
+	
+	private void dumpYAccelerationsBuffer() {
+		SQLiteDatabase db = this.getWritableDatabase();
+
+
+		/* Dump Accelerations buffer for Y axis */
+
+		for(Acceleration acceleration : yAccelerationsBuffer) {
+			ContentValues values = new ContentValues();
+			values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
+			values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
+			
+			db.insert(TABLE_Y_ACCELERATIONS, null, values);
+		}
+
+		yAccelerationsBuffer.clear();		
+		db.close();		
+	}
+	
+	private void dumpZAccelerationsBuffer() {
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		/* Dump Accelerations buffer for Z axis */		
+		
+		for(Acceleration acceleration : zAccelerationsBuffer) {
+			ContentValues values = new ContentValues();
+			values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
+			values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
+			
+			db.insert(TABLE_Z_ACCELERATIONS, null, values);
+		}
+
+		zAccelerationsBuffer.clear();				
+		db.close();		
+	}
+	
+	/***
+	 *  Dumps the accelerations that are not stored to the SQLite Database. 
+	 */
+	
+	public void dumpAccelerationBuffers() {
+		dumpXAccelerationsBuffer();
+		dumpYAccelerationsBuffer();
+		dumpZAccelerationsBuffer();
+	}
 	
 	/***
 	 * 
@@ -123,112 +177,30 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		switch(axis) {
 		case X:
 			if(xAccelerationsBuffer.size() == BUFFER_THRESHOLD) {
-				SQLiteDatabase db = this.getWritableDatabase();
-				ContentValues values = new ContentValues();
-
-				for(Acceleration acceleration : xAccelerationsBuffer) {					
-					values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
-					values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
-		
-					db.insert(TABLE_X_ACCELERATIONS, null, values);
-				}
-				
-				db.close();
-				
-				xAccelerationsBuffer.clear();
+				dumpXAccelerationsBuffer();
 			}
 				
 			xAccelerationsBuffer.add(newAcceleration);			
 			break;
 		case Y:
 			if(yAccelerationsBuffer.size() == BUFFER_THRESHOLD) {
-				SQLiteDatabase db = this.getWritableDatabase();
-				ContentValues values = new ContentValues();
-
-				for(Acceleration acceleration : yAccelerationsBuffer) {					
-					values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
-					values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
-		
-					db.insert(TABLE_Y_ACCELERATIONS, null, values);
-				}
-				
-				db.close();
-				
-				yAccelerationsBuffer.clear();
+				dumpYAccelerationsBuffer();
 			}
 				
 			yAccelerationsBuffer.add(newAcceleration);			
 			break;
 		case Z:
 			if(zAccelerationsBuffer.size() == BUFFER_THRESHOLD) {
-				SQLiteDatabase db = this.getWritableDatabase();
-				ContentValues values = new ContentValues();
-
-				for(Acceleration acceleration : zAccelerationsBuffer) {					
-					values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
-					values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
-		
-					db.insert(TABLE_Z_ACCELERATIONS, null, values);
-				}
-				
-				db.close();
-				
-				zAccelerationsBuffer.clear();
+				dumpZAccelerationsBuffer();
 			}
 				
 			zAccelerationsBuffer.add(newAcceleration);			
 			break;
 		default:
-			throw new Exception("Not valid axis");
+			throw new AxisException();
 		}
 	}
-	
-	/***
-	 *  Dumps the accelerations that are not stored to the SQLite Database. 
-	 */
-	
-	public void dumpAccelerationBuffers() {
-		SQLiteDatabase db = this.getWritableDatabase();
-		ContentValues values = new ContentValues();
 
-		/* Dump Accelerations buffer for X axis */
-		
-		for(Acceleration acceleration : xAccelerationsBuffer) {
-			values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
-			values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
-			
-			db.insert(TABLE_X_ACCELERATIONS, null, values);
-		}
-
-		xAccelerationsBuffer.clear();
-
-		/* Dump Accelerations buffer for Y axis */
-
-		for(Acceleration acceleration : yAccelerationsBuffer) {
-			values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
-			values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
-			
-			db.insert(TABLE_Y_ACCELERATIONS, null, values);
-		}
-
-		yAccelerationsBuffer.clear();
-
-		/* Dump Accelerations buffer for Z axis */		
-		
-		for(Acceleration acceleration : zAccelerationsBuffer) {
-			values.put(COLUMN_TIMESTAMP, acceleration.getTimestamp()); 
-			values.put(COLUMN_ACCELERATION, acceleration.getAcceleration());
-			
-			db.insert(TABLE_Z_ACCELERATIONS, null, values);
-		}
-
-		zAccelerationsBuffer.clear();
-				
-		db.close();
-
-		Log.d(TAG, "Dumped buffers to database");
-	}
-	
 	/***
 	 * Queries the SLQite database for an Acceleration at a given time
 	 * 
@@ -261,7 +233,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 									" WHERE " + COLUMN_TIMESTAMP + " = " + Long.toString(timestamp), null);
 				break;
 			default:
-				throw new Exception("Not valid axis");
+				throw new AxisException();
 		}
 		
 		if(cursor == null) { 
@@ -306,7 +278,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 											" FROM " + TABLE_Z_ACCELERATIONS, null);
 				break;
 			default:
-				throw new Exception("Not valid axis");
+				throw new AxisException();
 		}
 		
 		if(cursor == null) {
@@ -360,7 +332,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 									" AND " + COLUMN_TIMESTAMP + " < " + Long.toString(to), null);
 				break;
 			default:
-				throw new Exception("Not valid axis");
+				throw new AxisException();
 		}
 		
 		if(cursor == null) {
@@ -379,75 +351,15 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		
 		return accelerations;
 	}
-
-	/***
-	 * Creates the BUILD_MON_FOLDER, if it doesn't exist
-	 */
-	
-	private void createBuildMonFodler() {
-		File folder = new File(Environment.getExternalStoragePublicDirectory(""), BUILD_MON_FOLDER);
-		
-		if(!folder.exists()) {
-			folder.mkdirs();
-		}			
-	}	
 	
 	/***
 	 * Dumps all the Accelerations of the three Axis into 3 files, 
 	 * on for each Axis (DUMP_X_FILENAME, DUMP_Y_FILENAME, DUMP_Z_FILENAME)
-	 * @throws Exception throwed from the IO operations
+	 * @throws Exception thrown from the IO operations
 	 */
 	
-	public void dumpToFile() throws Exception {		
-		File dumpFile;
-		PrintWriter printWriter;
-		List<Acceleration> accelerations;
-		
-		createBuildMonFodler();
-		
-		/* Dump X axis accelerations */
-		
-		dumpFile = new File(Environment.getExternalStoragePublicDirectory(BUILD_MON_FOLDER), DUMP_X_FILENAME);
-		printWriter = new PrintWriter(new FileWriter(dumpFile, false));
-		
-		accelerations = getAllAccelerations(AccelerationAxis.X);
-		
-		for(Acceleration acceleration : accelerations) {
-			printWriter.println(Long.toString(acceleration.getTimestamp()) + "\t" + Float.toString(acceleration.getAcceleration()));
-		}
-		
-		printWriter.close();
-		
-		Log.d(TAG, "Wrote " + DUMP_X_FILENAME);
-		
-		/* Dump Y axis accelerations */
-
-		dumpFile = new File(Environment.getExternalStoragePublicDirectory(BUILD_MON_FOLDER), DUMP_Y_FILENAME);
-		printWriter = new PrintWriter(new FileWriter(dumpFile, false));
-		
-		accelerations = getAllAccelerations(AccelerationAxis.Y);
-		
-		for(Acceleration acceleration : accelerations) {
-			printWriter.println(Long.toString(acceleration.getTimestamp()) + "\t" + Float.toString(acceleration.getAcceleration()));
-		}
-		
-		printWriter.close();
-
-		Log.d(TAG, "Wrote " + DUMP_Y_FILENAME);		
-		
-		/* Dump Z axis accelerations */
-
-		dumpFile = new File(Environment.getExternalStoragePublicDirectory(BUILD_MON_FOLDER), DUMP_Z_FILENAME);
-		printWriter = new PrintWriter(new FileWriter(dumpFile, false));
-		
-		accelerations = getAllAccelerations(AccelerationAxis.Z);
-		
-		for(Acceleration acceleration : accelerations) {
-			printWriter.println(Long.toString(acceleration.getTimestamp()) + "\t" + Float.toString(acceleration.getAcceleration()));
-		}
-		
-		printWriter.close();
-
-		Log.d(TAG, "Wrote " + DUMP_Z_FILENAME);
+	public void dumpToFile() {		
+		DumpDatabaseTask dumper = new DumpDatabaseTask(view);
+		dumper.execute();
 	}
 }
