@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
 	}
 	
 	public void showMessage(String message) {		
-		Toast.makeText(getApplicationContext(), message, Toast.LENGTH_LONG).show();
+		Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 	}
 	
 	/**
@@ -45,11 +45,11 @@ public class MainActivity extends Activity {
 				Toast.makeText(this, "Accelerometer Listener Service Created", Toast.LENGTH_LONG).show();		
 			}
 			else {
-				Toast.makeText(getApplicationContext(), "Sampling Service is already running!", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "Sampling Service is already running!", Toast.LENGTH_LONG).show();
 			}
 		}
 		catch(MasterException e) {
-			Toast.makeText(getApplicationContext(), "This action can be done only from the Master node!", Toast.LENGTH_LONG).show();			
+			Toast.makeText(this, "This action can be done only from the Master node!", Toast.LENGTH_LONG).show();			
 		}
 	}	
 	
@@ -81,7 +81,7 @@ public class MainActivity extends Activity {
 			}
 		}
 		catch(MasterException e) {
-			Toast.makeText(getApplicationContext(), "This action can be done only from the Master node!", Toast.LENGTH_LONG).show();			
+			Toast.makeText(this, "This action can be done only from the Master node!", Toast.LENGTH_LONG).show();			
 		}
 	}	
 	
