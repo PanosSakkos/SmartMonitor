@@ -71,7 +71,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		this.view = view;
 		this.context = context;
 		
-		Log.i(TAG, "Constructor called with name " + DATABASE_NAME + " and version " + DATABASE_VERSION);
+		Log.i(TAG, "Created " + DATABASE_NAME + " v" + DATABASE_VERSION);
 	}
 
 	@Override
