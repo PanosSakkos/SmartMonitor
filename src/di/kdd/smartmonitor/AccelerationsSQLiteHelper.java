@@ -252,6 +252,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		
 		if(cursor == null) { 
 			Log.d(TAG, "No results found");
+			db.close();
 
 			return null;
 		}
@@ -352,6 +353,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		
 		if(cursor == null) {
 			Log.d(TAG, "No results found");
+			db.close();
 
 			return null;
 		}
