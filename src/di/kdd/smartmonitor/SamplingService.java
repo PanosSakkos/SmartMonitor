@@ -43,7 +43,7 @@ public class SamplingService extends Service implements SensorEventListener {
 	@Override
 	public void onSensorChanged(SensorEvent event) {
 		long timestamp = System.currentTimeMillis();
-Log.d(TAG, Long.toString(timestamp));
+
 		try {
 		
 			/* Ignore 0 values */
@@ -92,6 +92,7 @@ Log.d(TAG, Long.toString(timestamp));
 	
 	@Override
 	public void onDestroy() {
+		accelerationsDb.close();
 		sensorManager.unregisterListener(this);		
 	}
 	
