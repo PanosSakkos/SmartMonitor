@@ -76,16 +76,11 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {	
-		Log.i(TAG, "onCreate called");
+		Log.i(TAG, "Creating database");
 		
 		db.execSQL(TABLE_X_ACCELERATIONS_CREATE);
-		Log.i(TAG, TABLE_X_ACCELERATIONS_CREATE);
-		
 		db.execSQL(TABLE_Y_ACCELERATIONS_CREATE);
-		Log.i(TAG, TABLE_Y_ACCELERATIONS_CREATE);
-
 		db.execSQL(TABLE_Z_ACCELERATIONS_CREATE);
-		Log.i(TAG, TABLE_Z_ACCELERATIONS_CREATE);
 	}
 
 	/***
