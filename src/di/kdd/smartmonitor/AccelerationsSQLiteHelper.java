@@ -102,7 +102,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	 * Stores the acceleration values that are in the buffer for axis X
 	 */
 	
-	private void dumpXAccelerationsBuffer() {
+	private void flushXAccelerationsBuffer() {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		Log.i(TAG, "Flushing buffer of X axis to database");
@@ -122,7 +122,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	 * Stores the acceleration values that are in the buffer for axis Y
 	 */
 
-	private void dumpYAccelerationsBuffer() {
+	private void flushYAccelerationsBuffer() {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		Log.i(TAG, "Flushing buffer of Y axis to database");
@@ -142,7 +142,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	 * Stores the acceleration values that are in the buffer for axis Z
 	 */
 
-	private void dumpZAccelerationsBuffer() {
+	private void flushZAccelerationsBuffer() {
 		SQLiteDatabase db = this.getWritableDatabase();
 
 		Log.i(TAG, "Flushing buffer of Z axis to database");
@@ -162,10 +162,10 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	 *  Dumps the accelerations that are not stored to the SQLite Database. 
 	 */
 	
-	public void dumpAccelerationBuffers() {
-		dumpXAccelerationsBuffer();
-		dumpYAccelerationsBuffer();
-		dumpZAccelerationsBuffer();
+	public void flushAccelerationBuffers() {
+		flushXAccelerationsBuffer();
+		flushYAccelerationsBuffer();
+		flushZAccelerationsBuffer();
 	}
 	
 	/***
@@ -179,21 +179,21 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		switch(axis) {
 		case X:
 			if(xAccelerationsBuffer.size() == BUFFER_THRESHOLD) {
-				dumpXAccelerationsBuffer();
+				flushXAccelerationsBuffer();
 			}
 				
 			xAccelerationsBuffer.add(newAcceleration);			
 			break;
 		case Y:
 			if(yAccelerationsBuffer.size() == BUFFER_THRESHOLD) {
-				dumpYAccelerationsBuffer();
+				flushYAccelerationsBuffer();
 			}
 				
 			yAccelerationsBuffer.add(newAcceleration);			
 			break;
 		case Z:
 			if(zAccelerationsBuffer.size() == BUFFER_THRESHOLD) {
-				dumpZAccelerationsBuffer();
+				flushZAccelerationsBuffer();
 			}
 				
 			zAccelerationsBuffer.add(newAcceleration);			
@@ -217,7 +217,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		Acceleration acceleration;
 		SQLiteDatabase db = this.getReadableDatabase();
 		
-		dumpAccelerationBuffers();
+		flushAccelerationBuffers();
 		
 		switch(axis)
 		{
@@ -268,7 +268,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		List<Acceleration> accelerations = new ArrayList<Acceleration>();
 		
-		dumpAccelerationBuffers();
+		flushAccelerationBuffers();
 
 		switch(axis) {
 			case X:
@@ -319,7 +319,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		List<Acceleration> accelerations = new ArrayList<Acceleration>();
 				
-		dumpAccelerationBuffers();
+		flushAccelerationBuffers();
 
 		switch(axis) {
 			case X:
@@ -371,7 +371,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	public void dumpToFile() {		
 		Log.i(TAG, "Dumping database to filesystem");
 
-		dumpAccelerationBuffers();
+		flushAccelerationBuffers();
 
 		DumpDatabaseTask dumper = new DumpDatabaseTask(view);
 		dumper.execute();

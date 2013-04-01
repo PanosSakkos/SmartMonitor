@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onDestroy() {
-		accelerationsDb.dumpAccelerationBuffers();
+		accelerationsDb.flushAccelerationBuffers();
 	}
 	
 	public void showMessage(String message) {		
@@ -134,7 +134,7 @@ public class MainActivity extends Activity {
 	
 	public void exportToFile(View _) throws Exception {
 		if(distributedSystem.isSampling() == false) {
-			accelerationsDb.dumpAccelerationBuffers();
+			accelerationsDb.flushAccelerationBuffers();
 			accelerationsDb.dumpToFile();
 		}
 		else {
