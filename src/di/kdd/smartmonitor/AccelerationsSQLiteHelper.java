@@ -47,7 +47,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	 * BUFFER_THRESHOLD Accelerations captured 
 	 * */
 	
-	private static final int BUFFER_THRESHOLD = 5;
+	private static final int BUFFER_THRESHOLD = 10000;
 	
 	private List<Acceleration> xAccelerationsBuffer = new ArrayList<Acceleration>();
 	private List<Acceleration> yAccelerationsBuffer = new ArrayList<Acceleration>();
@@ -217,6 +217,8 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		Acceleration acceleration;
 		SQLiteDatabase db = this.getReadableDatabase();
 		
+		dumpAccelerationBuffers();
+		
 		switch(axis)
 		{
 			case X:
@@ -266,6 +268,8 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		List<Acceleration> accelerations = new ArrayList<Acceleration>();
 		
+		dumpAccelerationBuffers();
+
 		switch(axis) {
 			case X:
 				cursor = db.rawQuery("SELECT " + COLUMN_ACCELERATION + ", " + COLUMN_TIMESTAMP +  
@@ -315,6 +319,8 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		SQLiteDatabase db = this.getReadableDatabase();
 		List<Acceleration> accelerations = new ArrayList<Acceleration>();
 				
+		dumpAccelerationBuffers();
+
 		switch(axis) {
 			case X:
 				cursor = db.rawQuery("SELECT " + COLUMN_ACCELERATION + ", " + COLUMN_TIMESTAMP +  
@@ -365,6 +371,8 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	public void dumpToFile() {		
 		Log.i(TAG, "Dumping database to filesystem");
 
+		dumpAccelerationBuffers();
+
 		DumpDatabaseTask dumper = new DumpDatabaseTask(view);
 		dumper.execute();
 	}
@@ -375,6 +383,10 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	
 	public void deleteDatabase() {
 		Log.i(TAG, "Deleted database");
+
+		xAccelerationsBuffer.clear();
+		yAccelerationsBuffer.clear();
+		zAccelerationsBuffer.clear();
 
 		context.deleteDatabase(DATABASE_NAME);		
 	}
