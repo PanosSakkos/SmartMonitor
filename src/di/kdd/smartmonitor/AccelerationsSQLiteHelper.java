@@ -107,6 +107,10 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 		
+	/***
+	 * Stores the acceleration values that are in the buffer for axis X
+	 */
+	
 	private void dumpXAccelerationsBuffer() {
 		ContentValues values = new ContentValues();
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -124,6 +128,10 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		db.close();		
 	}
 	
+	/***
+	 * Stores the acceleration values that are in the buffer for axis Y
+	 */
+
 	private void dumpYAccelerationsBuffer() {
 		ContentValues values = new ContentValues();
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -141,6 +149,10 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		db.close();		
 	}
 	
+	/***
+	 * Stores the acceleration values that are in the buffer for axis Z
+	 */
+
 	private void dumpZAccelerationsBuffer() {
 		ContentValues values = new ContentValues();
 		SQLiteDatabase db = this.getWritableDatabase();
@@ -365,6 +377,10 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		DumpDatabaseTask dumper = new DumpDatabaseTask(view);
 		dumper.execute();
 	}
+	
+	/***
+	 * Deletes the database
+	 */
 	
 	public void deleteDatabase() {
 		context.deleteDatabase(DATABASE_NAME);		
