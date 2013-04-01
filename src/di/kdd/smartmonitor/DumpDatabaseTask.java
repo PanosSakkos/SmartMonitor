@@ -38,6 +38,8 @@ public class DumpDatabaseTask extends AsyncTask<Void, Void, Boolean> {
 		
 		if(!folder.exists()) {
 			folder.mkdirs();
+			
+			Log.i(TAG, "Created " + SMART_MONITOR_FOLDER + " folder");
 		}			
 	}	
 	
@@ -66,7 +68,7 @@ public class DumpDatabaseTask extends AsyncTask<Void, Void, Boolean> {
 			
 			printWriter.close();
 			
-			Log.d(TAG, "Wrote " + DUMP_X_FILENAME);
+			Log.i(TAG, "Wrote " + DUMP_X_FILENAME);
 			
 			/* Dump Y axis accelerations */
 	
@@ -81,7 +83,7 @@ public class DumpDatabaseTask extends AsyncTask<Void, Void, Boolean> {
 			
 			printWriter.close();
 	
-			Log.d(TAG, "Wrote " + DUMP_Y_FILENAME);		
+			Log.i(TAG, "Wrote " + DUMP_Y_FILENAME);		
 			
 			/* Dump Z axis accelerations */
 	
@@ -96,11 +98,13 @@ public class DumpDatabaseTask extends AsyncTask<Void, Void, Boolean> {
 			
 			printWriter.close();
 	
-			Log.d(TAG, "Wrote " + DUMP_Z_FILENAME);		
+			Log.i(TAG, "Wrote " + DUMP_Z_FILENAME);
+			
 			return true;
 		}
 		catch(Exception e) {
 			e.printStackTrace();
+
 			return false;
 		}
 	}	
