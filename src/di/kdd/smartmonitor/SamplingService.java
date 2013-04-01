@@ -62,12 +62,12 @@ public class SamplingService extends Service implements SensorEventListener {
 				Acceleration zAcceleration = new Acceleration(event.values[2], timestamp);
 				accelerationsDb.storeAcceleration(zAcceleration, AccelerationAxis.Z);						
 			}		
+
+			accelerationsCounted++;
 		}
 		catch(Exception exception) {
 			Log.e(TAG, exception.getMessage());			
 		}
-
-		accelerationsCounted++;
 	}
 
 	/***
