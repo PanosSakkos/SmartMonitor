@@ -95,7 +95,7 @@ public final class MasterNode extends DistributedSystemNode {
 		return true;
 	}
 
-	public void computeBuildingSignature(Date from, Date to) throws MasterException, IOException {
+	public void computeModalFrequencies(Date from, Date to) throws MasterException, IOException {
 		Message message = new Message(Tag.SEND_PEAKS, 
 								Long.toString(from.getTime()) + "\n" + 
 								Long.toString(to.getTime()));

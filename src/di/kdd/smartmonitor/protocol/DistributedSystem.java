@@ -163,12 +163,12 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 	}
 	
 	@Override
-	public void computeBuildingSignature(Date from, Date to) throws MasterException, IOException {
+	public void computeModalFrequencies(Date from, Date to) throws MasterException, IOException {
 		if(node != null && node.isMaster() == false) {
 			throw new MasterException();
 		}
 		
-		((MasterNode) node).computeBuildingSignature(from, to);
+		((MasterNode) node).computeModalFrequencies(from, to);
 	}
 
 	@Override

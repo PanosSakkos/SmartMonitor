@@ -102,7 +102,7 @@ public interface IProtocol {
 	 * @throws MasterException If the asked node is not the Master node
 	 */
 	
-	public void computeBuildingSignature(Date from, Date to) throws MasterException, IOException;
+	public void computeModalFrequencies(Date from, Date to) throws MasterException, IOException;
 	
 	/***
 	 * Returns if the node is Master of the distributed network.
