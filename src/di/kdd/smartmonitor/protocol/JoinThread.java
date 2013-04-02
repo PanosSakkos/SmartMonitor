@@ -11,7 +11,7 @@ import di.kdd.smartmonitor.protocol.IProtocol.Tag;
 public class JoinThread extends Thread {
 	private PeerData peerData;
 	
-	private static final String TAG = "join listener";
+	private static final String TAG = "JOIN listener";
 	
 	public JoinThread(PeerData peerData) {
 		this.peerData = peerData;
@@ -34,6 +34,8 @@ public class JoinThread extends Thread {
 			return;
 		}
 
+		Log.i(TAG, "Accepting on " + Integer.toString(IProtocol.JOIN_PORT));
+		
 		while(true) {
 			try {
 				Socket connectionSocket = joinSocket.accept();
