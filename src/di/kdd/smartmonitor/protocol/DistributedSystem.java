@@ -123,7 +123,7 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 		//TODO parallelize it
 		for(int i = 1; i < 256; ++i) {
 			try{
-				Log.d(TAG, "Trying to connect to :" + ipPrefix + Integer.toString(i));
+				Log.i(TAG, "Trying to connect to :" + ipPrefix + Integer.toString(i));
 				socket = new Socket(ipPrefix + Integer.toString(i), IProtocol.JOIN_PORT);
 			}
 			catch(IOException e) {
