@@ -11,7 +11,7 @@ import di.kdd.smartmonitor.MainActivity;
 import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 
-public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements IProtocol {
+public class DistributedSystem implements IProtocol {
 	/* The view that is interested to our events */
 	
 	private MainActivity view;
@@ -30,9 +30,23 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 	public DistributedSystem(MainActivity view) {
 		this.view = view;
 	}
+
+	protected void connectedAsMaster() {
+		node = new MasterNode();		
+		isConnected = true;
+		view.showMessage("Connected as Master");		
+	}
+
+	protected void connectedAsPeer(Socket socket) {
+		node = new PeerNode(socket);
+		isConnected = true;
+		view.showMessage("Connected as Peer");		
+	}
 	
+	@Override
 	public void connect() {
-		this.execute();
+		ConnectTask connectTask = new ConnectTask(this);
+		connectTask.execute();
 	}
 
 	@Override
@@ -70,6 +84,7 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 		isConnected = false;
 	}
 
+	@Override
 	public void startSampling() throws MasterException, IOException, ConnectException {
 		if(node == null) {
 			throw new ConnectException();
@@ -86,6 +101,7 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 		isSampling = true;
 	}
 
+	@Override
 	public void stopSampling() throws MasterException, IOException, ConnectException {
 		if(node == null) {
 			throw new ConnectException();
@@ -105,63 +121,7 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 	public boolean isSampling() {
 		return isSampling;
 	}
-	
-	/***
-	 * Sends JOIN messages to the first 255 local IP addresses and
-	 * according to if it will get a response or not, the node becomes
-	 * a peer or a Master respectively 
-	 */
-
-	@Override
-	protected Boolean doInBackground(Void... arg0) {
-		Socket socket;
-		String ipPrefix = "192.168.1."; //TODO FIXME
 		
-		android.os.Debug.waitForDebugger();
-
-		/* Look for the Master in the first 255 local IP addresses */
-		//TODO parallelize it
-		for(int i = 1; i < 256; ++i) {
-			try{
-				Log.i(TAG, "Trying to connect to :" + ipPrefix + Integer.toString(i));
-				socket = new Socket(ipPrefix + Integer.toString(i), IProtocol.JOIN_PORT);
-			}
-			catch(IOException e) {
-				continue;
-			}
-
-			/* Master found */
-			
-			node = new PeerNode(socket);
-			isConnected = true;
-			
-			return true;
-		}
-		
-		/* No response, I am the first node of the distributed system and the Master */
-		
-		node = new MasterNode();
-		isConnected = true;
-
-		return false;
-	}
-	
-	/***
-	 * Runs after the doInBackground methods returns. The became peer
-	 * parameter indicates if the node connected as a Master or as a Peer and
-	 * sends a notification to the subscribed view.
-	 */
-	
-	@Override
-	protected void onPostExecute(Boolean becamePeer) {
-		if(becamePeer) {
-			view.showMessage("Connected as Peer");		
-		}
-		else {
-			view.showMessage("Connected as Master");			
-		}
-	}
-	
 	@Override
 	public void computeModalFrequencies(Date from, Date to) throws MasterException, IOException, ConnectException {
 		if(node == null) {
