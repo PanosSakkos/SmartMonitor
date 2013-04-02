@@ -36,6 +36,8 @@ public class DistributedSystem implements IProtocol {
 	 */
 	
 	protected void connectedAsMaster() {
+		Log.i(TAG, "Connected as Master");
+
 		node = new MasterNode();		
 		isConnected = true;
 		view.showMessage("Connected as Master");		
@@ -47,19 +49,26 @@ public class DistributedSystem implements IProtocol {
 	 */
 	
 	protected void connectedAsPeer(Socket socket) {
+		Log.i(TAG, "Connected as Peer");
+
 		node = new PeerNode(socket);
 		isConnected = true;
+		
 		view.showMessage("Connected as Peer");		
 	}
 	
 	@Override
 	public void connect() {
+		Log.i(TAG, "Connecting");
+		
 		ConnectTask connectTask = new ConnectTask(this);
 		connectTask.execute();
 	}
 
 	@Override
 	public void connectAsMaster() {
+		Log.i(TAG, "Connect as Master");
+		
 		node = new MasterNode(); 
 		isConnected = true;
 		
@@ -70,6 +79,8 @@ public class DistributedSystem implements IProtocol {
 	public void connectAt(String ip) {
 		Socket socket;
 
+		Log.i(TAG, "Connecting as Peer at " + ip);
+		
 		try{
 			socket = new Socket(ip, IProtocol.JOIN_PORT);
 			node = new PeerNode(socket);
@@ -89,12 +100,14 @@ public class DistributedSystem implements IProtocol {
 	
 	@Override
 	public void disconnect() {
+		Log.i(TAG, "Disconnecting");
+		
 		node.disconnect();
 		isConnected = false;
 	}
 
 	@Override
-	public void startSampling() throws MasterException, IOException, ConnectException {
+	public void startSampling() throws MasterException, IOException, ConnectException {		
 		if(node == null) {
 			throw new ConnectException();
 		}

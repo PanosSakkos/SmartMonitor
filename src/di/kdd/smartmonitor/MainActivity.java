@@ -79,8 +79,8 @@ public class MainActivity extends Activity {
 	 * @param ignored
 	 */	
 	
-	public void stopSampling(View _)	{
-		try {			
+	public void stopSampling(View _) {
+		try {
 			if(distributedSystem.isSampling()) {
 				distributedSystem.stopSampling();
 
