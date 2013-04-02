@@ -18,7 +18,7 @@ public abstract class DistributedSystemNode extends Thread {
 	
 	protected Thread commandThread;
 
-	private static final String TAG = "distributed system node";
+	private static final String TAG = "node";
 	
 	public abstract void disconnect();
 	
@@ -36,7 +36,8 @@ public abstract class DistributedSystemNode extends Thread {
 	 */
 	
 	protected static void send(Socket socket, Message message) throws IOException {
-		Log.d(TAG, message.toString());
+		Log.i(TAG, "Sending: " + message.toString());
+		
 		DataOutputStream out = new DataOutputStream(socket.getOutputStream());
 		out.writeChars(message.toString());		
 	}
@@ -49,7 +50,8 @@ public abstract class DistributedSystemNode extends Thread {
 	 */
 	
 	protected static BufferedReader receive(Socket socket) throws IOException {
-		Log.d(TAG, "Receiving");
+		Log.i(TAG, "Receiving from " + socket.getRemoteSocketAddress());
+		
 		return new BufferedReader(new InputStreamReader(socket.getInputStream()));		
 	}
 }
