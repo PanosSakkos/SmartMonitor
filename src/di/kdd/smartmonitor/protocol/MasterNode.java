@@ -20,7 +20,7 @@ public final class MasterNode extends DistributedSystemNode {
 	 * nodes in the system.
 	 */
 	
-	private JoinThread knockKnockThread;
+	private JoinThread joinThread;
 
 	private static final String TAG = "Master";	
 	
@@ -29,10 +29,10 @@ public final class MasterNode extends DistributedSystemNode {
 
 		/* Start accepting nodes that want to join the distributed system */
 		
-		knockKnockThread = new JoinThread(peerData);
+		joinThread = new JoinThread(peerData);
 
 		commandThread.start();
-		knockKnockThread.start();
+		joinThread.start();
 	}
 
 	/***
@@ -81,8 +81,8 @@ public final class MasterNode extends DistributedSystemNode {
 	
 	@Override
 	public void disconnect() {
-		if(knockKnockThread != null) {
-			knockKnockThread.interrupt();
+		if(joinThread != null) {
+			joinThread.interrupt();
 		}
 		
 		if(commandThread != null) {
