@@ -31,12 +31,21 @@ public class DistributedSystem implements IProtocol {
 		this.view = view;
 	}
 
+	/***
+	 * Handler to be called from the ConnectTask, if the node didn't get a JOIN response
+	 */
+	
 	protected void connectedAsMaster() {
 		node = new MasterNode();		
 		isConnected = true;
 		view.showMessage("Connected as Master");		
 	}
 
+	/***
+	 * Handler to be called from the ConnectTask, if the node got repsonse to JOIN message
+	 * @param socket The connected to the Master node socket
+	 */
+	
 	protected void connectedAsPeer(Socket socket) {
 		node = new PeerNode(socket);
 		isConnected = true;

@@ -9,4 +9,6 @@
     <string name="main_stopSampling">Stop Sampling</string>
     <string name="main_exportToFile">Export To File</string>
     <string name="main_deleteDatabase">Delete database</string>
+    <string name="main_connectAsMaster">Connect as Master</string>
+    <string name="main_connectAt">Connect At</string>
 </resources>

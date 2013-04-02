@@ -16,7 +16,6 @@ public class ConnectTask extends AsyncTask<Void, Void, Socket> {
 	public ConnectTask(DistributedSystem ds) {
 		this.ds = ds;
 	}
-
 	
 	/***
 	 * Sends JOIN messages to the first 255 local IP addresses and

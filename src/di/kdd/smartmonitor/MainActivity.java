@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 public class MainActivity extends Activity {	
@@ -117,9 +118,6 @@ public class MainActivity extends Activity {
 	
 	public void connect(View _) {
 		if(distributedSystem.isConnected() == false) {
-				/* Reallocate instance, because AsyncTask can be ran only once =/ */
-			
-				distributedSystem = new DistributedSystem(this);
 				distributedSystem.connect();				
 		}
 		else {			
@@ -147,15 +145,26 @@ public class MainActivity extends Activity {
 	 * @throws Exception
 	 */
 	
-	public void exportToFile(View _) throws Exception {
+	public void exportToFile(View _) {
 		if(distributedSystem.isSampling() == false) {
-			accelerationsDb.flushAccelerationBuffers();
-			accelerationsDb.dumpToFile();
+				accelerationsDb.flushAccelerationBuffers();
+				accelerationsDb.dumpToFile();
 		}
 		else {
 			Toast.makeText(this, "The node is sampling!", Toast.LENGTH_LONG).show();
 		}
 	}	
+	
+	public void connectAsMaster(View _) {
+		distributedSystem.connectAsMaster();
+	}
+	
+	public void connectAt(View _) {
+		EditText editText;
+		
+		editText = (EditText) findViewById(R.id.ipText);
+		distributedSystem.connectAt(editText.getText().toString());
+	}
 	
 	public void deleteDatabase(View _) {
 		accelerationsDb.deleteDatabase();
