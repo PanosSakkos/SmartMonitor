@@ -23,7 +23,7 @@ public abstract class DistributedSystemNode extends Thread {
 	public abstract void disconnect();
 	
 	public abstract boolean isMaster();
-	
+
 	public String getMasterIP() {
 		return peerData.getLowestIP();
 	}

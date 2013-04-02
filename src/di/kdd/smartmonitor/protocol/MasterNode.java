@@ -39,6 +39,8 @@ public final class MasterNode extends DistributedSystemNode {
 	 */
 	
 	private void broadcastCommand(Message message) throws IOException {
+		Log.i(TAG, "Broadcasting " + message.toString());
+		
 		for(Socket peer : commandSockets) {
 			DistributedSystemNode.send(peer, message);
 		}		
@@ -51,7 +53,9 @@ public final class MasterNode extends DistributedSystemNode {
 	 */
 	
 	protected void newPeerAdded(String ip) {
-		try {
+		Log.i(TAG, "New peer added: " + ip);
+		
+		try {			
 			/* Connect to the peer, in order to have a communication channel for commands */
 			
 			Socket commandSocket = new Socket(ip, IProtocol.COMMAND_PORT);
@@ -63,7 +67,7 @@ public final class MasterNode extends DistributedSystemNode {
 			broadcastCommand(message);
 		}
 		catch (Exception e) {
-			Log.d(TAG, "Failed to connect to " + ip);
+			Log.e(TAG, "Failed to connect to " + ip);
 			peerData.removePeerIP(ip);
 		}
 	}
@@ -78,6 +82,8 @@ public final class MasterNode extends DistributedSystemNode {
 	
 	@Override
 	public void disconnect() {
+		Log.i(TAG, "Disconnecting");
+		
 		if(joinThread != null) {
 			joinThread.interrupt();
 		}
