@@ -163,8 +163,12 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 	}
 	
 	@Override
-	public void computeModalFrequencies(Date from, Date to) throws MasterException, IOException {
-		if(node != null && node.isMaster() == false) {
+	public void computeModalFrequencies(Date from, Date to) throws MasterException, IOException, ConnectException {
+		if(node == null) {
+			throw new ConnectException();
+		}
+
+		if(node.isMaster() == false) {
 			throw new MasterException();
 		}
 		

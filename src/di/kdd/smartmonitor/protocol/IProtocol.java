@@ -100,9 +100,10 @@ public interface IProtocol {
 	 * @param from Starting sample time
 	 * @param to Ending sample time
 	 * @throws MasterException If the asked node is not the Master node
+	 * @throws ConnectException When the node is not connected to the system
 	 */
 	
-	public void computeModalFrequencies(Date from, Date to) throws MasterException, IOException;
+	public void computeModalFrequencies(Date from, Date to) throws MasterException, IOException, ConnectException;
 	
 	/***
 	 * Returns if the node is Master of the distributed network.
