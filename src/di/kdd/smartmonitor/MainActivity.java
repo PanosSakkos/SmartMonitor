@@ -1,7 +1,10 @@
 package di.kdd.smartmonitor;
 
+import java.io.IOException;
+
 import di.kdd.buildmon.R;
 import di.kdd.smartmonitor.protocol.DistributedSystem;
+import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 import android.os.Bundle;
 import android.app.Activity;
@@ -48,8 +51,14 @@ public class MainActivity extends Activity {
 				Toast.makeText(this, "Sampling Service is already running!", Toast.LENGTH_LONG).show();
 			}
 		}
+		catch(IOException e) {
+			Toast.makeText(this, "Failed to command nodes to start sampling", Toast.LENGTH_LONG).show();						
+		}
+		catch(ConnectException e) {
+			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();									
+		}
 		catch(MasterException e) {
-			Toast.makeText(this, "This action can be done only from the Master node!", Toast.LENGTH_LONG).show();			
+			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();			
 		}
 	}	
 	
@@ -80,8 +89,14 @@ public class MainActivity extends Activity {
 				Toast.makeText(this, "Node is not sampling!", Toast.LENGTH_LONG).show();
 			}
 		}
+		catch(IOException e) {
+			Toast.makeText(this, "Failed to command nodes to start sampling", Toast.LENGTH_LONG).show();						
+		}
+		catch(ConnectException e) {
+			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();									
+		}
 		catch(MasterException e) {
-			Toast.makeText(this, "This action can be done only from the Master node!", Toast.LENGTH_LONG).show();			
+			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();			
 		}
 	}	
 	

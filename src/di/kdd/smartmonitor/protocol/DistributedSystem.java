@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import di.kdd.smartmonitor.MainActivity;
+import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 
 public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements IProtocol {
@@ -69,25 +70,33 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 		isConnected = false;
 	}
 
-	public void startSampling() throws MasterException {
-		if(node != null && node.isMaster() == false) {
+	public void startSampling() throws MasterException, IOException, ConnectException {
+		if(node == null) {
+			throw new ConnectException();
+		}
+
+		if(node.isMaster() == false) {
 			throw new MasterException();
 		}
 		
-		//TODO Broadcast START_SAMPLING
+		((MasterNode) node).startSampling();			
 		
 		view.startSamplingService();
 		samplingStarted = System.currentTimeMillis();		
 		isSampling = true;
 	}
 
-	public void stopSampling() throws MasterException {
-		if(node != null && node.isMaster() == false) {
-			throw new MasterException();
+	public void stopSampling() throws MasterException, IOException, ConnectException {
+		if(node == null) {
+			throw new ConnectException();
 		}
 
-		//TODO Broadcast STOP_SAMPLING
-
+		if(node.isMaster() == false) {
+			throw new MasterException();
+		}
+		
+		((MasterNode) node).stopSampling();			
+		
 		view.stopSamplingService();
 		samplingEnded = System.currentTimeMillis();		
 		isSampling = false;

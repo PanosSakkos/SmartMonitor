@@ -71,6 +71,14 @@ public final class MasterNode extends DistributedSystemNode {
 		}
 	}
 	
+	public void startSampling() throws IOException {
+		broadcast(new Message(Tag.START_SAMPLING, ""));
+	}
+
+	public void stopSampling() throws IOException {
+		broadcast(new Message(Tag.STOP_SAMPLING, ""));
+	}
+	
 	@Override
 	public void disconnect() {
 		if(knockKnockThread != null) {

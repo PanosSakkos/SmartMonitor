@@ -3,6 +3,7 @@ package di.kdd.smartmonitor.protocol;
 import java.io.IOException;
 import java.util.Date;
 
+import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 
 public interface IProtocol {
@@ -69,18 +70,22 @@ public interface IProtocol {
 	/***
 	 * Broadcast a START_SAMPLING command to all the peers and 
 	 * starts sampling itself. 
-	 * @throws MasterException If the asked node is not the Master node
+	 * @throws MasterException When the asked node is not the Master node
+	 * @throws IOException When a socket communication fails
+	 * @throws ConnectException When the node is not connected to the system
 	 */
 	
-	public void startSampling() throws MasterException;
+	public void startSampling() throws MasterException, IOException, ConnectException;
 
-	/***
+	/**
 	 * Broadcast a STOP_SAMPLING command to all the peers and 
 	 * stops sampling itself. 
-	 * @throws MasterException If the asked node is not the Master node
+	 * @throws MasterException When the asked node is not the Master node
+	 * @throws IOException When a socket communication fails
+	 * @throws ConnectException When the node is not connected to the system
 	 */
 	
-	public void stopSampling() throws MasterException;
+	public void stopSampling() throws MasterException, IOException, ConnectException;
 
 	/***
 	 * Asks the node if is in sampling state
