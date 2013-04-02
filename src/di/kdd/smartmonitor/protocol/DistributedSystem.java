@@ -182,6 +182,6 @@ public class DistributedSystem extends AsyncTask<Void, Void, Boolean> implements
 
 	@Override
 	public String getMasterIP() {
-		return (node != null) ? "None" : node.getMasterIP());
+		return (node != null) ? "None" : node.getMasterIP();
 	}
 }
