@@ -26,9 +26,6 @@ public final class MasterNode extends DistributedSystemNode {
 	
 	public MasterNode() {
 		commandThread = new Thread(this);
-
-		/* Start accepting nodes that want to join the distributed system */
-		
 		joinThread = new JoinThread(peerData);
 
 		commandThread.start();
@@ -41,7 +38,7 @@ public final class MasterNode extends DistributedSystemNode {
 	 * @throws IOException
 	 */
 	
-	private void broadcast(Message message) throws IOException {
+	private void broadcastCommand(Message message) throws IOException {
 		for(Socket peer : commandSockets) {
 			DistributedSystemNode.send(peer, message);
 		}		
@@ -63,7 +60,7 @@ public final class MasterNode extends DistributedSystemNode {
 			/* Notify peers about the new peer that joined the network */
 			
 			Message message = new Message(Tag.NEW_PEER, ip);						
-			broadcast(message);
+			broadcastCommand(message);
 		}
 		catch (Exception e) {
 			Log.d(TAG, "Failed to connect to " + ip);
@@ -72,11 +69,11 @@ public final class MasterNode extends DistributedSystemNode {
 	}
 	
 	public void startSampling() throws IOException {
-		broadcast(new Message(Tag.START_SAMPLING, ""));
+		broadcastCommand(new Message(Tag.START_SAMPLING, ""));
 	}
 
 	public void stopSampling() throws IOException {
-		broadcast(new Message(Tag.STOP_SAMPLING, ""));
+		broadcastCommand(new Message(Tag.STOP_SAMPLING, ""));
 	}
 	
 	@Override
@@ -99,7 +96,7 @@ public final class MasterNode extends DistributedSystemNode {
 		Message message = new Message(Tag.SEND_PEAKS, 
 								Long.toString(from.getTime()) + "\n" + 
 								Long.toString(to.getTime()));
-		broadcast(message);
+		broadcastCommand(message);
 		
 		/* Gather each peer's peaks */
 		
