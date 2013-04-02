@@ -49,7 +49,7 @@ public final class MasterNode extends DistributedSystemNode {
 	 * @param ip The IP address of the node that joined the network.
 	 */
 	
-	protected void newPeerAdded(String ip) {
+	protected void newPeerAddedHandler(String ip) {
 		Log.i(TAG, "New peer added: " + ip);
 		
 		try {			

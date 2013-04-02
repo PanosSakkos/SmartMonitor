@@ -14,7 +14,7 @@ import android.util.Log;
  */
 
 public class PeerData {
-	private MasterNode captainNode;
+	private MasterNode masterNodeSubscriber;
 	private Set<String> peerIPs = new TreeSet<String>();
 
 	private static final String TAG = "peer data";
@@ -23,11 +23,11 @@ public class PeerData {
 	}
 	
 	/***
-	 * @param captainNode The Captain node to notify when a new peer is added from the KnockKnock thread
+	 * @param masterNode The Master node to notify when a new peer is added from the  thread
 	 */
 	
-	public PeerData(MasterNode captainNode) {
-		this.captainNode = captainNode;
+	public PeerData(MasterNode masterNode) {
+		this.masterNodeSubscriber = masterNode;
 	}
 	
 	/***
@@ -39,16 +39,34 @@ public class PeerData {
 		//TODO check ip validity
 
 		if(peerIPs.contains(ip) == false) {
-			peerIPs.add(ip);		
-			Log.d(TAG, "Added " + ip);
+			peerIPs.add(ip);	
+			
+			Log.i(TAG, "Added " + ip);
 			
 			/* Notify the Captain node about the new peer's IP address
 			 * in order to broadcast the new IP to the peers.
 			 */
 			
-			if(captainNode != null) {
-				captainNode.newPeerAdded(ip);
+			if(masterNodeSubscriber != null) {
+				masterNodeSubscriber.newPeerAddedHandler(ip);
 			}
+		}
+	}
+	
+	/***
+	 * Given a BufferedReader of a socket input stream, parses the payload 
+	 * per line and stores the IP addresses that finds
+	 * @param in Socket input stream holding the payload with the IP addresses
+	 * @throws IOException
+	 */
+	
+	public void addPeersFromStream(BufferedReader in) throws IOException {
+		String peerDataLine;
+
+		while((peerDataLine = in.readLine()) != null) {
+			addPeerIP(peerDataLine);
+			
+			Log.i(TAG, "Added " + peerDataLine + " from input stream");
 		}
 	}
 	
@@ -70,16 +88,7 @@ public class PeerData {
 	public synchronized String getLowestIP() {
 		return Collections.min(peerIPs);
 	}
-	
-	public void addPeersFromStream(BufferedReader in) throws IOException {
-		String peerDataLine;
-
-		while((peerDataLine = in.readLine()) != null) {
-			addPeerIP(peerDataLine);
-			Log.d(TAG, "Added " + peerDataLine + " from input stream");
-		}
-	}
-	
+		
 	/***
 	 * Return the IP addresses of the peers, separated by a new line character
 	 */
