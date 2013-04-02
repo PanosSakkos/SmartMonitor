@@ -10,14 +10,7 @@ import android.util.Log;
 
 public abstract class DistributedSystemNode extends Thread {
 	protected PeerData peerData = new PeerData();
-
-	/*
-	 * The Master uses the commandThread in order to send commands to the peers
-	 * and the peers use this thread to receive commands from the Master.
-	 */
 	
-	protected Thread commandThread;
-
 	private static final String TAG = "node";
 	
 	public abstract void disconnect();

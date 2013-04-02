@@ -25,10 +25,7 @@ public final class MasterNode extends DistributedSystemNode {
 	private static final String TAG = "Master";	
 	
 	public MasterNode() {
-		commandThread = new Thread(this);
 		joinThread = new JoinThread(peerData);
-
-		commandThread.start();
 		joinThread.start();
 	}
 
@@ -87,10 +84,6 @@ public final class MasterNode extends DistributedSystemNode {
 		if(joinThread != null) {
 			joinThread.interrupt();
 		}
-		
-		if(commandThread != null) {
-			commandThread.interrupt();
-		}		
 	}
 	
 	@Override

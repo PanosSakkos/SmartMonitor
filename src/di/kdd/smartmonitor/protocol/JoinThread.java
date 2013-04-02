@@ -28,7 +28,7 @@ public class JoinThread extends Thread {
 			welcomeSocket = new ServerSocket(IProtocol.JOIN_PORT);
 		} 
 		catch (IOException e) {
-			Log.d(TAG, "Could not bind socket at the knock knock port");
+			Log.e(TAG, "Could not bind socket at the knock knock port");
 			e.printStackTrace();
 		}
 
@@ -46,7 +46,7 @@ public class JoinThread extends Thread {
 					
 					//TODO REVIEW
 					peerData.addPeerIP(connectionSocket.getRemoteSocketAddress().toString());
-					Log.d(TAG, "Added " + connectionSocket.getRemoteSocketAddress().toString() + "to peer data");
+					Log.i(TAG, "Added " + connectionSocket.getRemoteSocketAddress().toString() + " to peer data");
 					
 					/* Send synchronization message */
 					
@@ -54,7 +54,7 @@ public class JoinThread extends Thread {
 			}
 		}
 		catch(IOException e) {
-			Log.d(TAG, "Error while communicating with a peer");
+			Log.e(TAG, "Error while communicating with a peer");
 			e.printStackTrace();
 		}
 	}

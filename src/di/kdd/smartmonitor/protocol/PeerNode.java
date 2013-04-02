@@ -9,8 +9,8 @@ import android.util.Log;
 import di.kdd.smartmonitor.middlewareServices.TimeSynchronization;
 import di.kdd.smartmonitor.protocol.IProtocol.Tag;
 
-public final class PeerNode extends DistributedSystemNode {
-	/* The socket that the peer holds in order to get commands from the Master */
+public final class PeerNode extends DistributedSystemNode implements Runnable {
+	/* The socket that the peer holds in order to get command messages from the Master */
 	
 	private ServerSocket commandsServerSocket;
 
@@ -23,12 +23,9 @@ public final class PeerNode extends DistributedSystemNode {
 		BufferedReader in;
 
 		try {
-			/* The Master was found, send the knock-knock message */
+			/* The Master was found, send the JOIN message */
 			
-			message = new Message(Tag.JOIN, null);
-
-			/* Send request to join the distributed network */
-
+			message = new Message(Tag.JOIN, "");
 			send(socket, message);
 			
 			/* Receive peer data */
@@ -38,14 +35,13 @@ public final class PeerNode extends DistributedSystemNode {
 			/* Parse peer data */
 			
 			peerData.addPeersFromStream(in);
-			socket.close();			
+			socket.close();
+			
+			new Thread(this).start();
 		}
 		catch(Exception e) {
 			//TODO
 		}		
-
-		commandThread = new Thread(this);
-		commandThread.start();
 	}
 	
 	/***
@@ -110,9 +106,6 @@ public final class PeerNode extends DistributedSystemNode {
 
 	@Override
 	public void disconnect() {
-		if(commandThread != null) {
-			commandThread.interrupt();
-		}
 	}
 	
 	@Override
