@@ -47,7 +47,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	 * BUFFER_THRESHOLD Accelerations captured 
 	 * */
 	
-	private static final int BUFFER_THRESHOLD = 10000;
+	private static final int BUFFER_THRESHOLD = 100000;
 	
 	private List<Acceleration> xAccelerationsBuffer = new ArrayList<Acceleration>();
 	private List<Acceleration> yAccelerationsBuffer = new ArrayList<Acceleration>();
