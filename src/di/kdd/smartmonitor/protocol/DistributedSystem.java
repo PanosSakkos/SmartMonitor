@@ -12,7 +12,7 @@ import di.kdd.smartmonitor.ISampler;
 import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 
-public class DistributedSystem implements IProtocol, IObservable, ISingleton<DistributedSystem> {
+public class DistributedSystem implements IProtocol, IObservable {
 	private ISampler sampler;
 	private List<IObserver> observers = new ArrayList<IObserver>();
 
@@ -34,7 +34,6 @@ public class DistributedSystem implements IProtocol, IObservable, ISingleton<Dis
 	private DistributedSystem() {
 	}
 	
-	@Override
 	public static DistributedSystem getInstance() {
 		if(ds == null) {
 			ds = new DistributedSystem();
