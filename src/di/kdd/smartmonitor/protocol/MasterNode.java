@@ -105,6 +105,8 @@ public final class MasterNode extends DistributedSystemNode {
 		
 		/* Gather each peer's peaks */
 		
+		Log.i(TAG, "Gathering peaks from peers");
+		
 		for(Socket socket : commandSockets) {
 			BufferedReader in = receive(socket);
 			
@@ -112,6 +114,8 @@ public final class MasterNode extends DistributedSystemNode {
 			
 			//TODO Gather peaks
 		}
+		
+		Log.i(TAG, "Gather peaks from peers");
 		
 		//TODO Find Master node's peaks, decide the global peaks and store them
 	}	
