@@ -67,7 +67,9 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 			MasterSocket = commandsServerSocket.accept();
 		}
 		catch(IOException e) {
-			Log.d(TAG, "Failed to accept command socket");
+			Log.e(TAG, "Failed to accept command socket");
+			e.printStackTrace();
+			
 			return;
 		}
 		
