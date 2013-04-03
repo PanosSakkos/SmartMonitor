@@ -86,31 +86,34 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 			
 				switch(message.getTag()) {
 					case NEW_PEER:
-						/* A new peer was accepted form the Master, get his IP address */										
-	
+						Log.i(TAG, "Received NEW_PEER command");	
+
 						peerData.addPeerIP(message.getPayload());
 						break;
 					case SYNC:
-						/* The Master sent a message with its shipment timestamp */
+						Log.i(TAG, "Received SYNC command");
 						
 						timeSync.timeReference(Long.parseLong(message.getPayload()));
 						break;
 					case START_SAMPLING:
+						Log.i(TAG, "Received START_SAMPLING command");
 
 						break;
 					case STOP_SAMPLING:
+						Log.i(TAG, "Received STOP_SAMPLING command");
 						
 						break;
 					case SEND_PEAKS:
-							
+							Log.i(TAG, "Received SEND_PEAKS command");
 						break;
 					default:
-						Log.d(TAG, "Not implemented Tag handling: " + message.getTag().toString());
+						Log.e(TAG, "Not implemented Tag handling: " + message.getTag().toString());
 						break;
 				}
 			}
 		}
 		catch(IOException e) {
+			Log.e(TAG, "Error while listening to commands from Master node");
 			e.printStackTrace();
 		}		
 	}
