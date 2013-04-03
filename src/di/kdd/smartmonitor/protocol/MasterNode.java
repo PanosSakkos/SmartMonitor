@@ -45,7 +45,8 @@ public final class MasterNode extends DistributedSystemNode {
 	
 	/***
 	 * Handler to be called by the PeerData instance that this class holds,
-	 * when a new IP is added by the Join thread
+	 * when a new IP is added by the Join thread. Sends NEW_PEER commands
+	 * to the peers to notify them for the new peer that joined the system
 	 * @param ip The IP address of the node that joined the network.
 	 */
 	
