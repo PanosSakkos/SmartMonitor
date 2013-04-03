@@ -65,6 +65,8 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 		try {
 			commandsServerSocket = new ServerSocket(ISmartMonitor.COMMAND_PORT);		
 			masterSocket = commandsServerSocket.accept();
+			
+			Log.i(TAG, "Accepted command socket from " + masterSocket.getRemoteSocketAddress().toString());
 		}
 		catch(IOException e) {
 			Log.e(TAG, "Failed to accept command socket");
