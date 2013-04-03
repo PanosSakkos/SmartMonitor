@@ -62,7 +62,15 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 	}
 
 	/* ISmartMonitor implementation */
-	
+		
+	@Override
+	public void connect() {
+		Log.i(TAG, "Connecting");
+		
+		ConnectTask connectTask = new ConnectTask(this);
+		connectTask.execute();
+	}
+
 	/***
 	 * Handler to be called from the ConnectTask, if the node didn't get a JOIN response
 	 */
@@ -77,7 +85,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 	}
 
 	/***
-	 * Handler to be called from the ConnectTask, if the node got repsonse to JOIN message
+	 * Handler to be called from the ConnectTask, if the node got response to JOIN message
 	 * @param socket The connected to the Master node socket
 	 */
 	
@@ -88,14 +96,6 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 		isConnected = true;
 		
 		notify("Connected as Peer");		
-	}
-	
-	@Override
-	public void connect() {
-		Log.i(TAG, "Connecting");
-		
-		ConnectTask connectTask = new ConnectTask(this);
-		connectTask.execute();
 	}
 
 	@Override
@@ -161,6 +161,8 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 		sampler.startSamplingService();
 		samplingStarted = System.currentTimeMillis();		
 		isSampling = true;
+		
+		notify("Started sampling");
 	}
 
 	@Override
@@ -178,6 +180,8 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 		sampler.stopSamplingService();
 		samplingEnded = System.currentTimeMillis();		
 		isSampling = false;
+
+		notify("Stoped sampling");
 	}
 	
 	@Override
@@ -196,6 +200,8 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 		}
 		
 		((MasterNode) node).computeModalFrequencies(from, to);
+		
+		notify("Computed modal frequencies");
 	}
 
 	@Override
