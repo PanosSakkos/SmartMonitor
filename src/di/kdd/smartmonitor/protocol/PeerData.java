@@ -19,7 +19,7 @@ public class PeerData {
 
 	private static final String TAG = "peer data";
 	
-	public PeerData() {		
+	public PeerData() {
 	}
 	
 	/***
@@ -43,7 +43,7 @@ public class PeerData {
 			
 			Log.i(TAG, "Added " + ip);
 			
-			/* Notify the Captain node about the new peer's IP address
+			/* Notify the Master node about the new peer's IP address
 			 * in order to broadcast the new IP to the peers.
 			 */
 			
@@ -77,6 +77,8 @@ public class PeerData {
 	
 	public synchronized void removePeerIP(String ip) {
 		peerIPs.remove(ip);
+		
+		Log.i(TAG, "Removed peer IP addres: " + ip);
 	}
 	
 	/***
