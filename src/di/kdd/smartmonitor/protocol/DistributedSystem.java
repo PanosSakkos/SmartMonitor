@@ -2,19 +2,19 @@ package di.kdd.smartmonitor.protocol;
 
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import android.os.AsyncTask;
 import android.util.Log;
 
-import di.kdd.smartmonitor.MainActivity;
+import di.kdd.smartmonitor.ISampler;
 import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 
-public class DistributedSystem implements IProtocol {
-	/* The view that is interested to our events */
-	
-	private MainActivity view;
+public class DistributedSystem implements IProtocol, IObservable {
+	private ISampler sampler;
+	private List<IObserver> observers = new ArrayList<IObserver>();
 
 	private DistributedSystemNode node;
 	
@@ -26,11 +26,7 @@ public class DistributedSystem implements IProtocol {
 	private boolean isSampling;
 	
 	private static final String TAG = "distributed system";
-		
-	public DistributedSystem(MainActivity view) {
-		this.view = view;
-	}
-
+			
 	/***
 	 * Handler to be called from the ConnectTask, if the node didn't get a JOIN response
 	 */
@@ -40,7 +36,7 @@ public class DistributedSystem implements IProtocol {
 
 		node = new MasterNode();		
 		isConnected = true;
-		view.showMessage("Connected as Master");		
+		notify("Connected as Master");		
 	}
 
 	/***
@@ -54,7 +50,7 @@ public class DistributedSystem implements IProtocol {
 		node = new PeerNode(socket);
 		isConnected = true;
 		
-		view.showMessage("Connected as Peer");		
+		notify("Connected as Peer");		
 	}
 	
 	@Override
@@ -72,7 +68,7 @@ public class DistributedSystem implements IProtocol {
 		node = new MasterNode(); 
 		isConnected = true;
 		
-		view.showMessage("Connected as Master");			
+		notify("Connected as Master");			
 	}
 
 	@Override
@@ -86,10 +82,10 @@ public class DistributedSystem implements IProtocol {
 			node = new PeerNode(socket);
 			isConnected = true;
 		
-			view.showMessage("Connected as Peer");						
+			notify("Connected as Peer");						
 		}
 		catch(IOException e) {
-			view.showMessage("Failed to connect as Peer");
+			notify("Failed to connect as Peer");
 		}		
 	}	
 	
@@ -107,6 +103,11 @@ public class DistributedSystem implements IProtocol {
 	}
 
 	@Override
+	public void setSampler(ISampler sampler) {
+		this.sampler = sampler;
+	}
+	
+	@Override
 	public void startSampling() throws MasterException, IOException, ConnectException {		
 		if(node == null) {
 			throw new ConnectException();
@@ -118,7 +119,7 @@ public class DistributedSystem implements IProtocol {
 		
 		((MasterNode) node).startSampling();			
 		
-		view.startSamplingService();
+		sampler.startSamplingService();
 		samplingStarted = System.currentTimeMillis();		
 		isSampling = true;
 	}
@@ -135,11 +136,12 @@ public class DistributedSystem implements IProtocol {
 		
 		((MasterNode) node).stopSampling();			
 		
-		view.stopSamplingService();
+		sampler.stopSamplingService();
 		samplingEnded = System.currentTimeMillis();		
 		isSampling = false;
 	}
 	
+	@Override
 	public boolean isSampling() {
 		return isSampling;
 	}
@@ -165,5 +167,24 @@ public class DistributedSystem implements IProtocol {
 	@Override
 	public String getMasterIP() {
 		return (node != null) ? "None" : node.getMasterIP();
+	}
+
+	/* IObservable implementation */
+	
+	@Override
+	public void unsubscribe(IObserver observer) {
+		observers.remove(observer);
+	}
+
+	@Override
+	public void subscribe(IObserver observer) {
+		observers.add(observer);		
+	}
+	
+	@Override
+	public void notify(String message) {
+		for(IObserver observer : observers) {
+			observer.showToastNotification(message);
+		}
 	}
 }

@@ -3,6 +3,7 @@ package di.kdd.smartmonitor.protocol;
 import java.io.IOException;
 import java.util.Date;
 
+import di.kdd.smartmonitor.ISampler;
 import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 
@@ -67,6 +68,10 @@ public interface IProtocol {
 	
 	public void disconnect();
 
+	/* Sets the ISampler that will start and stop the sampling process in the node */
+	
+	public void setSampler(ISampler sampler);
+	
 	/***
 	 * Broadcast a START_SAMPLING command to all the peers and 
 	 * starts sampling itself. 

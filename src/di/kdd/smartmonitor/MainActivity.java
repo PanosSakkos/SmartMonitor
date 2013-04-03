@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import di.kdd.buildmon.R;
 import di.kdd.smartmonitor.protocol.DistributedSystem;
+import di.kdd.smartmonitor.protocol.IObserver;
 import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 import android.os.Bundle;
@@ -13,7 +14,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class MainActivity extends Activity {	
+public class MainActivity extends Activity implements IObserver, ISampler {	
 	private AccelerationsSQLiteHelper accelerationsDb;
 	private DistributedSystem distributedSystem;
 	
@@ -22,7 +23,9 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 			
-		distributedSystem = new DistributedSystem(this);
+		distributedSystem = new DistributedSystem();
+		distributedSystem.subscribe(this);
+
 		accelerationsDb = new AccelerationsSQLiteHelper(this, this.getApplicationContext());
 	}
 
@@ -31,9 +34,29 @@ public class MainActivity extends Activity {
 		accelerationsDb.flushAccelerationBuffers();
 	}
 	
-	public void showMessage(String message) {		
+	/* IObserver implementation */
+	
+	@Override
+	public void showToastNotification(String message) {		
 		Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 	}
+	/* ISampler implementation */
+	
+	@Override
+	public void startSamplingService() {
+		if(distributedSystem.isSampling() == false) {
+			startService(new Intent(this, SamplingService.class));		
+		}
+	}	
+	
+	@Override
+	public void stopSamplingService() {
+		if(distributedSystem.isSampling()) {		
+			stopService(new Intent(this, SamplingService.class));		
+		}
+	}
+	
+	/* Button handlers */
 	
 	/**
 	 * Handler of the startSampling button. 
@@ -62,17 +85,7 @@ public class MainActivity extends Activity {
 			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();			
 		}
 	}	
-	
-	/***
-	 * Starts the sampling service, if is not already running
-	 */
-	
-	public void startSamplingService() {
-		if(distributedSystem.isSampling() == false) {
-			startService(new Intent(this, SamplingService.class));		
-		}
-	}	
-	
+		
 	/**
 	 * Handler of the stopSampling button. 
 	 * Unregisters the listener of the Accelerometer
@@ -101,15 +114,6 @@ public class MainActivity extends Activity {
 		}
 	}	
 	
-	/***
-	 * Stops the sampling service, if is running 
-	 */
-	
-	public void stopSamplingService() {
-		if(distributedSystem.isSampling()) {		
-			stopService(new Intent(this, SamplingService.class));		
-		}
-	}
 	
 	/***
 	 * Handler for the connect button. 
