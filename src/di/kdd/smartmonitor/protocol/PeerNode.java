@@ -57,14 +57,14 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 	
 	@Override
 	public void run() {
-		Socket MasterSocket;
+		Socket masterSocket;
 		BufferedReader in;
 
 		android.os.Debug.waitForDebugger();
 		
 		try {
 			commandsServerSocket = new ServerSocket(ISmartMonitor.COMMAND_PORT);		
-			MasterSocket = commandsServerSocket.accept();
+			masterSocket = commandsServerSocket.accept();
 		}
 		catch(IOException e) {
 			Log.e(TAG, "Failed to accept command socket");
@@ -79,7 +79,7 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 			while(true) {
 				Message message;
 			
-				in = receive(MasterSocket);
+				in = receive(masterSocket);
 				message = new Message(in);				
 			
 				switch(message.getTag()) {
