@@ -42,7 +42,26 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 		return ds;
 	}
 
-	/* IProtocol implementation */
+	/* IObservable implementation */
+	
+	@Override
+	public void unsubscribe(IObserver observer) {
+		observers.remove(observer);
+	}
+
+	@Override
+	public void subscribe(IObserver observer) {
+		observers.add(observer);		
+	}
+	
+	@Override
+	public void notify(String message) {
+		for(IObserver observer : observers) {
+			observer.showToastNotification(message);
+		}
+	}
+
+	/* ISmartMonitor implementation */
 	
 	/***
 	 * Handler to be called from the ConnectTask, if the node didn't get a JOIN response
@@ -53,6 +72,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 
 		node = new MasterNode();		
 		isConnected = true;
+		
 		notify("Connected as Master");		
 	}
 
@@ -80,7 +100,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 
 	@Override
 	public void connectAsMaster() {
-		Log.i(TAG, "Connect as Master");
+		Log.i(TAG, "Connecting as Master");
 		
 		node = new MasterNode(); 
 		isConnected = true;
@@ -99,10 +119,10 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 			node = new PeerNode(socket);
 			isConnected = true;
 		
-			notify("Connected as Peer");						
+			notify("Connected as Peer at " + ip);						
 		}
 		catch(IOException e) {
-			notify("Failed to connect as Peer");
+			notify("Failed to connect as Peer at " + ip);
 		}		
 	}	
 	
@@ -117,6 +137,8 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 		
 		node.disconnect();
 		isConnected = false;
+		
+		notify("Disconnected");
 	}
 
 	@Override
@@ -184,24 +206,5 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 	@Override
 	public String getMasterIP() {
 		return (node != null) ? "None" : node.getMasterIP();
-	}
-
-	/* IObservable implementation */
-	
-	@Override
-	public void unsubscribe(IObserver observer) {
-		observers.remove(observer);
-	}
-
-	@Override
-	public void subscribe(IObserver observer) {
-		observers.add(observer);		
-	}
-	
-	@Override
-	public void notify(String message) {
-		for(IObserver observer : observers) {
-			observer.showToastNotification(message);
-		}
 	}
 }
