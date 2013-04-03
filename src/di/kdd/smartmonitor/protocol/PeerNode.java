@@ -46,7 +46,8 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 			new Thread(this).start();
 		}
 		catch(Exception e) {
-			//TODO
+			Log.e(TAG, "Failed to join the system");
+			e.printStackTrace();
 		}		
 	}
 	
