@@ -120,6 +120,7 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 
 	@Override
 	public void disconnect() {
+		this.interrupt();
 	}
 	
 	@Override
