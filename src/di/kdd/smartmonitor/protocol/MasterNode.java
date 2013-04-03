@@ -61,7 +61,7 @@ public final class MasterNode extends DistributedSystemNode {
 			
 			/* Notify peers about the new peer that joined the network */
 			
-			Message message = new Message(Tag.NEW_PEER, ip);						
+			Message message = new Message(Tag.NEW_PEER, ip);			
 			broadcastCommand(message);
 		}
 		catch (Exception e) {
@@ -70,28 +70,24 @@ public final class MasterNode extends DistributedSystemNode {
 		}
 	}
 	
+	/***
+	 * Broadcasts START_SAMPLING command to the peer nodes
+	 * @throws IOException
+	 */
+	
 	public void startSampling() throws IOException {
 		broadcastCommand(new Message(Tag.START_SAMPLING, ""));
 	}
+
+	/***
+	 * Broadcasts STOP_SAMPLING command to the peer nodes
+	 * @throws IOException
+	 */
 
 	public void stopSampling() throws IOException {
 		broadcastCommand(new Message(Tag.STOP_SAMPLING, ""));
 	}
 	
-	@Override
-	public void disconnect() {
-		Log.i(TAG, "Disconnecting");
-		
-		if(joinThread != null) {
-			joinThread.interrupt();
-		}
-	}
-	
-	@Override
-	public boolean isMaster() {
-		return true;
-	}
-
 	public void computeModalFrequencies(Date from, Date to) throws MasterException, IOException {
 		Message message = new Message(Tag.SEND_PEAKS, 
 								Long.toString(from.getTime()) + "\n" + 
@@ -108,4 +104,18 @@ public final class MasterNode extends DistributedSystemNode {
 			//TODO
 		}
 	}	
+
+	@Override
+	public void disconnect() {
+		Log.i(TAG, "Disconnecting");
+		
+		if(joinThread != null) {
+			joinThread.interrupt();
+		}
+	}
+	
+	@Override
+	public boolean isMaster() {
+		return true;
+	}
 }
