@@ -72,7 +72,7 @@ public final class MasterNode extends DistributedSystemNode {
 	
 	/***
 	 * Broadcasts START_SAMPLING command to the peer nodes
-	 * @throws IOException
+	 * @throws IOException Communication error
 	 */
 	
 	public void startSampling() throws IOException {
@@ -88,6 +88,15 @@ public final class MasterNode extends DistributedSystemNode {
 		broadcastCommand(new Message(Tag.STOP_SAMPLING, ""));
 	}
 	
+	/***
+	 * Broadcasts SEND_PEAKS command to the peers, gather their frequency peaks and
+	 * computes the modal frequencies from all the peaks
+	 * @param from First time of samples of interest
+	 * @param to End time of samples of interest 
+	 * @throws MasterException The node must be a Master node
+	 * @throws IOException Communication error
+	 */
+	
 	public void computeModalFrequencies(Date from, Date to) throws MasterException, IOException {
 		Message message = new Message(Tag.SEND_PEAKS, 
 								Long.toString(from.getTime()) + "\n" + 
@@ -101,8 +110,10 @@ public final class MasterNode extends DistributedSystemNode {
 			
 			message = new Message(in);
 			
-			//TODO
+			//TODO Gather peaks
 		}
+		
+		//TODO Find Master node's peaks, decide the global peaks and store them
 	}	
 
 	@Override
