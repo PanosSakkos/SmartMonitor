@@ -3,7 +3,7 @@ package di.kdd.smartmonitor.protocol;
 import java.io.BufferedReader;
 import java.io.IOException;
 
-import di.kdd.smartmonitor.protocol.IProtocol.Tag;
+import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 
 /***
  * The message that is exchanged in every communication under

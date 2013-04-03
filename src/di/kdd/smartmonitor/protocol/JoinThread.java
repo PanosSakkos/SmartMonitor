@@ -6,7 +6,7 @@ import java.net.Socket;
 
 import android.util.Log;
 import di.kdd.smartmonitor.middlewareServices.TimeSynchronizationMessage;
-import di.kdd.smartmonitor.protocol.IProtocol.Tag;
+import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 
 public class JoinThread extends Thread {
 	private PeerData peerData;
@@ -25,7 +25,7 @@ public class JoinThread extends Thread {
 		android.os.Debug.waitForDebugger();
 		
 		try {
-			joinSocket = new ServerSocket(IProtocol.JOIN_PORT);
+			joinSocket = new ServerSocket(ISmartMonitor.JOIN_PORT);
 		} 
 		catch (IOException e) {
 			Log.e(TAG, "Could not bind socket at the knock knock port");
@@ -34,7 +34,7 @@ public class JoinThread extends Thread {
 			return;
 		}
 
-		Log.i(TAG, "Accepting on " + Integer.toString(IProtocol.JOIN_PORT));
+		Log.i(TAG, "Accepting on " + Integer.toString(ISmartMonitor.JOIN_PORT));
 		
 		while(true) {
 			try {

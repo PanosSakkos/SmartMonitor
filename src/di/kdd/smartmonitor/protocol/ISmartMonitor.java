@@ -7,7 +7,7 @@ import di.kdd.smartmonitor.ISampler;
 import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 
-public interface IProtocol {
+public interface ISmartMonitor {
 	
 	/* The period of the heartbeat messages (in seconds) */
 	

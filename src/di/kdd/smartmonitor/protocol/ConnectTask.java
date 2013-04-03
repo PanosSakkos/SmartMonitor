@@ -35,7 +35,7 @@ public class ConnectTask extends AsyncTask<Void, Void, Socket> {
 		for(int i = 1; i < 256; ++i) {
 			try{
 				Log.i(TAG, "Trying to connect to :" + ipPrefix + Integer.toString(i));
-				socket = new Socket(ipPrefix + Integer.toString(i), IProtocol.JOIN_PORT);
+				socket = new Socket(ipPrefix + Integer.toString(i), ISmartMonitor.JOIN_PORT);
 			}
 			catch(IOException e) {
 				continue;

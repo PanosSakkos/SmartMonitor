@@ -12,7 +12,7 @@ import di.kdd.smartmonitor.ISampler;
 import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 
-public class DistributedSystem implements IProtocol, IObservable {
+public class DistributedSystem implements ISmartMonitor, IObservable {
 	private ISampler sampler;
 	private List<IObserver> observers = new ArrayList<IObserver>();
 
@@ -95,7 +95,7 @@ public class DistributedSystem implements IProtocol, IObservable {
 		Log.i(TAG, "Connecting as Peer at " + ip);
 		
 		try{
-			socket = new Socket(ip, IProtocol.JOIN_PORT);
+			socket = new Socket(ip, ISmartMonitor.JOIN_PORT);
 			node = new PeerNode(socket);
 			isConnected = true;
 		

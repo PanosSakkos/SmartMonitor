@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import android.util.Log;
-import di.kdd.smartmonitor.protocol.IProtocol.Tag;
+import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 
 public final class MasterNode extends DistributedSystemNode {
@@ -55,7 +55,7 @@ public final class MasterNode extends DistributedSystemNode {
 		try {			
 			/* Connect to the peer, in order to have a communication channel for commands */
 			
-			Socket commandSocket = new Socket(ip, IProtocol.COMMAND_PORT);
+			Socket commandSocket = new Socket(ip, ISmartMonitor.COMMAND_PORT);
 			commandSockets.add(commandSocket);
 			
 			/* Notify peers about the new peer that joined the network */

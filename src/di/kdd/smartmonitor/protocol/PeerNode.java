@@ -7,7 +7,7 @@ import java.net.Socket;
 
 import android.util.Log;
 import di.kdd.smartmonitor.middlewareServices.TimeSynchronization;
-import di.kdd.smartmonitor.protocol.IProtocol.Tag;
+import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 
 public final class PeerNode extends DistributedSystemNode implements Runnable {
 	/* The socket that the peer holds in order to get command messages from the Master */
@@ -56,7 +56,7 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 		android.os.Debug.waitForDebugger();
 		
 		try {
-			commandsServerSocket = new ServerSocket(IProtocol.COMMAND_PORT);		
+			commandsServerSocket = new ServerSocket(ISmartMonitor.COMMAND_PORT);		
 			MasterSocket = commandsServerSocket.accept();
 		}
 		catch(IOException e) {

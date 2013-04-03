@@ -1,7 +1,7 @@
 package di.kdd.smartmonitor.middlewareServices;
 
 import di.kdd.smartmonitor.protocol.Message;
-import di.kdd.smartmonitor.protocol.IProtocol.Tag;
+import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 
 public class TimeSynchronizationMessage extends Message {
 	
