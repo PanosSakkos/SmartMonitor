@@ -18,12 +18,18 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 
 	private static final String TAG = "peer";
 
+	/***
+	 * Sends a JOIN message to the Master node and if it gets accepted,
+	 * starts a thread that accepts commands from the Master
+	 * @param socket The connected to the Master node socket
+	 */
+	
 	public PeerNode(Socket socket) {		
 		Message message;
 		BufferedReader in;
 
 		try {
-			/* The Master was found, send the JOIN message */
+			/* The Master node was found, send the JOIN message */
 			
 			message = new Message(Tag.JOIN, "");
 			send(socket, message);
