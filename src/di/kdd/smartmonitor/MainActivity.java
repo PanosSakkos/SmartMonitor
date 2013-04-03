@@ -23,7 +23,7 @@ public class MainActivity extends Activity implements IObserver, ISampler {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 			
-		distributedSystem = new DistributedSystem();
+		distributedSystem = DistributedSystem.getInstance();
 		distributedSystem.subscribe(this);
 
 		accelerationsDb = new AccelerationsSQLiteHelper(this, this.getApplicationContext());

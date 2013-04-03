@@ -12,7 +12,7 @@ import di.kdd.smartmonitor.ISampler;
 import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 
-public class DistributedSystem implements IProtocol, IObservable {
+public class DistributedSystem implements IProtocol, IObservable, ISingleton<DistributedSystem> {
 	private ISampler sampler;
 	private List<IObserver> observers = new ArrayList<IObserver>();
 
@@ -26,7 +26,25 @@ public class DistributedSystem implements IProtocol, IObservable {
 	private boolean isSampling;
 	
 	private static final String TAG = "distributed system";
-			
+	
+	/* Singleton implementation */
+
+	private static DistributedSystem ds;
+	
+	private DistributedSystem() {
+	}
+	
+	@Override
+	public static DistributedSystem getInstance() {
+		if(ds == null) {
+			ds = new DistributedSystem();
+		}
+		
+		return ds;
+	}
+
+	/* IProtocol implementation */
+	
 	/***
 	 * Handler to be called from the ConnectTask, if the node didn't get a JOIN response
 	 */
