@@ -22,7 +22,7 @@ public final class MasterNode extends DistributedSystemNode {
 	
 	private JoinThread joinThread;
 
-	private static final String TAG = "Master";	
+	private static final String TAG = "master";	
 	
 	public MasterNode() {
 		joinThread = new JoinThread(peerData);
@@ -44,8 +44,8 @@ public final class MasterNode extends DistributedSystemNode {
 	}
 	
 	/***
-	 * Called by the PeerData instance that this class holds,
-	 * when a new IP is added by the KnockKnockThread.
+	 * Handler to be called by the PeerData instance that this class holds,
+	 * when a new IP is added by the Join thread
 	 * @param ip The IP address of the node that joined the network.
 	 */
 	
