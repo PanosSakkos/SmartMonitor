@@ -17,13 +17,7 @@ public class JoinThread extends Thread {
 	public JoinThread(PeerData peerData) {
 		this.peerData = peerData;
 	}
-	
-	@Override
-	protected void finalize() throws Throwable {
-		joinSocket.close();
-		super.finalize();
-	}
-	
+		
 	@Override
 	public void run() {
 		Message message;
@@ -80,5 +74,11 @@ public class JoinThread extends Thread {
 				}
 			}
 		}
+	}
+	
+	@Override
+	protected void finalize() throws Throwable {
+		joinSocket.close();
+		super.finalize();
 	}
 }
