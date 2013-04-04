@@ -10,7 +10,8 @@ import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 
 public class JoinThread extends Thread {
 	private PeerData peerData;
-	
+	ServerSocket joinSocket;
+
 	private static final String TAG = "JOIN listener";
 	
 	public JoinThread(PeerData peerData) {
@@ -18,10 +19,16 @@ public class JoinThread extends Thread {
 	}
 	
 	@Override
+	protected void finalize() throws Throwable {
+		joinSocket.close();
+		super.finalize();
+	}
+	
+	@Override
 	public void run() {
 		Message message;
-		ServerSocket joinSocket;
-				
+		Socket connectionSocket = null;
+		
 		android.os.Debug.waitForDebugger();
 		
 		try {
@@ -38,7 +45,7 @@ public class JoinThread extends Thread {
 		
 		while(true) {
 			try {
-				Socket connectionSocket = joinSocket.accept();
+				connectionSocket = joinSocket.accept();
 				
 				Log.i(TAG, "Accepted socket");
 				
@@ -62,6 +69,15 @@ public class JoinThread extends Thread {
 			catch(IOException e) {
 				Log.e(TAG, "Error while communicating with a peer");
 				e.printStackTrace();
+			}
+			finally {
+				try {
+					if(connectionSocket != null) {
+						connectionSocket.close();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}
