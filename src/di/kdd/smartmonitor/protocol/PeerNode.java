@@ -91,15 +91,15 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 					in = receive(masterSocket);
 					peerData.addPeersFromStream(in);					
 					break;
-				case NEW_PEER:
-					Log.i(TAG, "Received NEW_PEER command");	
-
-					peerData.addPeerIP(message.getPayload());
-					break;
 				case SYNC:
 					Log.i(TAG, "Received SYNC command");
 					
 					timeSync.timeReference(Long.parseLong(message.getPayload()));
+					break;
+				case NEW_PEER:
+					Log.i(TAG, "Received NEW_PEER command");	
+
+					peerData.addPeerIP(message.getPayload());
 					break;
 				case START_SAMPLING:
 					Log.i(TAG, "Received START_SAMPLING command");
