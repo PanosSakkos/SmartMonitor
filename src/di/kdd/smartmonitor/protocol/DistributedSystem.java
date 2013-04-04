@@ -131,6 +131,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 		Log.i(TAG, "Disconnecting");
 		
 		node.disconnect();
+		node = null;
 		isConnected = false;
 		
 		notify("Disconnected");
