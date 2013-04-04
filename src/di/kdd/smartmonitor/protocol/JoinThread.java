@@ -52,9 +52,7 @@ public class JoinThread extends Thread {
 				
 				/* Update the peer data with the new IP address */
 				
-				//TODO REVIEW
 				peerData.addPeerIP(connectionSocket.getRemoteSocketAddress().toString());
-				Log.i(TAG, "Added " + connectionSocket.getRemoteSocketAddress().toString() + " to peer data");
 				
 				/* Send synchronization message */
 				
