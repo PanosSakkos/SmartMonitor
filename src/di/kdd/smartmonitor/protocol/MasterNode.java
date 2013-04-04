@@ -127,6 +127,14 @@ public final class MasterNode extends DistributedSystemNode {
 		if(joinThread != null) {
 			joinThread.interrupt();
 		}
+		
+		for(Socket commandSocket : commandSockets) {
+			try {
+				commandSocket.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	@Override
