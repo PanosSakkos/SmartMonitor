@@ -33,7 +33,7 @@ public interface ISmartMonitor {
 	
 	/* Message tags */
 	
-	public enum Tag { JOIN, NEW_PEER, SYNC, HEARTBEAT, START_SAMPLING, STOP_SAMPLING, SEND_PEAKS };
+	public enum Tag { JOIN, PEER_DATA, NEW_PEER, SYNC, HEARTBEAT, START_SAMPLING, STOP_SAMPLING, SEND_PEAKS };
 		
 	/***
 	 * Connects to the distributed system.

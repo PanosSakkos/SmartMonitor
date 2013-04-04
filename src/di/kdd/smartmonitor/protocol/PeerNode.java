@@ -85,30 +85,36 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 				message = new Message(in);				
 			
 				switch(message.getTag()) {
-					case NEW_PEER:
-						Log.i(TAG, "Received NEW_PEER command");	
+				case PEER_DATA:
+					Log.i(TAG, "Received PEER_DATA command");
+					
+					in = receive(masterSocket);
+					peerData.addPeersFromStream(in);					
+					break;
+				case NEW_PEER:
+					Log.i(TAG, "Received NEW_PEER command");	
 
-						peerData.addPeerIP(message.getPayload());
-						break;
-					case SYNC:
-						Log.i(TAG, "Received SYNC command");
-						
-						timeSync.timeReference(Long.parseLong(message.getPayload()));
-						break;
-					case START_SAMPLING:
-						Log.i(TAG, "Received START_SAMPLING command");
+					peerData.addPeerIP(message.getPayload());
+					break;
+				case SYNC:
+					Log.i(TAG, "Received SYNC command");
+					
+					timeSync.timeReference(Long.parseLong(message.getPayload()));
+					break;
+				case START_SAMPLING:
+					Log.i(TAG, "Received START_SAMPLING command");
 
-						break;
-					case STOP_SAMPLING:
-						Log.i(TAG, "Received STOP_SAMPLING command");
-						
-						break;
-					case SEND_PEAKS:
-							Log.i(TAG, "Received SEND_PEAKS command");
-						break;
-					default:
-						Log.e(TAG, "Not implemented Tag handling: " + message.getTag().toString());
-						break;
+					break;
+				case STOP_SAMPLING:
+					Log.i(TAG, "Received STOP_SAMPLING command");
+					
+					break;
+				case SEND_PEAKS:
+						Log.i(TAG, "Received SEND_PEAKS command");
+					break;
+				default:
+					Log.e(TAG, "Not implemented Tag handling: " + message.getTag().toString());
+					break;
 				}
 			}
 		}
