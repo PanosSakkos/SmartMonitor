@@ -70,6 +70,8 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 		
 		/* Listen on MasterSocket for incoming commands from the Master */
 		
+		Log.i(TAG, "Listening for commands from the Master node");
+		
 		try {		
 			while(true) {
 				Message message;
