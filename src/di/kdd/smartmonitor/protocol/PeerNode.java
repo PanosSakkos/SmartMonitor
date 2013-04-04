@@ -127,6 +127,11 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 	@Override
 	public void disconnect() {
 		this.interrupt();
+		try {
+			commandsServerSocket.close();			
+		}
+		catch(IOException e) {			
+		}
 	}
 	
 	@Override
