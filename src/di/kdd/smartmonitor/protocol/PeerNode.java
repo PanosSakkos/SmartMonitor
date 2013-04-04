@@ -34,14 +34,7 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 			message = new Message(Tag.JOIN, "");
 			send(socket, message);
 			
-			/* Receive peer data */
-
-			in = receive(socket);
-										
-			/* Parse peer data */
-			
-			peerData.addPeersFromStream(in);
-			socket.close();
+			/* Start command-serving thread */
 			
 			new Thread(this).start();
 		}
