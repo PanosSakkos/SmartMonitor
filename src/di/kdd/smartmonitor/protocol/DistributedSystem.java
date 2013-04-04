@@ -57,7 +57,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 	@Override
 	public void notify(String message) {
 		for(IObserver observer : observers) {
-			observer.showToastNotification(message);
+			observer.update(message);
 		}
 	}
 

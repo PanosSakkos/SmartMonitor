@@ -37,7 +37,7 @@ public class MainActivity extends Activity implements IObserver, ISampler {
 	/* IObserver implementation */
 	
 	@Override
-	public void showToastNotification(String message) {		
+	public void update(String message) {		
 		Toast.makeText(this, message, Toast.LENGTH_LONG).show();
 	}
 	/* ISampler implementation */

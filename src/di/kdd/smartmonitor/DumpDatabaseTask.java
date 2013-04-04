@@ -112,10 +112,10 @@ public class DumpDatabaseTask extends AsyncTask<Void, Void, Boolean> {
 	@Override
 	protected void onPostExecute(Boolean succcess) {
 		if(succcess) {
-			view.showToastNotification("Dumped accelerations to filesystem");
+			view.update("Dumped accelerations to filesystem");
 		}
 		else {
-			view.showToastNotification("Failed to dump acceleration to filesystem");
+			view.update("Failed to dump acceleration to filesystem");
 		}
 	}
 }

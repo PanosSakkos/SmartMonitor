@@ -8,5 +8,5 @@ public interface IObserver {
 	 * @param message The message to show
 	 */
 	
-	public void showToastNotification(String message);
+	public void update(String message);
 }
