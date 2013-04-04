@@ -110,20 +110,10 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 
 	@Override
 	public void connectAt(String ip) {
-		Socket socket;
-
 		Log.i(TAG, "Connecting as Peer at " + ip);
-		
-		try{
-			socket = new Socket(ip, ISmartMonitor.JOIN_PORT);
-			node = new PeerNode(socket);
-			isConnected = true;
-		
-			notify("Connected as Peer at " + ip);						
-		}
-		catch(IOException e) {
-			notify("Failed to connect as Peer at " + ip);
-		}		
+
+		ConnectTask connectTask = new ConnectTask(this, ip);
+		connectTask.execute();
 	}	
 	
 	@Override

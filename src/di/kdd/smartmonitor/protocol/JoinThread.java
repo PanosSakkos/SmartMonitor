@@ -39,6 +39,9 @@ public class JoinThread extends Thread {
 		while(true) {
 			try {
 				Socket connectionSocket = joinSocket.accept();
+				
+				Log.i(TAG, "Accepted socket on " + Integer.toString(ISmartMonitor.JOIN_PORT));
+				
 				DistributedSystemNode.receive(connectionSocket);
 
 				/* Send the peer data to the node that wants to join the distributed network */
