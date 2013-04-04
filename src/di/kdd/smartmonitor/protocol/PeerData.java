@@ -13,21 +13,29 @@ import android.util.Log;
  * Thread-safe.
  */
 
-public class PeerData {
-	private MasterNode masterNodeSubscriber;
+public class PeerData implements IObservable {
+	private IObserver masterNodeObserver;
 	private Set<String> peerIPs = new TreeSet<String>();
 
 	private static final String TAG = "peer data";
 	
-	public PeerData() {
+	/* IObservable implementation */
+	
+	@Override
+	public void subscribe(IObserver observer) {
+		this.masterNodeObserver = observer;
 	}
-	
-	/***
-	 * @param masterNode The Master node to notify when a new peer is added from the  thread
-	 */
-	
-	public PeerData(MasterNode masterNode) {
-		this.masterNodeSubscriber = masterNode;
+
+	@Override
+	public void unsubscribe(IObserver observer) {
+		this.masterNodeObserver = null;
+	}
+
+	@Override
+	public void notify(String message) {
+		if(masterNodeObserver != null) {
+			masterNodeObserver.update(message);
+		}
 	}
 	
 	/***
@@ -47,9 +55,7 @@ public class PeerData {
 			 * in order to broadcast the new IP to the peers.
 			 */
 			
-			if(masterNodeSubscriber != null) {
-				masterNodeSubscriber.newPeerAddedHandler(ip);
-			}
+				notify(ip);
 		}
 	}
 	

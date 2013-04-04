@@ -11,7 +11,7 @@ import android.util.Log;
 import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 
-public final class MasterNode extends DistributedSystemNode {
+public final class MasterNode extends DistributedSystemNode implements IObserver {
 	/* List of open sockets with the peers, in order to send them commands */
 	
 	private List<Socket> commandSockets = new ArrayList<Socket>();
@@ -25,23 +25,13 @@ public final class MasterNode extends DistributedSystemNode {
 	private static final String TAG = "master";	
 	
 	public MasterNode() {
+		peerData.subscribe(this);
+		
 		joinThread = new JoinThread(peerData);
 		joinThread.start();
 	}
 
-	/***
-	 * Sends a message to each connected peer
-	 * @param message The message to broadcast
-	 * @throws IOException
-	 */
-	
-	private void broadcastCommand(Message message) throws IOException {
-		Log.i(TAG, "Broadcasting " + message.toString());
-		
-		for(Socket peer : commandSockets) {
-			DistributedSystemNode.send(peer, message);
-		}		
-	}
+	/* IObserver implementation */
 	
 	/***
 	 * Handler to be called by the PeerData instance that this class holds,
@@ -50,7 +40,8 @@ public final class MasterNode extends DistributedSystemNode {
 	 * @param ip The IP address of the node that joined the network.
 	 */
 	
-	protected void newPeerAddedHandler(String ip) {
+	@Override
+	public void update(String ip) {
 		Log.i(TAG, "New peer added: " + ip);
 		
 		try {			
@@ -68,8 +59,22 @@ public final class MasterNode extends DistributedSystemNode {
 			Log.e(TAG, "Failed to connect to " + ip);
 			peerData.removePeerIP(ip);
 		}
-	}
+	}	
 	
+	/***
+	 * Sends a message to each connected peer
+	 * @param message The message to broadcast
+	 * @throws IOException
+	 */
+	
+	private void broadcastCommand(Message message) throws IOException {
+		Log.i(TAG, "Broadcasting " + message.toString());
+		
+		for(Socket peer : commandSockets) {
+			DistributedSystemNode.send(peer, message);
+		}		
+	}
+		
 	/***
 	 * Broadcasts START_SAMPLING command to the peer nodes
 	 * @throws IOException Communication error
@@ -135,6 +140,8 @@ public final class MasterNode extends DistributedSystemNode {
 				e.printStackTrace();
 			}
 		}
+		
+		peerData.unsubscribe(this);
 	}
 	
 	@Override
