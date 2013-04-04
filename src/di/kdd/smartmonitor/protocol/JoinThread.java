@@ -43,6 +43,8 @@ public class JoinThread extends Thread {
 				
 				Log.i(TAG, "Accepted socket");
 				
+				/* Receive JOIN message */
+				
 				DistributedSystemNode.receive(connectionSocket);
 
 				/* Send the peer data to the node that wants to join the distributed network */
