@@ -40,7 +40,7 @@ public class JoinThread extends Thread {
 			try {
 				Socket connectionSocket = joinSocket.accept();
 				
-				Log.i(TAG, "Accepted socket on " + Integer.toString(ISmartMonitor.JOIN_PORT));
+				Log.i(TAG, "Accepted socket");
 				
 				DistributedSystemNode.receive(connectionSocket);
 

@@ -71,6 +71,11 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 		connectTask.execute();
 	}
 
+	
+	protected void failedToConnectAsPeer() {
+		notify("Failed to connect as Peer");
+	}
+	
 	/***
 	 * Handler to be called from the ConnectTask, if the node didn't get a JOIN response
 	 */

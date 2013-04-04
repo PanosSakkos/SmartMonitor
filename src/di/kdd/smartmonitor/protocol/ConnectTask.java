@@ -84,9 +84,7 @@ public class ConnectTask extends AsyncTask<Void, Void, Socket> {
 			ds.connectedAsMaster();
 		}
 		else if (result == null && ip != null){
-			/* Failed to connect as peer at specific IP address */
-
-			return;
+			ds.failedToConnectAsPeer();
 		}
 		else {
 			ds.connectedAsPeer(socket);
