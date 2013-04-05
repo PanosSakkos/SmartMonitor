@@ -7,6 +7,7 @@ import di.kdd.smartmonitor.protocol.DistributedSystem;
 import di.kdd.smartmonitor.protocol.IObserver;
 import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
+import di.kdd.smartmonitor.protocol.exceptions.SamplerException;
 import android.os.Bundle;
 import android.app.Activity;
 import android.content.Intent;
@@ -78,12 +79,15 @@ public class MainActivity extends Activity implements IObserver, ISampler {
 		catch(IOException e) {
 			Toast.makeText(this, "Failed to command nodes to start sampling", Toast.LENGTH_LONG).show();						
 		}
+		catch(SamplerException e) {
+			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();												
+		}
 		catch(ConnectException e) {
 			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();									
 		}
 		catch(MasterException e) {
 			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();			
-		}
+		}		
 	}	
 		
 	/**
@@ -105,6 +109,9 @@ public class MainActivity extends Activity implements IObserver, ISampler {
 		}
 		catch(IOException e) {
 			Toast.makeText(this, "Failed to command nodes to start sampling", Toast.LENGTH_LONG).show();						
+		}
+		catch(SamplerException e) {
+			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();												
 		}
 		catch(ConnectException e) {
 			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();									
