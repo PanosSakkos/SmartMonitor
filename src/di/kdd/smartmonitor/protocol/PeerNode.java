@@ -26,7 +26,6 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 	
 	public PeerNode(Socket socket) {		
 		Message message;
-		BufferedReader in;
 
 		try {
 			/* The Master node was found, send the JOIN message */
