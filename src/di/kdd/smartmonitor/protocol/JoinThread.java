@@ -75,7 +75,6 @@ public class JoinThread extends Thread {
 						connectionSocket.close();
 					}
 				} catch (IOException e) {
-					e.printStackTrace();
 				}
 			}
 		}
