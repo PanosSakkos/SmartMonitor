@@ -27,6 +27,7 @@ public class JoinThread extends Thread {
 		
 		try {
 			joinSocket = new ServerSocket(ISmartMonitor.JOIN_PORT);
+			joinSocket.setReuseAddress(true);
 		} 
 		catch (IOException e) {
 			Log.e(TAG, "Could not bind socket at the knock knock port");
