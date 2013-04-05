@@ -44,9 +44,9 @@ public abstract class DistributedSystemNode extends Thread {
 	
 	//TODO Added a Tag parameter, when you want to receive a message with a specific Tag
 	
-	protected static BufferedReader receive(Socket socket) throws IOException {
+	protected static Message receive(Socket socket) throws IOException {
 		Log.i(TAG, "Receiving from " + socket.getRemoteSocketAddress());
 		
-		return new BufferedReader(new InputStreamReader(socket.getInputStream()));		
+		return new Message(new BufferedReader(new InputStreamReader(socket.getInputStream())));		
 	}
 }

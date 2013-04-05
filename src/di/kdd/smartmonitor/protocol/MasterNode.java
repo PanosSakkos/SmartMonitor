@@ -113,9 +113,7 @@ public final class MasterNode extends DistributedSystemNode implements IObserver
 		Log.i(TAG, "Gathering peaks from peers");
 		
 		for(Socket socket : commandSockets) {
-			BufferedReader in = receive(socket);
-			
-			message = new Message(in);
+			message = receive(socket);
 			
 			//TODO Gather peaks
 		}

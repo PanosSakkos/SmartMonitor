@@ -58,8 +58,9 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 		
 		try {
 			commandsServerSocket = new ServerSocket(ISmartMonitor.COMMAND_PORT);		
+			commandsServerSocket.setReuseAddress(true);
 			masterSocket = commandsServerSocket.accept();
-			
+						
 			Log.i(TAG, "Accepted command socket from " + masterSocket.getRemoteSocketAddress().toString());
 		}
 		catch(IOException e) {
@@ -77,15 +78,14 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 			while(!this.isInterrupted()) {
 				Message message;
 			
-				in = receive(masterSocket);
-				message = new Message(in);				
+				message = receive(masterSocket);
 			
 				switch(message.getTag()) {
 				case PEER_DATA:
 					Log.i(TAG, "Received PEER_DATA command");
 					
-					in = receive(masterSocket);
-					peerData.addPeersFromStream(in);					
+					message = receive(masterSocket);
+					peerData.addPeersFromMessage(message);					
 					break;
 				case SYNC:
 					Log.i(TAG, "Received SYNC command");

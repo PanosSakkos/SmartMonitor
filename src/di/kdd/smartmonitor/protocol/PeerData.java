@@ -3,6 +3,7 @@ package di.kdd.smartmonitor.protocol;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -69,13 +70,15 @@ public class PeerData implements IObservable {
 	 * @throws IOException
 	 */
 	
-	public void addPeersFromStream(BufferedReader in) throws IOException {
+	public void addPeersFromMessage(Message message) throws IOException {
 		String peerDataLine;
-
-		while((peerDataLine = in.readLine()) != null) {
+		Scanner in = new Scanner(message.getPayload());
+				
+		while(in.hasNextLine()) {
+			peerDataLine = in.nextLine();
 			addPeerIP(peerDataLine);
 			
-			Log.i(TAG, "Added " + peerDataLine + " from input stream");
+			Log.i(TAG, "Added " + peerDataLine + " from message");
 		}
 	}
 	
