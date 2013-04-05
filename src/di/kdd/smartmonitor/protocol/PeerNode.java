@@ -28,14 +28,14 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 		Message message;
 
 		try {
-			/* The Master node was found, send the JOIN message */
-			
-			message = new Message(Tag.JOIN, null);
-			send(socket, message);
-			
 			/* Start command-serving thread */
 			
 			new Thread(this).start();
+
+			/* The Master node was found, send the JOIN message */
+			
+			message = new Message(Tag.JOIN, null);
+			send(socket, message);			
 		}
 		catch(Exception e) {
 			Log.e(TAG, "Failed to join the system: " + e.getMessage());
