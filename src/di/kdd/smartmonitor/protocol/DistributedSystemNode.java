@@ -6,6 +6,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.Socket;
 
+import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
+import di.kdd.smartmonitor.protocol.exceptions.TagException;
+
 import android.util.Log;
 
 public abstract class DistributedSystemNode extends Thread {
@@ -42,11 +45,34 @@ public abstract class DistributedSystemNode extends Thread {
 	 * @throws IOException
 	 */
 	
-	//TODO Added a Tag parameter, when you want to receive a message with a specific Tag
-	
 	protected static Message receive(Socket socket) throws IOException {
 		Log.i(TAG, "Receiving from " + socket.getRemoteSocketAddress());
 		
 		return new Message(new BufferedReader(new InputStreamReader(socket.getInputStream())));		
 	}
+	
+	/***
+	 * Receives a message from a connected socket and checks the tag of the message
+	 * @param tag The desired tag
+	 * @param socket The connected socket
+	 * @return The message that was read from the socket
+	 * @throws IOException Socket failure
+	 * @throws TagException When the desired tag is not the same with the tag of 
+	 * the received message
+	 */
+	
+	protected static Message receive(Socket socket, Tag tag) throws IOException, TagException {
+		Message message;
+		
+		Log.i(TAG, "Receiving from " + socket.getRemoteSocketAddress() + "with desired Tag: " + tag.toString());
+		
+		message = new Message(new BufferedReader(new InputStreamReader(socket.getInputStream())));		
+		
+		if(message.getTag() != tag) {
+			throw new TagException();
+		}
+		
+		return message;
+	}
+
 }

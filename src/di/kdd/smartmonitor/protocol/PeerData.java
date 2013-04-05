@@ -73,7 +73,7 @@ public class PeerData implements IObservable {
 	public void addPeersFromMessage(Message message) throws IOException {
 		String peerDataLine;
 		Scanner in = new Scanner(message.getPayload());
-				
+
 		while(in.hasNextLine()) {
 			peerDataLine = in.nextLine();
 			addPeerIP(peerDataLine);
