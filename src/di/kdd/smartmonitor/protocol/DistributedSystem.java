@@ -11,6 +11,7 @@ import android.util.Log;
 import di.kdd.smartmonitor.ISampler;
 import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
+import di.kdd.smartmonitor.protocol.exceptions.SamplerException;
 
 public class DistributedSystem implements ISmartMonitor, IObservable {
 	private ISampler sampler;
@@ -143,7 +144,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 	}
 	
 	@Override
-	public void startSampling() throws MasterException, IOException, ConnectException {		
+	public void startSampling() throws MasterException, ConnectException, SamplerException, IOException {		
 		if(node == null) {
 			throw new ConnectException();
 		}
@@ -152,6 +153,10 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 			throw new MasterException();
 		}
 		
+		if(sampler == null) {
+			throw new SamplerException();
+		}
+
 		((MasterNode) node).startSampling();			
 		
 		sampler.startSamplingService();
@@ -162,13 +167,17 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 	}
 
 	@Override
-	public void stopSampling() throws MasterException, IOException, ConnectException {
+	public void stopSampling() throws MasterException, ConnectException, SamplerException, IOException {
 		if(node == null) {
 			throw new ConnectException();
 		}
 
 		if(node.isMaster() == false) {
 			throw new MasterException();
+		}
+		
+		if(sampler == null) {
+			throw new SamplerException();
 		}
 		
 		((MasterNode) node).stopSampling();			
