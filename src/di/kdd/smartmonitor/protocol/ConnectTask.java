@@ -8,7 +8,6 @@ import android.util.Log;
 
 public class ConnectTask extends AsyncTask<Void, Void, Socket> {
 
-	Socket socket;
 	DistributedSystem ds;
 	String ip;
 	
@@ -87,7 +86,7 @@ public class ConnectTask extends AsyncTask<Void, Void, Socket> {
 			ds.failedToConnectAsPeer();
 		}
 		else {
-			ds.connectedAsPeer(socket);
+			ds.connectedAsPeer(result);
 		}
 	}
 }

@@ -30,9 +30,15 @@ public abstract class DistributedSystemNode extends Thread {
 	
 	protected static void send(Socket socket, Message message) throws IOException {
 		Log.i(TAG, "Sending: " + message.toString());
-		
-		DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-		out.writeChars(message.toString());		
+
+		try {
+			DataOutputStream out = new DataOutputStream(socket.getOutputStream());
+			out.writeChars(message.toString());		
+		}
+		catch(IOException e) {
+			Log.e(TAG, e.getMessage());
+			throw e;
+		}
 	}
 	
 	/***
