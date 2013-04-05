@@ -1,4 +1,4 @@
-package di.kdd.smartmonitor.middlewareServices;
+package di.kdd.smartmonitor.middleware;
 
 import di.kdd.smartmonitor.protocol.Message;
 import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;

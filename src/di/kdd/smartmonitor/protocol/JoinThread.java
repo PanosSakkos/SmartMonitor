@@ -5,7 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import android.util.Log;
-import di.kdd.smartmonitor.middlewareServices.TimeSynchronizationMessage;
+import di.kdd.smartmonitor.middleware.TimeSynchronizationMessage;
 import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 import di.kdd.smartmonitor.protocol.exceptions.TagException;
 

@@ -1,4 +1,4 @@
-package di.kdd.smartmonitor.middlewareServices;
+package di.kdd.smartmonitor.middleware;
 
 public class TimeSynchronization {
 	private long timeDifference;
