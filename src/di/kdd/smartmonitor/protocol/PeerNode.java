@@ -54,6 +54,8 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 		BufferedReader in;
 
 		android.os.Debug.waitForDebugger();
+
+		Log.i(TAG, "Command-serving thread was started");
 		
 		try {
 			commandsServerSocket = new ServerSocket(ISmartMonitor.COMMAND_PORT);		
