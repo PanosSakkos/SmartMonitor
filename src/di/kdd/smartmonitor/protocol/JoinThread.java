@@ -7,6 +7,7 @@ import java.net.Socket;
 import android.util.Log;
 import di.kdd.smartmonitor.middlewareServices.TimeSynchronizationMessage;
 import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
+import di.kdd.smartmonitor.protocol.exceptions.TagException;
 
 public class JoinThread extends Thread {
 	private PeerData peerData;
@@ -46,7 +47,7 @@ public class JoinThread extends Thread {
 				
 				/* Receive JOIN message */
 				
-				DistributedSystemNode.receive(connectionSocket);
+				DistributedSystemNode.receive(Tag.JOIN, connectionSocket);
 
 				/* Send the peer data to the node that wants to join the distributed network */
 				
@@ -64,6 +65,9 @@ public class JoinThread extends Thread {
 			catch(IOException e) {
 				Log.e(TAG, "Error while communicating with a peer");
 				e.printStackTrace();
+			}
+			catch(TagException e) {
+				Log.e(TAG, "Didn't receive JOIN tag");
 			}
 			finally {
 				try {
