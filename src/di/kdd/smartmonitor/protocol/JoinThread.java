@@ -37,7 +37,7 @@ public class JoinThread extends Thread {
 
 		Log.i(TAG, "Accepting on " + Integer.toString(ISmartMonitor.JOIN_PORT));
 		
-		while(true) {
+		while(!this.isInterrupted()) {
 			try {
 				connectionSocket = joinSocket.accept();
 				
@@ -74,11 +74,14 @@ public class JoinThread extends Thread {
 				}
 			}
 		}
-	}
-	
-	@Override
-	protected void finalize() throws Throwable {
-		joinSocket.close();
-		super.finalize();
-	}
+		
+		/* Join thread was interrupted */
+		
+		try {
+			joinSocket.close();
+		}
+		catch(IOException e) {			
+		}
+
+	}	
 }
