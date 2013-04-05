@@ -74,50 +74,50 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 		
 		Log.i(TAG, "Listening for commands from the Master node");
 		
-		try {		
 			while(!this.isInterrupted()) {
-				Message message;
-			
-				message = receive(masterSocket);
-			
-				switch(message.getTag()) {
-				case PEER_DATA:
-					Log.i(TAG, "Received PEER_DATA command");
-					
+				try {		
+					Message message;
+				
 					message = receive(masterSocket);
-					peerData.addPeersFromMessage(message);					
-					break;
-				case SYNC:
-					Log.i(TAG, "Received SYNC command");
-					
-					timeSync.timeReference(Long.parseLong(message.getPayload()));
-					break;
-				case NEW_PEER:
-					Log.i(TAG, "Received NEW_PEER command");	
-
-					peerData.addPeerIP(message.getPayload());
-					break;
-				case START_SAMPLING:
-					Log.i(TAG, "Received START_SAMPLING command");
-
-					break;
-				case STOP_SAMPLING:
-					Log.i(TAG, "Received STOP_SAMPLING command");
-					
-					break;
-				case SEND_PEAKS:
-						Log.i(TAG, "Received SEND_PEAKS command");
-					break;
-				default:
-					Log.e(TAG, "Not implemented Tag handling: " + message.getTag().toString());
-					break;
-				}
+				
+					switch(message.getTag()) {
+					case PEER_DATA:
+						Log.i(TAG, "Received PEER_DATA command");
+						
+						message = receive(masterSocket);
+						peerData.addPeersFromMessage(message);					
+						break;
+					case SYNC:
+						Log.i(TAG, "Received SYNC command");
+						
+						timeSync.timeReference(Long.parseLong(message.getPayload()));
+						break;
+					case NEW_PEER:
+						Log.i(TAG, "Received NEW_PEER command");	
+	
+						peerData.addPeerIP(message.getPayload());
+						break;
+					case START_SAMPLING:
+						Log.i(TAG, "Received START_SAMPLING command");
+	
+						break;
+					case STOP_SAMPLING:
+						Log.i(TAG, "Received STOP_SAMPLING command");
+						
+						break;
+					case SEND_PEAKS:
+							Log.i(TAG, "Received SEND_PEAKS command");
+						break;
+					default:
+						Log.e(TAG, "Not implemented Tag handling: " + message.getTag().toString());
+						break;
+					}
 			}
+			catch(IOException e) {
+				Log.e(TAG, "Error while listening to commands from Master node");
+				e.printStackTrace();
+			}		
 		}
-		catch(IOException e) {
-			Log.e(TAG, "Error while listening to commands from Master node");
-			e.printStackTrace();
-		}		
 	}
 
 	@Override
