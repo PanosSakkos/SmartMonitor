@@ -73,7 +73,7 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 		Log.i(TAG, "Listening for commands from the Master node");
 		
 		try {		
-			while(true) {
+			while(!this.isInterrupted()) {
 				Message message;
 			
 				in = receive(masterSocket);
@@ -122,6 +122,7 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 	@Override
 	public void disconnect() {
 		this.interrupt();
+
 		try {
 			commandsServerSocket.close();			
 		}
