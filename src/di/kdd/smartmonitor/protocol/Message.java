@@ -35,11 +35,17 @@ public class Message {
 	public String getPayload() {
 		return payload;
 	}
+
+	/***
+	 * Initialize Message with ignored payload
+	 * @param tag The message's tag
+	 */
+	
+	public Message(Tag tag) {
+		this.tag = tag;
+	}
 	
 	/***
-	 * Initializes a BuildMonMessage instance with the given tag 
-	 * and payload.
-	 * 
 	 * @param tag The message's tag
 	 * @param payload The message's payload
 	 * @throws InvalidTagException 

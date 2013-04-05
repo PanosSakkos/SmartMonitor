@@ -81,7 +81,7 @@ public final class MasterNode extends DistributedSystemNode implements IObserver
 	 */
 	
 	public void startSampling() throws IOException {
-		broadcastCommand(new Message(Tag.START_SAMPLING, ""));
+		broadcastCommand(new Message(Tag.START_SAMPLING));
 	}
 
 	/***
@@ -90,7 +90,7 @@ public final class MasterNode extends DistributedSystemNode implements IObserver
 	 */
 
 	public void stopSampling() throws IOException {
-		broadcastCommand(new Message(Tag.STOP_SAMPLING, ""));
+		broadcastCommand(new Message(Tag.STOP_SAMPLING));
 	}
 	
 	/***
@@ -103,9 +103,8 @@ public final class MasterNode extends DistributedSystemNode implements IObserver
 	 */
 	
 	public void computeModalFrequencies(Date from, Date to) throws MasterException, IOException {
-		Message message = new Message(Tag.SEND_PEAKS, 
-								Long.toString(from.getTime()) + "\n" + 
-								Long.toString(to.getTime()));
+		Message message = new Message(Tag.SEND_PEAKS,  Long.toString(from.getTime()) + "\n" + 
+																	Long.toString(to.getTime()));
 		broadcastCommand(message);
 		
 		/* Gather each peer's peaks */

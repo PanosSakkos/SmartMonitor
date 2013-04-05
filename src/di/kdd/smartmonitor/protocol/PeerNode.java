@@ -34,7 +34,7 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 
 			/* The Master node was found, send the JOIN message */
 			
-			message = new Message(Tag.JOIN, null);
+			message = new Message(Tag.JOIN);
 			send(socket, message);			
 		}
 		catch(Exception e) {
