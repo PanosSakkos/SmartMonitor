@@ -57,7 +57,6 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 	@Override
 	public void run() {
 		Socket masterSocket;
-		BufferedReader in;
 
 		android.os.Debug.waitForDebugger();
 
