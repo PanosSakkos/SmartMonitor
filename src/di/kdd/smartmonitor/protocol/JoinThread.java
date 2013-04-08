@@ -37,13 +37,11 @@ public class JoinThread extends Thread {
 			return;
 		}
 
-		Log.i(TAG, "Accepting on " + Integer.toString(ISmartMonitor.JOIN_PORT));
+		Log.i(TAG, "Listening on " + Integer.toString(ISmartMonitor.JOIN_PORT));
 		
 		while(!this.isInterrupted()) {
 			try {
 				connectionSocket = joinSocket.accept();
-				
-				Log.i(TAG, "Accepted socket");
 				
 				/* Receive JOIN message */
 				
@@ -56,7 +54,7 @@ public class JoinThread extends Thread {
 				
 				/* Update the peer data with the new IP address */
 				
-				peerData.addPeerIP(connectionSocket.getRemoteSocketAddress().toString());
+				peerData.addPeerIP(connectionSocket.getInetAddress().toString());
 				
 				/* Send synchronization message */
 				
