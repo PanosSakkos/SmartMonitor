@@ -47,7 +47,7 @@ public class JoinThread extends Thread {
 				
 				DistributedSystemNode.receive(connectionSocket, Tag.JOIN);
 
-				/* Send the peer data to the node that wants to join the distributed network */
+				/* Send the peer data to the node that wants to join the distributed system */
 				
 				message = new Message(Tag.PEER_DATA, peerData.toString());
 				DistributedSystemNode.send(connectionSocket, message);
