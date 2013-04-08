@@ -47,6 +47,12 @@ public class PeerData implements IObservable {
 	public synchronized void addPeerIP(String ip) {
 		//TODO check ip validity
 
+		/* Remove the / character that is added from the socket.getInetAddress method */
+
+		if(ip.charAt(0) == '/') {
+			ip = ip.substring(1);
+		}
+		
 		if(peerIPs.contains(ip) == false) {
 			peerIPs.add(ip);	
 			
