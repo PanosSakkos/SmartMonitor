@@ -68,6 +68,8 @@ public abstract class DistributedSystemNode extends Thread {
 		
 		message = new Message(new BufferedReader(new InputStreamReader(socket.getInputStream())));		
 		
+		/* Check received message Tag */
+		
 		if(message.getTag() != tag) {
 			throw new TagException();
 		}
