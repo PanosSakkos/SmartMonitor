@@ -64,7 +64,7 @@ public abstract class DistributedSystemNode extends Thread {
 	protected static Message receive(Socket socket, Tag tag) throws IOException, TagException {
 		Message message;
 		
-		Log.i(TAG, "Receiving from " + socket.getInetAddress() + "with desired Tag: " + tag.toString());
+		Log.i(TAG, "Receiving from " + socket.getInetAddress() + " with desired Tag: " + tag.toString());
 		
 		message = new Message(new BufferedReader(new InputStreamReader(socket.getInputStream())));		
 		
