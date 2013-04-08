@@ -68,7 +68,7 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 			commandsServerSocket.setReuseAddress(true);
 			masterSocket = commandsServerSocket.accept();
 
-			Log.i(TAG, "Accepted command socket from " + masterSocket.getRemoteSocketAddress().toString());
+			Log.i(TAG, "Accepted command socket from " + masterSocket.getInetAddress().toString());
 		}
 		catch(IOException e) {
 			Log.e(TAG, "Failed to accept command socket");
