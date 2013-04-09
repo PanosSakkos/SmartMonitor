@@ -12,6 +12,7 @@ import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 public final class PeerNode extends DistributedSystemNode implements Runnable {
 	/* The socket that the peer holds in order to get command messages from the Master */
 
+	private Socket joinSocket;
 	private ServerSocket commandsServerSocket;
 
 	private TimeSynchronization timeSync = new TimeSynchronization();
@@ -21,33 +22,15 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 	/***
 	 * Sends a JOIN message to the Master node and if it gets accepted,
 	 * starts a thread that accepts commands from the Master
-	 * @param socket The connected to the Master node socket
+	 * @param joinSocket The connected to the Master node socket
 	 */
 
-	public PeerNode(Socket socket) {		
-		Message message;
+	public PeerNode(Socket joinSocket) {		
+		this.joinSocket = joinSocket;
 
-		try {
-			/* Start command-serving thread */
+		/* Start command-serving thread */
 
-			new Thread(this).start();
-
-			/* The Master node was found, send the JOIN message */
-
-			message = new Message(Tag.JOIN);
-			send(socket, message);	
-		}
-		catch(Exception e) {
-			Log.e(TAG, "Failed to join the system: " + e.getMessage());
-			e.printStackTrace();
-		}
-		finally {
-			try {
-				socket.close();
-			}
-			catch(IOException e) {				
-			}
-		}
+		new Thread(this).start();
 	}
 
 	/***
@@ -57,10 +40,39 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 	@Override
 	public void run() {
 		Socket masterSocket;
+		Message message;
 
 		android.os.Debug.waitForDebugger();
 
-		Log.i(TAG, "Command-serving thread was started");
+		Log.i(TAG, "Joining the system");
+		
+		try {
+			/* The Master node was found, send the JOIN message */
+	
+			message = new Message(Tag.JOIN);
+			send(joinSocket, message);	
+	
+			/* Receive PEER_DATA */
+			
+			message = receive(joinSocket, Tag.PEER_DATA);
+			
+			/* Receive TIME_SYNC */
+	
+			message = receive(joinSocket, Tag.SYNC);
+		}
+		catch(Exception e) {
+			Log.e(TAG, "Failed to join the system: " + e.getMessage());
+			return;
+		}
+		finally {
+			try {
+				joinSocket.close();
+			}
+			catch(Exception e) {				
+			}
+		}
+		
+		Log.i(TAG, "Starting serving commands");
 
 		try {
 			commandsServerSocket = new ServerSocket(ISmartMonitor.COMMAND_PORT);		
@@ -82,15 +94,12 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 
 		while(!this.isInterrupted()) {
 			try {		
-				Message message;
-
 				message = receive(masterSocket);
 
 				switch(message.getTag()) {
 				case PEER_DATA:
 					Log.i(TAG, "Received PEER_DATA command");
 
-					message = receive(masterSocket);
 					peerData.addPeersFromMessage(message);					
 					break;
 				case SYNC:
