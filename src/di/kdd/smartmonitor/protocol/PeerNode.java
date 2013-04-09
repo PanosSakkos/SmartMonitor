@@ -69,7 +69,9 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 			message = receive(joinSocket, Tag.SYNC);
 		}
 		catch(Exception e) {
-			Log.e(TAG, "Failed to join the system: " + e.getMessage());
+			Log.e(TAG, "Failed to join the system");
+			e.printStackTrace();
+			
 			return;
 		}
 		finally {
