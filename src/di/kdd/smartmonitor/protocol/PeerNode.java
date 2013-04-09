@@ -1,6 +1,5 @@
 package di.kdd.smartmonitor.protocol;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,8 +9,6 @@ import di.kdd.smartmonitor.middleware.TimeSynchronization;
 import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 
 public final class PeerNode extends DistributedSystemNode implements Runnable {
-	/* The socket that the peer holds in order to get command messages from the Master */
-
 	private Socket joinSocket;
 	private ServerSocket commandsServerSocket;
 
@@ -39,10 +36,21 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 
 	@Override
 	public void run() {
-		Socket masterSocket;
 		Message message;
+		Socket masterSocket;
 
 		android.os.Debug.waitForDebugger();
+
+		try {
+			commandsServerSocket = new ServerSocket(ISmartMonitor.COMMAND_PORT);		
+			commandsServerSocket.setReuseAddress(true);
+		}
+		catch(IOException e) {
+			Log.e(TAG, "Failed to accept command socket");
+			e.printStackTrace();
+
+			return;
+		}
 
 		Log.i(TAG, "Joining the system");
 		
@@ -75,18 +83,14 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 		Log.i(TAG, "Starting serving commands");
 
 		try {
-			commandsServerSocket = new ServerSocket(ISmartMonitor.COMMAND_PORT);		
-			commandsServerSocket.setReuseAddress(true);
 			masterSocket = commandsServerSocket.accept();
-
-			Log.i(TAG, "Accepted command socket from " + masterSocket.getInetAddress().toString());
 		}
 		catch(IOException e) {
-			Log.e(TAG, "Failed to accept command socket");
-			e.printStackTrace();
-
+			Log.e(TAG, "Failed to accept socket for command serving");
 			return;
 		}
+		
+		Log.i(TAG, "Accepted command socket from " + masterSocket.getInetAddress().toString());
 
 		/* Listen on MasterSocket for incoming commands from the Master */
 
@@ -131,7 +135,11 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 			catch(IOException e) {
 				Log.e(TAG, "Error while listening to commands from Master node");
 				e.printStackTrace();
-			}		
+			}
+			catch(ClassNotFoundException e) {
+				Log.e(TAG, "Error while receiving data");
+				e.printStackTrace();
+			}
 		}
 	}
 
