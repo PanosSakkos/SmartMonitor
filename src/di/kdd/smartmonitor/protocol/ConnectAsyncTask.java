@@ -6,18 +6,18 @@ import java.net.Socket;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class ConnectTask extends AsyncTask<Void, Void, Socket> {
+public class ConnectAsyncTask extends AsyncTask<Void, Void, Socket> {
 
 	DistributedSystem ds;
 	String ip;
 	
 	private static final String TAG = "connect task";
 	
-	public ConnectTask(DistributedSystem ds) {
+	public ConnectAsyncTask(DistributedSystem ds) {
 		this.ds = ds;
 	}
 	
-	public ConnectTask(DistributedSystem ds, String ip) {
+	public ConnectAsyncTask(DistributedSystem ds, String ip) {
 		this.ds = ds;
 		this.ip = ip;
 	}

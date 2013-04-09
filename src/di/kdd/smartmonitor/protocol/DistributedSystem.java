@@ -68,7 +68,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 	public void connect() {
 		Log.i(TAG, "Connecting");
 		
-		ConnectTask connectTask = new ConnectTask(this);
+		ConnectAsyncTask connectTask = new ConnectAsyncTask(this);
 		connectTask.execute();
 	}
 
@@ -118,7 +118,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 	public void connectAt(String ip) {
 		Log.i(TAG, "Connecting as Peer at " + ip);
 
-		ConnectTask connectTask = new ConnectTask(this, ip);
+		ConnectAsyncTask connectTask = new ConnectAsyncTask(this, ip);
 		connectTask.execute();
 	}	
 	
