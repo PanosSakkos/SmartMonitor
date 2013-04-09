@@ -56,10 +56,9 @@ public final class MasterNode extends DistributedSystemNode implements IObserver
 	/***
 	 * Sends a message to each connected peer
 	 * @param message The message to broadcast
-	 * @throws IOException
 	 */
 	
-	private void broadcastCommand(Message message) throws IOException {
+	private void broadcastCommand(Message message) {
 		Log.i(TAG, "Broadcasting " + message.toString());
 		
 		BroadcastAsyncTask broadcastAsyncTask = new BroadcastAsyncTask(commandSockets, message);
@@ -68,19 +67,17 @@ public final class MasterNode extends DistributedSystemNode implements IObserver
 		
 	/***
 	 * Broadcasts START_SAMPLING command to the peer nodes
-	 * @throws IOException Communication error
 	 */
 	
-	public void startSampling() throws IOException {
+	public void startSampling() {
 		broadcastCommand(new Message(Tag.START_SAMPLING));
 	}
 
 	/***
 	 * Broadcasts STOP_SAMPLING command to the peer nodes
-	 * @throws IOException
 	 */
 
-	public void stopSampling() throws IOException {
+	public void stopSampling(){
 		broadcastCommand(new Message(Tag.STOP_SAMPLING));
 	}
 	
@@ -100,14 +97,7 @@ public final class MasterNode extends DistributedSystemNode implements IObserver
 		
 		/* Gather each peer's peaks */
 		
-		Log.i(TAG, "Gathering peaks from peers");
-		
-		for(Socket socket : commandSockets) {
-			
-			//TODO Gather peaks
-		}
-		
-		Log.i(TAG, "Gather peaks from peers");
+		//TODO Gather peaks
 		
 		//TODO Find Master node's peaks, decide the global peaks and store them
 	}	
