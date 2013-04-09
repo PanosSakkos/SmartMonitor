@@ -6,22 +6,46 @@ import java.net.Socket;
 import android.os.AsyncTask;
 import android.util.Log;
 
-public class ConnectAsyncTask extends AsyncTask<Void, Void, Socket> {
+public class ConnectAsyncTask extends AsyncTask<Void, Void, Socket> implements IObservable {
 
-	DistributedSystem ds;
 	String ip;
+	IObserver ds;
 	
 	private static final String TAG = "connect task";
 	
-	public ConnectAsyncTask(DistributedSystem ds) {
-		this.ds = ds;
+	enum ConnectionStatus { ConnectedAsMaster, ConnectedAsPeer, FailedToConnect };
+	
+	public ConnectAsyncTask() {		
 	}
 	
-	public ConnectAsyncTask(DistributedSystem ds, String ip) {
-		this.ds = ds;
+	/***
+	 * Force connection at specified IP address 
+	 * @param ip IP address to connect to
+	 */
+	
+	public ConnectAsyncTask(String ip) {
 		this.ip = ip;
 	}
 	
+	/* IObservable implementation */
+	
+	@Override
+	public void subscribe(IObserver observer) {
+		this.ds = observer;
+	}
+
+	@Override
+	public void unsubscribe(IObserver observer) {
+		this.ds = null;
+	}
+
+	@Override
+	public void notify(String message) {
+		if(ds != null) {
+			ds.update(message);
+		}
+	}
+
 	/***
 	 * Sends JOIN messages to the first 255 local IP addresses and
 	 * according to if it will get a response or not, the node becomes
@@ -75,18 +99,19 @@ public class ConnectAsyncTask extends AsyncTask<Void, Void, Socket> {
 				return null;
 			}
 		}
-	}
-	
+	}	
+
 	@Override
 	protected void onPostExecute(Socket result) {
 		if(result == null && ip == null) {
-			ds.connectedAsMaster();
+			notify(ConnectionStatus.ConnectedAsMaster.toString());
 		}
 		else if (result == null && ip != null){
-			ds.failedToConnectAsPeer();
+			notify(ConnectionStatus.FailedToConnect.toString());
 		}
 		else {
-			ds.connectedAsPeer(result);
+			((DistributedSystem) ds).setPeerJoinSocket(result);
+			notify(ConnectionStatus.ConnectedAsPeer.toString());
 		}
 	}
 }

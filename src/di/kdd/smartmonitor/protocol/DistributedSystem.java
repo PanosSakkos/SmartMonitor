@@ -9,11 +9,12 @@ import java.util.List;
 import android.util.Log;
 
 import di.kdd.smartmonitor.ISampler;
+import di.kdd.smartmonitor.protocol.ConnectAsyncTask.ConnectionStatus;
 import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 import di.kdd.smartmonitor.protocol.exceptions.SamplerException;
 
-public class DistributedSystem implements ISmartMonitor, IObservable {
+public class DistributedSystem implements ISmartMonitor, IObservable, IObserver {
 	private ISampler sampler;
 	private List<IObserver> observers = new ArrayList<IObserver>();
 
@@ -68,40 +69,9 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 	public void connect() {
 		Log.i(TAG, "Connecting");
 		
-		ConnectAsyncTask connectTask = new ConnectAsyncTask(this);
+		ConnectAsyncTask connectTask = new ConnectAsyncTask();
+		connectTask.subscribe(this);
 		connectTask.execute();
-	}
-
-	
-	protected void failedToConnectAsPeer() {
-		notify("Failed to connect as Peer");
-	}
-	
-	/***
-	 * Handler to be called from the ConnectTask, if the node didn't get a JOIN response
-	 */
-	
-	protected void connectedAsMaster() {
-		Log.i(TAG, "Connected as Master");
-
-		node = new MasterNode();		
-		isConnected = true;
-		
-		notify("Connected as Master");		
-	}
-
-	/***
-	 * Handler to be called from the ConnectTask, if the node got response to JOIN message
-	 * @param socket The connected to the Master node socket
-	 */
-	
-	protected void connectedAsPeer(Socket socket) {
-		Log.i(TAG, "Connected as Peer");
-
-		node = new PeerNode(socket);
-		isConnected = true;
-		
-		notify("Connected as Peer");		
 	}
 
 	@Override
@@ -118,7 +88,8 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 	public void connectAt(String ip) {
 		Log.i(TAG, "Connecting as Peer at " + ip);
 
-		ConnectAsyncTask connectTask = new ConnectAsyncTask(this, ip);
+		ConnectAsyncTask connectTask = new ConnectAsyncTask(ip);
+		connectTask.subscribe(this);
 		connectTask.execute();
 	}	
 	
@@ -217,5 +188,47 @@ public class DistributedSystem implements ISmartMonitor, IObservable {
 	@Override
 	public String getMasterIP() {
 		return (node != null) ? "None" : node.getMasterIP();
+	}
+	
+	private Socket joinSocket;
+	
+	/***
+	 * Allow to the ConnectAsyncTask to pass the connected socket
+	 * to the master, in order to join the system
+	 * @param joinSocket The connected to the JOIN port socket
+	 */
+	
+	protected void setPeerJoinSocket(Socket joinSocket) {
+		this.joinSocket = joinSocket;
+	}
+
+	/* IObserver implementation */
+	
+	@Override
+	public void update(String message) {
+		switch(ConnectionStatus.valueOf(message)) {
+		case ConnectedAsMaster:
+			Log.i(TAG, "Connected as Master");
+
+			node = new MasterNode();		
+			isConnected = true;
+			
+			notify("Connected as Master");		
+			break;
+		case ConnectedAsPeer:
+			Log.i(TAG, "Connected as Peer");
+
+			node = new PeerNode(joinSocket);
+			isConnected = true;
+			
+			notify("Connected as Peer");		
+			break;			
+		case FailedToConnect:
+			Log.e(TAG, "Failed to connect as Peer");
+			notify("Failed to connect as Peer");
+			break;
+		default:				
+		}
+		
 	}
 }
