@@ -23,6 +23,8 @@ public class DumpDatabaseTask extends AsyncTask<Void, Void, Boolean> {
 
 	private MainActivity view;
 	
+	private AccelerationsSQLiteHelper database;
+	
 	private static final String TAG = "db dumper";
 			
 	public DumpDatabaseTask(MainActivity view) {
@@ -51,7 +53,7 @@ public class DumpDatabaseTask extends AsyncTask<Void, Void, Boolean> {
 			File dumpFile;
 			PrintWriter printWriter;
 			List<Acceleration> accelerations;
-			AccelerationsSQLiteHelper database = new AccelerationsSQLiteHelper(view, view);
+			database = new AccelerationsSQLiteHelper(view, view);
 			
 			createSmartMonitorFolder();
 			
@@ -99,7 +101,7 @@ public class DumpDatabaseTask extends AsyncTask<Void, Void, Boolean> {
 			printWriter.close();
 	
 			Log.i(TAG, "Wrote " + DUMP_Z_FILENAME);
-			
+						
 			return true;
 		}
 		catch(Exception e) {
@@ -111,6 +113,8 @@ public class DumpDatabaseTask extends AsyncTask<Void, Void, Boolean> {
 	
 	@Override
 	protected void onPostExecute(Boolean succcess) {
+		database.close();
+
 		if(succcess) {
 			view.update("Dumped accelerations to filesystem");
 		}
