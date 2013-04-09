@@ -228,7 +228,6 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 			notify("Failed to connect as Peer");
 			break;
 		default:				
-		}
-		
+		}		
 	}
 }
