@@ -26,7 +26,8 @@ public class BroadcastAsyncTask extends AsyncTask<Void, Void, Void> {
 				DistributedSystemNode.send(peer, message);
 			}
 			catch(IOException e) {
-				Log.i(TAG, "Failed to broadcast at node " + e.getMessage());
+				Log.i(TAG, "Failed to broadcast at node");
+				e.printStackTrace();
 			}
 		}		
 
