@@ -26,6 +26,7 @@ public class MainActivity extends Activity implements IObserver, ISampler {
 			
 		distributedSystem = DistributedSystem.getInstance();
 		distributedSystem.subscribe(this);
+		distributedSystem.setSampler(this);
 
 		accelerationsDb = new AccelerationsSQLiteHelper(this, this.getApplicationContext());
 	}
