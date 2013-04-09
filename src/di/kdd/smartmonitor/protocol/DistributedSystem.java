@@ -218,7 +218,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 		case ConnectedAsPeer:
 			Log.i(TAG, "Connected as Peer");
 
-			node = new PeerNode(joinSocket);
+			node = new PeerNode(this, joinSocket);
 			isConnected = true;
 			
 			notify("Connected as Peer");		
@@ -229,5 +229,21 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 			break;
 		default:				
 		}		
+	}
+	
+	protected void startSamplngCommand() {
+		sampler.startSamplingService();
+		samplingStarted = System.currentTimeMillis();		
+		isSampling = true;
+		
+		notify("Started sampling");
+	}
+	
+	protected void stopSamplingCommand() {
+		sampler.stopSamplingService();
+		samplingEnded = System.currentTimeMillis();		
+		isSampling = false;
+		
+		notify("Stoped sampling");
 	}
 }

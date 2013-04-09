@@ -14,6 +14,8 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 
 	private TimeSynchronization timeSync = new TimeSynchronization();
 
+	private DistributedSystem ds;
+	
 	private static final String TAG = "peer";
 
 	/***
@@ -22,7 +24,8 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 	 * @param joinSocket The connected to the Master node socket
 	 */
 
-	public PeerNode(Socket joinSocket) {		
+	public PeerNode(DistributedSystem ds, Socket joinSocket) {		
+		this.ds = ds;
 		this.joinSocket = joinSocket;
 
 		/* Start command-serving thread */
@@ -123,10 +126,12 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 				case START_SAMPLING:
 					Log.i(TAG, "Received START_SAMPLING command");
 
+					ds.startSamplngCommand();
 					break;
 				case STOP_SAMPLING:
 					Log.i(TAG, "Received STOP_SAMPLING command");
 
+					ds.stopSamplingCommand();
 					break;
 				case SEND_PEAKS:
 					Log.i(TAG, "Received SEND_PEAKS command");
