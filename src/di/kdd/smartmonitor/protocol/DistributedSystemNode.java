@@ -4,6 +4,9 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.PrintWriter;
 import java.net.Socket;
 
 import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
@@ -34,8 +37,9 @@ public abstract class DistributedSystemNode extends Thread {
 	protected static void send(Socket socket, Message message) throws IOException {
 		Log.i(TAG, "Sending: " + message.toString());
 
-		DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-		out.writeBytes(message.toString());		
+		ObjectOutputStream out = new ObjectOutputStream(socket.getOutputStream());
+		out.writeObject(message);
+		out.flush();
 	}
 	
 	/***
@@ -45,10 +49,11 @@ public abstract class DistributedSystemNode extends Thread {
 	 * @throws IOException
 	 */
 	
-	protected static Message receive(Socket socket) throws IOException {
+	protected static Message receive(Socket socket) throws IOException, ClassNotFoundException {
 		Log.i(TAG, "Receiving from " + socket.getInetAddress());
 		
-		return new Message(new BufferedReader(new InputStreamReader(socket.getInputStream())));		
+		ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+		return (Message) in.readObject();
 	}
 	
 	/***
@@ -61,13 +66,15 @@ public abstract class DistributedSystemNode extends Thread {
 	 * the received message
 	 */
 	
-	protected static Message receive(Socket socket, Tag tag) throws IOException, TagException {
+	protected static Message receive(Socket socket, Tag tag) throws IOException, TagException, ClassNotFoundException {
 		Message message;
+		ObjectInputStream in;
 		
 		Log.i(TAG, "Receiving from " + socket.getInetAddress() + " with desired Tag: " + tag.toString());
 		
-		message = new Message(new BufferedReader(new InputStreamReader(socket.getInputStream())));		
-		
+		in = new ObjectInputStream(socket.getInputStream());
+		message = (Message) in.readObject();
+
 		/* Check received message Tag */
 		
 		if(message.getTag() != tag) {

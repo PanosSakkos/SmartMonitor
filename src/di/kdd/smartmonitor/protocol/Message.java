@@ -2,6 +2,9 @@ package di.kdd.smartmonitor.protocol;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.Serializable;
+
+import android.util.Log;
 
 import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 
@@ -10,7 +13,7 @@ import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
  * the BuildMondProtocol.
  */
 
-public class Message {
+public class Message implements Serializable {
 	private Tag tag;
 	private String payload;
 	
@@ -65,7 +68,9 @@ public class Message {
 	
 	public Message(BufferedReader in) throws IOException {
 		String line;
-		this.tag = Tag.valueOf(in.readLine());
+		line = in.readLine();
+Log.d("message", line);		
+		this.tag = Tag.valueOf(line);
 
 		while((line = in.readLine()) != null) {
 			this.payload += line + '\n';
