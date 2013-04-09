@@ -1,6 +1,5 @@
 package di.kdd.smartmonitor.protocol;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -45,7 +44,7 @@ public final class MasterNode extends DistributedSystemNode implements IObserver
 		Log.i(TAG, "New peer added: " + ip);
 		
 		try {			
-			/* Connect to the peer, in order to have a communication channel for commands */
+			/* Connect to the peer, in order to establish communication channel for commands */
 			
 			Socket commandSocket = new Socket(ip, ISmartMonitor.COMMAND_PORT);
 			commandSockets.add(commandSocket);
@@ -70,9 +69,8 @@ public final class MasterNode extends DistributedSystemNode implements IObserver
 	private void broadcastCommand(Message message) throws IOException {
 		Log.i(TAG, "Broadcasting " + message.toString());
 		
-		for(Socket peer : commandSockets) {
-			DistributedSystemNode.send(peer, message);
-		}		
+		BroadcastAsyncTask broadcastAsyncTask = new BroadcastAsyncTask(commandSockets, message);
+		broadcastAsyncTask.execute();
 	}
 		
 	/***
