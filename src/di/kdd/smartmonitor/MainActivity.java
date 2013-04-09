@@ -9,6 +9,7 @@ import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 import di.kdd.smartmonitor.protocol.exceptions.SamplerException;
 import android.os.Bundle;
+import android.os.Looper;
 import android.app.Activity;
 import android.content.Intent;
 import android.view.View;
@@ -39,8 +40,13 @@ public class MainActivity extends Activity implements IObserver, ISampler {
 	/* IObserver implementation */
 	
 	@Override
-	public void update(String message) {		
-		Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+	public void update(String message) {
+		if(Looper.myLooper() == Looper.getMainLooper() ) {
+			Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+		}
+		else {
+			this.runOnUiThread(new ShowToastOnMainThread(this, message));
+		}
 	}
 	/* ISampler implementation */
 	
