@@ -12,7 +12,7 @@ public class BroadcastAsyncTask extends AsyncTask<Void, Void, Void> {
 	private List<Socket> sockets;
 	private Message message;
 	
-	private static final String TAG = "broacast task";
+	private static final String TAG = "broadcast task";
 	
 	public BroadcastAsyncTask(List<Socket> sockets, Message message) {
 		this.sockets = sockets;
