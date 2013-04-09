@@ -114,7 +114,6 @@ public final class MasterNode extends DistributedSystemNode implements IObserver
 			try {
 				commandSocket.close();
 			} catch (IOException e) {
-				e.printStackTrace();
 			}
 		}
 		
