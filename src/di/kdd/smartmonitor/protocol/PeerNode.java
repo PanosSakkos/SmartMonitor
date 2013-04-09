@@ -46,7 +46,7 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 			commandsServerSocket.setReuseAddress(true);
 		}
 		catch(IOException e) {
-			Log.e(TAG, "Failed to accept command socket");
+			Log.e(TAG, "Failed to bind command server socket");
 			e.printStackTrace();
 
 			return;
