@@ -31,9 +31,9 @@ public class JoinThread extends Thread {
 			joinSocket.setReuseAddress(true);
 		} 
 		catch (IOException e) {
-			Log.e(TAG, "Could not bind socket at the knock knock port");
+			Log.e(TAG, "Could not bind socket at the join port");
 			e.printStackTrace();
-			
+						
 			return;
 		}
 
@@ -47,18 +47,19 @@ public class JoinThread extends Thread {
 				
 				DistributedSystemNode.receive(connectionSocket, Tag.JOIN);
 
-				/* Send the peer data to the node that wants to join the distributed system */
+				/* Send PEER_DATA to the node that wants to join the system */
 				
 				message = new Message(Tag.PEER_DATA, peerData.toString());
 				DistributedSystemNode.send(connectionSocket, message);
 				
-				/* Update the peer data with the new IP address */
+				/* Send TIME_SYNC message */
+				
+				DistributedSystemNode.send(connectionSocket, new TimeSynchronizationMessage());
+
+				/* Update the peer data with the IP address of the new node */
 				
 				peerData.addPeerIP(connectionSocket.getInetAddress().toString());
 				
-				/* Send synchronization message */
-				
-				DistributedSystemNode.send(connectionSocket, new TimeSynchronizationMessage());
 			}
 			catch(IOException e) {
 				Log.e(TAG, "Error while communicating with a peer");
@@ -66,6 +67,9 @@ public class JoinThread extends Thread {
 			}
 			catch(TagException e) {
 				Log.e(TAG, "Didn't receive JOIN tag");
+			}
+			catch(Exception e) {
+				Log.e(TAG, e.getMessage());
 			}
 			finally {
 				try {
