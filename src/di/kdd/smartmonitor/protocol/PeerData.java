@@ -62,7 +62,7 @@ public class PeerData implements IObservable {
 			 * in order to broadcast the new IP to the peers.
 			 */
 			
-				notify(ip);
+			notify(ip);
 		}
 	}
 	
