@@ -10,16 +10,9 @@ import android.util.Log;
 import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 
-public final class MasterNode extends DistributedSystemNode implements IObserver {
-	/* List of open sockets with the peers, in order to send them commands */
-	
-	private List<Socket> commandSockets = new ArrayList<Socket>();
-	
-	/* This thread is used only from the Master, in order to accept new 
-	 * nodes in the system.
-	 */
-	
+public final class MasterNode extends DistributedSystemNode implements IObserver {	
 	private JoinThread joinThread;
+	private List<Socket> commandSockets = new ArrayList<Socket>();
 
 	private static final String TAG = "master";	
 	
@@ -110,7 +103,6 @@ public final class MasterNode extends DistributedSystemNode implements IObserver
 		Log.i(TAG, "Gathering peaks from peers");
 		
 		for(Socket socket : commandSockets) {
-			message = receive(socket);
 			
 			//TODO Gather peaks
 		}
