@@ -35,7 +35,7 @@ public abstract class DistributedSystemNode extends Thread {
 		Log.i(TAG, "Sending: " + message.toString());
 
 		DataOutputStream out = new DataOutputStream(socket.getOutputStream());
-		out.writeChars(message.toString());		
+		out.writeBytes(message.toString());		
 	}
 	
 	/***
