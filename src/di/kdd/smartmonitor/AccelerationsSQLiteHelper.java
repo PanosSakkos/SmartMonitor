@@ -9,8 +9,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
 import di.kdd.smartmonitor.exceptions.AxisException;
+import di.kdd.smartmonitor.protocol.IObservable;
+import di.kdd.smartmonitor.protocol.IObserver;
 
-public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
+public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObservable {
 	
 	private static final int DATABASE_VERSION = 18;
 
@@ -55,7 +57,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 
 	/* The view to send UI notifications to */
 	
-	private MainActivity view;
+	private IObserver observer;
 	
 	private Context context;
 	
@@ -66,9 +68,8 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 	 * @param context The context of the Application that the SQLite Database belongs to
 	 */
 	
-	public AccelerationsSQLiteHelper(MainActivity view, Context context) {
+	public AccelerationsSQLiteHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
-		this.view = view;
 		this.context = context;
 		
 		Log.i(TAG, "Created " + DATABASE_NAME + " v" + DATABASE_VERSION);
@@ -98,6 +99,22 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 		onCreate(db);
 	}
 		
+	/* IObservable implementation */
+	
+	public void subscribe(IObserver observer) {
+		this.observer = observer;
+	}
+	
+	public void unsubscribe(IObserver observer) {
+		this.observer = null;
+	}
+	
+	public void notify(String message) {
+		if(observer != null) {
+			observer.notify();
+		}
+	}
+	
 	/***
 	 * Stores the acceleration values that are in the buffer for axis X
 	 */
@@ -361,7 +378,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper {
 
 		flushAccelerationBuffers();
 
-		DumpDatabaseTask dumper = new DumpDatabaseTask(view);
+		DumpDatabaseTask dumper = new DumpDatabaseTask(this, observer);
 		dumper.execute();
 	}
 	

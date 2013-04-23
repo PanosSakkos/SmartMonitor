@@ -2,12 +2,13 @@ package di.kdd.smartmonitor;
 
 import java.io.IOException;
 
-import di.kdd.buildmon.R;
+
 import di.kdd.smartmonitor.protocol.DistributedSystem;
 import di.kdd.smartmonitor.protocol.IObserver;
 import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 import di.kdd.smartmonitor.protocol.exceptions.SamplerException;
+import di.kdd.smart.R;
 import android.os.Bundle;
 import android.os.Looper;
 import android.app.Activity;
@@ -24,17 +25,18 @@ public class MainActivity extends Activity implements IObserver, ISampler {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-			
-		distributedSystem = DistributedSystem.getInstance();
-		distributedSystem.subscribe(this);
-		distributedSystem.setSampler(this);
+//			
+//		distributedSystem = DistributedSystem.getInstance();
+//		distributedSystem.subscribe(this);
+//		distributedSystem.setSampler(this);
 
-		accelerationsDb = new AccelerationsSQLiteHelper(this, this.getApplicationContext());
+		//accelerationsDb = new AccelerationsSQLiteHelper(this, this.getApplicationContext());
 	}
 
 	@Override
 	protected void onDestroy() {
-		accelerationsDb.flushAccelerationBuffers();
+		super.onDestroy();
+		//accelerationsDb.flushAccelerationBuffers();
 	}
 	
 	/* IObserver implementation */
@@ -182,6 +184,20 @@ public class MainActivity extends Activity implements IObserver, ISampler {
 		
 		editText = (EditText) findViewById(R.id.ipText);
 		distributedSystem.connectAt(editText.getText().toString());
+	}
+	
+	public void connectAsPeer(View _) {
+
+		Intent intent = new Intent(this, PeerActivity.class);
+        startActivity(intent);  
+		
+	}
+	
+	public void connectAsMasterJ(View _) {
+
+		Intent intent = new Intent(this, MasterActivity.class);
+        startActivity(intent);  
+		
 	}
 	
 	public void deleteDatabase(View _) {

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingTop="100dp" >
+
+    <TextView
+        android:id="@+id/textView1"
+        style="@style/ButtonLargeText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/master_masterActivityHdr"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/samplingBtn"
+        style="@style/ButtonSmallText"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/orange_menu_btn"
+        android:onClick="samplingButtonHandler"
+        android:text="@string/master_SamplingText" />
+
+    <Button
+        android:id="@+id/computeModalFreqsBtn"
+        style="@style/ButtonSmallText"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/orange_menu_btn"
+        android:onClick="computeModalFrequencies"
+        android:text="@string/master_computeModalFreqs" />
+
+    <Button
+        android:id="@+id/plotBtn"
+        style="@style/ButtonSmallText"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/orange_menu_btn"
+        android:onClick="plot"
+        android:text="@string/plottingBtnTxt" />
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal" 
+        android:layout_marginTop="50dip">
+
+        <Button
+            android:id="@+id/exportToFileBtn"
+            style="@style/ButtonSmallText"
+            android:layout_width="100dip" 
+       		android:layout_height="wrap_content"
+       		android:layout_margin="10dip"
+            android:background="@drawable/red_menu_btn"
+            android:onClick="exportToFile"
+            android:text="@string/exportToFileBtnTxt" 
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/deleteDbBtn"
+            style="@style/ButtonSmallText"
+            android:layout_width="100dip" 
+       		android:layout_height="wrap_content"
+       		android:layout_margin="10dip"
+            android:background="@drawable/red_menu_btn"
+            android:onClick="deleteDatabase"
+            android:text="@string/deleteDbBtnTxt" 
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+</LinearLayout>

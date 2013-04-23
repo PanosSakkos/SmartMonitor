@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
+import di.kdd.smartmonitor.protocol.IObserver;
 
 public class DumpDatabaseTask extends AsyncTask<Void, Void, Boolean> {
 	/* The folder that the dump files are placed under */
@@ -21,14 +22,14 @@ public class DumpDatabaseTask extends AsyncTask<Void, Void, Boolean> {
 	private static final String DUMP_Y_FILENAME = "y_dump.txt";
 	private static final String DUMP_Z_FILENAME = "z_dump.txt";		
 
-	private MainActivity view;
-	
+	private IObserver observer;
 	private AccelerationsSQLiteHelper database;
 	
 	private static final String TAG = "db dumper";
 			
-	public DumpDatabaseTask(MainActivity view) {
-		this.view = view;
+	public DumpDatabaseTask(AccelerationsSQLiteHelper database, IObserver observer) {
+		this.database = database;
+		this.observer = observer;
 	}
 	
 	/***
@@ -53,7 +54,6 @@ public class DumpDatabaseTask extends AsyncTask<Void, Void, Boolean> {
 			File dumpFile;
 			PrintWriter printWriter;
 			List<Acceleration> accelerations;
-			database = new AccelerationsSQLiteHelper(view, view);
 			
 			createSmartMonitorFolder();
 			
@@ -116,10 +116,10 @@ public class DumpDatabaseTask extends AsyncTask<Void, Void, Boolean> {
 		database.close();
 
 		if(succcess) {
-			view.update("Dumped accelerations to filesystem");
+			observer.update("Dumped accelerations to filesystem");
 		}
 		else {
-			view.update("Failed to dump acceleration to filesystem");
+			observer.update("Failed to dump acceleration to filesystem");
 		}
 	}
 }

@@ -231,6 +231,8 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 		}		
 	}
 	
+	/* Methods that should be called form the peer node, when he receives a command */
+	
 	protected void startSamplngCommand() {
 		sampler.startSamplingService();
 		samplingStarted = System.currentTimeMillis();		
