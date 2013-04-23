@@ -21,7 +21,7 @@
     <string name="master_SamplingText">Start Sampling</string>
     <string name="master_computeModalFreqs">Compute Modal Frequencies</string>
     
-    <string name="peer_peerActivityHdr">Peer Controls</string>
+    <string name="peer_peerActivityHdr">Peer Node Controls</string>
 
     <string name="plot_plotActivityHdr">Plots</string>
     
