@@ -16,4 +16,23 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         style="@style/ButtonLargeText" />
 
+    <Button
+        android:id="@+id/samplingBtn"
+        style="@style/ButtonSmallText"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+		android:layout_marginRight="300dp"
+        android:background="@drawable/orange_menu_btn"
+        android:onClick="connectAt"
+        android:text="@string/peer_connect_at" />
+
+    <Button
+        android:id="@+id/computeModalFreqsBtn"
+        style="@style/ButtonSmallText"
+        android:layout_width="fill_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/orange_menu_btn"
+        android:onClick="connect"
+        android:text="@string/peer_connect" />
+    
 </LinearLayout>
