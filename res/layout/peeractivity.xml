@@ -16,18 +16,33 @@
         android:textAppearance="?android:attr/textAppearanceLarge"
         style="@style/ButtonLargeText" />
 
-    <Button
-        android:id="@+id/samplingBtn"
-        style="@style/ButtonSmallText"
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="100dp"
-		android:layout_marginRight="300dp"
-        android:background="@drawable/orange_menu_btn"
-        android:onClick="connectAt"
-        android:text="@string/peer_connect_at" />
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/connectAtBtn"
+            style="@style/ButtonSmallText"
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:layout_marginRight="150dp"
+            android:background="@drawable/orange_menu_btn"
+            android:onClick="connectAt"
+            android:text="@string/peer_connect_at" />
+
+        <EditText
+            android:id="@+id/ipText"
+            android:layout_width="300dp"
+            android:layout_height="100dp"
+            android:textAlignment="center"
+            android:text="@string/connect_at_ip" />
+
+    </LinearLayout>
 
     <Button
-        android:id="@+id/computeModalFreqsBtn"
+        android:id="@+id/connectBtn"
         style="@style/ButtonSmallText"
         android:layout_width="fill_parent"
         android:layout_height="100dp"
