@@ -12,6 +12,8 @@ public abstract class SmartActivity extends Activity implements IObserver, ISamp
 	protected AccelerationsSQLiteHelper accelerationsDb;
 	protected DistributedSystem distributedSystem;
 	
+	/* IObserver implementation */
+	
 	@Override
 	public void update(String message) {
 		if(Looper.myLooper() == Looper.getMainLooper() ) {
@@ -21,8 +23,7 @@ public abstract class SmartActivity extends Activity implements IObserver, ISamp
 			this.runOnUiThread(new ShowToastOnMainThread(this, message));
 		}
 	}
-	
-	
+		
 	/* ISampler implementation */
 	
 	@Override
