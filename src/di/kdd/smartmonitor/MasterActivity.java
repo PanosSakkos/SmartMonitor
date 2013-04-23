@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
-public class MasterActivity extends SmartActivity implements IObserver, ISampler{
+public class MasterActivity extends SmartActivity {
 	
 	private Button samplingButton;
 	private Button computeMFreqsButton;
@@ -26,7 +26,6 @@ public class MasterActivity extends SmartActivity implements IObserver, ISampler
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.masteractivity);
 		
-		distributedSystem = DistributedSystem.getInstance();
 		distributedSystem.subscribe(this);
 		distributedSystem.setSampler(this);
 
@@ -35,17 +34,17 @@ public class MasterActivity extends SmartActivity implements IObserver, ISampler
 		accelerationsDb = new AccelerationsSQLiteHelper(this.getApplicationContext());
 		accelerationsDb.subscribe(this);
 		
-		computeMFreqsButton = (Button)findViewById(R.id.computeModalFreqsBtn);		
-		plotButton = (Button)findViewById(R.id.plotBtn);
+		computeMFreqsButton = (Button) findViewById(R.id.computeModalFreqsBtn);		
+		plotButton = (Button) findViewById(R.id.plotBtn);
 
 		hideButtons();
 		
 		plotButton.setEnabled(true);
 		plotButton.setAlpha((float) 1);
 		
-		samplingButton = (Button)findViewById(R.id.samplingBtn);
-		samplingButton.setText("Start Sampling");
-		
+		samplingButton = (Button) findViewById(R.id.samplingBtn);
+
+		samplingButton.setText("Start Sampling");		
 	}
 	
 	
@@ -110,7 +109,6 @@ public class MasterActivity extends SmartActivity implements IObserver, ISampler
 		
 	}
 	
-	
 	private void revealButtons() {
 		computeMFreqsButton.setEnabled(true);
 		computeMFreqsButton.setAlpha((float) 1);
@@ -127,7 +125,6 @@ public class MasterActivity extends SmartActivity implements IObserver, ISampler
 		deleteDbBtn.setAlpha((float) 1);
 		
 	}
-
 
 	/**
 	 * Handler of the computeModalFrequencies button. 
@@ -153,9 +150,6 @@ public class MasterActivity extends SmartActivity implements IObserver, ISampler
 			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();			
 		}
 	}	
-	
-	
-	
 
 	/**
 	 * Handler of the plot button.
@@ -164,8 +158,6 @@ public class MasterActivity extends SmartActivity implements IObserver, ISampler
 	 */	
 	
 	public void plot(View _) {
-		
-
 		if(!distributedSystem.isSampling()) {
 			
 			Intent intent = new Intent(this, PlotActivity.class);
@@ -174,7 +166,6 @@ public class MasterActivity extends SmartActivity implements IObserver, ISampler
 		else {
 			Toast.makeText(this, "STOP SAMPLING must be invoked!", Toast.LENGTH_LONG).show();
 		}
-
 	}	
 	
 	/***
@@ -203,8 +194,6 @@ public class MasterActivity extends SmartActivity implements IObserver, ISampler
 		}
 	}
 	
-	
-	
 	/* ISampler implementation */
 	
 	@Override
@@ -219,9 +208,5 @@ public class MasterActivity extends SmartActivity implements IObserver, ISampler
 		if(distributedSystem.isSampling()) {		
 			stopService(new Intent(this, SamplingService.class));		
 		}
-	}
-	
-	
-	
-	
+	}	
 }

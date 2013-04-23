@@ -10,7 +10,7 @@ import di.kdd.smartmonitor.protocol.IObserver;
 public abstract class SmartActivity extends Activity implements IObserver, ISampler {
 
 	protected AccelerationsSQLiteHelper accelerationsDb;
-	protected DistributedSystem distributedSystem;
+	protected DistributedSystem distributedSystem = DistributedSystem.getInstance();
 	
 	/* IObserver implementation */
 	
