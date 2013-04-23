@@ -8,6 +8,7 @@ import java.util.List;
 
 import android.util.Log;
 
+import di.kdd.smartmonitor.AccelerationsSQLiteHelper;
 import di.kdd.smartmonitor.IObservable;
 import di.kdd.smartmonitor.IObserver;
 import di.kdd.smartmonitor.ISampler;
@@ -30,6 +31,12 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 	private boolean isSampling;
 	
 	private static final String TAG = "distributed system";
+	
+	private AccelerationsSQLiteHelper db;
+	
+	public void setDatabase(AccelerationsSQLiteHelper db) {
+		this.db = db;
+	}
 	
 	/* Singleton implementation */
 
@@ -163,6 +170,21 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 	}
 	
 	@Override
+	public void deleteDatabase() throws MasterException, ConnectException {
+		if(node == null) {
+			throw new ConnectException();
+		}
+
+		if(node.isMaster() == false) {
+			throw new MasterException();
+		}
+
+		((MasterNode) node).deleteDatabase();
+
+		notify("Deleted database");
+	}
+	
+	@Override
 	public boolean isSampling() {
 		return isSampling;
 	}
@@ -249,5 +271,13 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 		isSampling = false;
 		
 		notify("Stoped sampling");
+	}	
+	
+	protected void deleteDatabaseCommand() {		
+		if(db != null) {
+			db.deleteDatabase();
+			
+			notify("Deleted database");
+		}
 	}
 }

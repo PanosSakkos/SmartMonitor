@@ -13,11 +13,12 @@ public class PeerActivity extends NodeActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.peeractivity);		
 		
-		distributedSystem.subscribe(this);
-		distributedSystem.setSampler(this);
-		
 		accelerationsDb = new AccelerationsSQLiteHelper(this.getApplicationContext());
 		accelerationsDb.subscribe(this);	
+
+		distributedSystem.subscribe(this);
+		distributedSystem.setSampler(this);
+		distributedSystem.setDatabase(accelerationsDb);
 	}
 	
 	/* Button handlers */

@@ -25,13 +25,14 @@ public class MasterActivity extends NodeActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.masteractivity);
 		
-		distributedSystem.subscribe(this);
-		distributedSystem.setSampler(this);
-
-		distributedSystem.connectAsMaster();
-		
 		accelerationsDb = new AccelerationsSQLiteHelper(this.getApplicationContext());
 		accelerationsDb.subscribe(this);
+		
+		distributedSystem.subscribe(this);
+		distributedSystem.setSampler(this);
+		distributedSystem.setDatabase(accelerationsDb);
+		
+		distributedSystem.connectAsMaster();
 		
 		computeMFreqsButton = (Button) findViewById(R.id.computeModalFreqsBtn);		
 		plotButton = (Button) findViewById(R.id.plotBtn);

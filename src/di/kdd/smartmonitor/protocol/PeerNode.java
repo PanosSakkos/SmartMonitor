@@ -136,6 +136,11 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 				case SEND_PEAKS:
 					Log.i(TAG, "Received SEND_PEAKS command");
 					break;
+				case DELETE_DATA:
+					Log.i(TAG, "Received DELETE_DATA command");
+					
+					ds.deleteDatabaseCommand();
+					break;
 				default:
 					Log.e(TAG, "Not implemented Tag handling: " + message.getTag().toString());
 					break;

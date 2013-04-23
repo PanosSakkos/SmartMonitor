@@ -103,6 +103,10 @@ public final class MasterNode extends DistributedSystemNode implements IObserver
 		//TODO Find Master node's peaks, decide the global peaks and store them
 	}	
 
+	public void deleteDatabase() {
+		broadcastCommand(new Message(Tag.DELETE_DATA));
+	}
+	
 	@Override
 	public void disconnect() {
 		Log.i(TAG, "Disconnecting");

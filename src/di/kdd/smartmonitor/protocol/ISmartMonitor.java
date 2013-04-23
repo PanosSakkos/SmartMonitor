@@ -34,7 +34,7 @@ public interface ISmartMonitor {
 	
 	/* Message tags */
 	
-	public enum Tag { JOIN, PEER_DATA, NEW_PEER, SYNC, HEARTBEAT, START_SAMPLING, STOP_SAMPLING, SEND_PEAKS };
+	public enum Tag { JOIN, PEER_DATA, NEW_PEER, SYNC, HEARTBEAT, START_SAMPLING, STOP_SAMPLING, SEND_PEAKS , DELETE_DATA };
 		
 	/***
 	 * Connects to the distributed system.
@@ -112,6 +112,14 @@ public interface ISmartMonitor {
 	 */
 	
 	public void computeModalFrequencies(Date from, Date to) throws MasterException, IOException, ConnectException;
+	
+	/***
+	 * Broadcasts command to all nodes, to delete the databases
+	 * @throws MasterException If the asked node is not the Master node
+	 * @throws ConnectException When the node is not connected to the system
+	 */
+	
+	public void deleteDatabase() throws MasterException, ConnectException;
 	
 	/***
 	 * Returns if the node is Master of the distributed network.
