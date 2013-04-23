@@ -70,12 +70,12 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
 		this.context = context;
 		
-		Log.i(TAG, "Created " + DATABASE_NAME + " v" + DATABASE_VERSION);
+		Log.i(TAG, "Opened " + DATABASE_NAME + " v" + DATABASE_VERSION);
 	}
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {	
-		Log.i(TAG, "Creating database");
+		Log.i(TAG, "Creating database " + DATABASE_NAME + " v" + DATABASE_VERSION);
 		
 		db.execSQL(TABLE_X_ACCELERATIONS_CREATE);
 		db.execSQL(TABLE_Y_ACCELERATIONS_CREATE);
@@ -88,7 +88,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		Log.i(TAG, "Upgrading database");
+		Log.i(TAG, "Upgrading database" + DATABASE_NAME + " v" + DATABASE_VERSION);
 		
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_X_ACCELERATIONS);
 		db.execSQL("DROP TABLE IF EXISTS " + TABLE_Y_ACCELERATIONS);
