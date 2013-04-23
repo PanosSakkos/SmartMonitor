@@ -7,6 +7,9 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
+import di.kdd.smartmonitor.IObservable;
+import di.kdd.smartmonitor.IObserver;
+
 import android.util.Log;
 
 /***

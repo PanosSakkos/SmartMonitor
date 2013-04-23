@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import di.kdd.smart.R;
 import di.kdd.smartmonitor.protocol.DistributedSystem;
-import di.kdd.smartmonitor.protocol.IObserver;
 import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 import di.kdd.smartmonitor.protocol.exceptions.SamplerException;

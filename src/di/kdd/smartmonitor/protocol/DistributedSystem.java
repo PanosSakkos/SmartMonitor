@@ -8,6 +8,8 @@ import java.util.List;
 
 import android.util.Log;
 
+import di.kdd.smartmonitor.IObservable;
+import di.kdd.smartmonitor.IObserver;
 import di.kdd.smartmonitor.ISampler;
 import di.kdd.smartmonitor.protocol.ConnectAsyncTask.ConnectionStatus;
 import di.kdd.smartmonitor.protocol.exceptions.ConnectException;

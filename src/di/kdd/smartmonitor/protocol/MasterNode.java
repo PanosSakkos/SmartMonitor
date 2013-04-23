@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import android.util.Log;
+import di.kdd.smartmonitor.IObserver;
 import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 

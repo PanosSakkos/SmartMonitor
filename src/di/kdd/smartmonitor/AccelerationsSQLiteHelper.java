@@ -9,8 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
 import di.kdd.smartmonitor.exceptions.AxisException;
-import di.kdd.smartmonitor.protocol.IObservable;
-import di.kdd.smartmonitor.protocol.IObserver;
 
 public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObservable {
 	

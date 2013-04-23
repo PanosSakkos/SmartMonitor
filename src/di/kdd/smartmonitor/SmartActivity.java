@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Looper;
 import android.widget.Toast;
 import di.kdd.smartmonitor.protocol.DistributedSystem;
-import di.kdd.smartmonitor.protocol.IObserver;
 
 public abstract class SmartActivity extends Activity implements IObserver, ISampler {
 
