@@ -6,7 +6,7 @@ import android.os.Looper;
 import android.widget.Toast;
 import di.kdd.smartmonitor.protocol.DistributedSystem;
 
-public abstract class SmartActivity extends Activity implements IObserver, ISampler {
+public abstract class NodeActivity extends Activity implements IObserver, ISampler {
 
 	protected AccelerationsSQLiteHelper accelerationsDb;
 	protected DistributedSystem distributedSystem = DistributedSystem.getInstance();

@@ -14,7 +14,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
-public class MasterActivity extends SmartActivity {
+public class MasterActivity extends NodeActivity {
 	
 	private Button samplingButton;
 	private Button computeMFreqsButton;
