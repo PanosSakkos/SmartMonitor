@@ -141,6 +141,11 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 					
 					ds.deleteDatabaseCommand();
 					break;
+				case DUMP_DATA:
+					Log.i(TAG, "Received DUMP_DATA command");
+					
+					ds.dumpDatabaseCommand();
+					break;
 				default:
 					Log.e(TAG, "Not implemented Tag handling: " + message.getTag().toString());
 					break;

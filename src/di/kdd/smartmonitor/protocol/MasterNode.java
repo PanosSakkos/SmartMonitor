@@ -78,7 +78,7 @@ public final class MasterNode extends DistributedSystemNode implements IObserver
 	 * Broadcasts STOP_SAMPLING command to the peer nodes
 	 */
 
-	public void stopSampling(){
+	public void stopSampling() {
 		broadcastCommand(new Message(Tag.STOP_SAMPLING));
 	}
 	
@@ -105,6 +105,10 @@ public final class MasterNode extends DistributedSystemNode implements IObserver
 
 	public void deleteDatabase() {
 		broadcastCommand(new Message(Tag.DELETE_DATA));
+	}
+	
+	public void dumpDatabase() {
+		broadcastCommand(new Message(Tag.DUMP_DATA));
 	}
 	
 	@Override

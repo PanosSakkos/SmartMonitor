@@ -174,23 +174,32 @@ public class MasterActivity extends NodeActivity {
 	 * @throws Exception
 	 */
 	
-	public void exportToFile(View _) {
-		if (!distributedSystem.isSampling()) {
-				accelerationsDb.flushAccelerationBuffers();
-				accelerationsDb.dumpToFile();
+	public void exportToFile(View _) throws MasterException {
+		try {
+			if (!distributedSystem.isSampling()) {
+					distributedSystem.dumpDatabase();
+			}
+			else {
+				Toast.makeText(this, "The node is sampling!", Toast.LENGTH_LONG).show();
+			}
 		}
-		else {
-			Toast.makeText(this, "The node is sampling!", Toast.LENGTH_LONG).show();
+		catch(ConnectException e) {
+			Toast.makeText(this, "The node is not connected!", Toast.LENGTH_LONG).show();							
 		}
 	}	
 	
-	public void deleteDatabase(View _) {
-		if (!distributedSystem.isSampling()) {
-			accelerationsDb.deleteDatabase();
-			Toast.makeText(this, "Deleted database", Toast.LENGTH_LONG).show();
+	public void deleteDatabase(View _) throws MasterException {
+		try {
+			if (!distributedSystem.isSampling()) {
+				distributedSystem.deleteDatabase();
+				Toast.makeText(this, "Deleted database", Toast.LENGTH_LONG).show();
+			}
+			else {
+				Toast.makeText(this, "The node is sampling!", Toast.LENGTH_LONG).show();
+			}
 		}
-		else {
-			Toast.makeText(this, "The node is sampling!", Toast.LENGTH_LONG).show();
+		catch(ConnectException e) {
+			Toast.makeText(this, "The node is not connected!", Toast.LENGTH_LONG).show();			
 		}
 	}
 	

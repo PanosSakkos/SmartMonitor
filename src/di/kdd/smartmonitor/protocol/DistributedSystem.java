@@ -185,6 +185,21 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 	}
 	
 	@Override
+	public void dumpDatabase() throws MasterException, ConnectException {
+		if(node == null) {
+			throw new ConnectException();
+		}
+
+		if(node.isMaster() == false) {
+			throw new MasterException();
+		}
+
+		((MasterNode) node).dumpDatabase();
+
+		notify("Dumped database");		
+	}
+	
+	@Override
 	public boolean isSampling() {
 		return isSampling;
 	}
@@ -279,5 +294,13 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 			
 			notify("Deleted database");
 		}
+	}
+	
+	protected void dumpDatabaseCommand() {
+		if(db != null) {
+			db.dumpToFile();
+			
+			notify("Dumped database");
+		}		
 	}
 }
