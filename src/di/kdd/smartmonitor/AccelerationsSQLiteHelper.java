@@ -392,5 +392,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 		zAccelerationsBuffer.clear();
 
 		context.deleteDatabase(DATABASE_NAME);		
+
+		Log.i(TAG, "Deleted database");
 	}
 }
