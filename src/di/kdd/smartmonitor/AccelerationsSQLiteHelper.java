@@ -18,27 +18,27 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 
 	/* Three tables, on for each acceleration axis, with the acceleration and the timestamp */
 	
-	private static final String TABLE_X_ACCELERATIONS = "x_accelerations";
-	private static final String TABLE_Y_ACCELERATIONS = "y_accelerations";
-	private static final String TABLE_Z_ACCELERATIONS = "z_accelerations";
+	protected final String TABLE_X_ACCELERATIONS = "x_accelerations";
+	protected final String TABLE_Y_ACCELERATIONS = "y_accelerations";
+	protected final String TABLE_Z_ACCELERATIONS = "z_accelerations";
 
-	private static final String COLUMN_ID = "id";
-	private static final String COLUMN_ACCELERATION = "acceleration";
-	private static final String COLUMN_TIMESTAMP = "timestamp";
+	private final String COLUMN_ID = "id";
+	protected final String COLUMN_ACCELERATION = "acceleration";
+	protected final String COLUMN_TIMESTAMP = "timestamp";
 
 	/* SQLite commands to create each Table of the database */
 	
-	private static final String TABLE_X_ACCELERATIONS_CREATE = "create table " + TABLE_X_ACCELERATIONS + 
+	private final String TABLE_X_ACCELERATIONS_CREATE = "create table " + TABLE_X_ACCELERATIONS + 
 													" (" + COLUMN_ID + " integer primary key autoincrement" + 
 													", " + COLUMN_ACCELERATION + " float not null" +
 													", " + COLUMN_TIMESTAMP + " long not null);";
 
-	private static final String TABLE_Y_ACCELERATIONS_CREATE = "create table " + TABLE_Y_ACCELERATIONS + 
+	private final String TABLE_Y_ACCELERATIONS_CREATE = "create table " + TABLE_Y_ACCELERATIONS + 
 													" (" + COLUMN_ID + " integer primary key autoincrement" + 
 													", " + COLUMN_ACCELERATION + " float not null" +
 													", " + COLUMN_TIMESTAMP + " long not null);";
 
-	private static final String TABLE_Z_ACCELERATIONS_CREATE = "create table " + TABLE_Z_ACCELERATIONS + 
+	private final String TABLE_Z_ACCELERATIONS_CREATE = "create table " + TABLE_Z_ACCELERATIONS + 
 													" (" + COLUMN_ID + " integer primary key autoincrement" + 
 													", " + COLUMN_ACCELERATION + " float not null" +
 													", " + COLUMN_TIMESTAMP + " long not null);";
@@ -118,18 +118,8 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 	 */
 	
 	private void flushXAccelerationsBuffer() {
-		SQLiteDatabase db = this.getWritableDatabase();
-
-		Log.i(TAG, "Flushing buffer of X axis to database");
-		
-		/* Flush Accelerations buffer for X axis */
-		
-		for(Acceleration acceleration : xAccelerationsBuffer) {
-			db.execSQL("INSERT INTO " + TABLE_X_ACCELERATIONS + " (" + COLUMN_TIMESTAMP + ", " + COLUMN_ACCELERATION + ")" +
-						" VALUES (" + Long.toString(acceleration.getTimestamp()) + ", " + Double.toString(acceleration.getAcceleration()) + ")");			
-		}
-
-		xAccelerationsBuffer.clear();		
+		Thread xFlushThread = new FlushBufferThread(this, AccelerationAxis.X, xAccelerationsBuffer);
+		xFlushThread.start();		
 	}
 	
 	/***
@@ -137,18 +127,8 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 	 */
 
 	private void flushYAccelerationsBuffer() {
-		SQLiteDatabase db = this.getWritableDatabase();
-
-		Log.i(TAG, "Flushing buffer of Y axis to database");
-
-		/* Flush Accelerations buffer for Y axis */
-
-		for(Acceleration acceleration : yAccelerationsBuffer) {
-			db.execSQL("INSERT INTO " + TABLE_Y_ACCELERATIONS + " (" + COLUMN_TIMESTAMP + ", " + COLUMN_ACCELERATION + ")" +
-					" VALUES (" + Long.toString(acceleration.getTimestamp()) + ", " + Double.toString(acceleration.getAcceleration()) + ")");			
-		}
-
-		yAccelerationsBuffer.clear();		
+		Thread yFlushThread = new FlushBufferThread(this, AccelerationAxis.Y, yAccelerationsBuffer);
+		yFlushThread.start();		
 	}
 	
 	/***
@@ -156,18 +136,8 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 	 */
 
 	private void flushZAccelerationsBuffer() {
-		SQLiteDatabase db = this.getWritableDatabase();
-
-		Log.i(TAG, "Flushing buffer of Z axis to database");
-
-		/* Flush Accelerations buffer for Z axis */		
-		
-		for(Acceleration acceleration : zAccelerationsBuffer) {
-			db.execSQL("INSERT INTO " + TABLE_Z_ACCELERATIONS + " (" + COLUMN_TIMESTAMP + ", " + COLUMN_ACCELERATION + ")" +
-					" VALUES (" + Long.toString(acceleration.getTimestamp()) + ", " + Double.toString(acceleration.getAcceleration()) + ")");			
-		}
-
-		zAccelerationsBuffer.clear();				
+		Thread zFlushThread = new FlushBufferThread(this, AccelerationAxis.Z, zAccelerationsBuffer);
+		zFlushThread.start();		
 	}
 	
 	/***

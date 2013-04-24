@@ -180,7 +180,8 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 		}
 
 		((MasterNode) node).deleteDatabase();
-
+		db.deleteDatabase();
+		
 		notify("Deleted database");
 	}
 	
@@ -195,7 +196,8 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 		}
 
 		((MasterNode) node).dumpDatabase();
-
+		db.dumpToFile();
+		
 		notify("Dumped database");		
 	}
 	

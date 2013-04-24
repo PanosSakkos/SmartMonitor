@@ -81,7 +81,7 @@ public class SamplingService extends Service implements SensorEventListener {
 		sensorManager.unregisterListener(this);
 
 		accelerationsDb.flushAccelerationBuffers();
-		accelerationsDb.close();
+//		accelerationsDb.close();
 
 		Log.i(TAG, "Destroyed sampling service");
 	}
