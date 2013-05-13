@@ -8,6 +8,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.util.Log;
+import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
 import di.kdd.smartmonitor.IObserver;
 import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
@@ -19,6 +20,10 @@ public final class MasterNode extends Node implements IObserver {
 	private JoinThread joinThread;
 	private List<Socket> commandSockets = new ArrayList<Socket>();
 
+	private List<Float> xAxisFrequencies = new ArrayList<Float>();
+	private List<Float> yAxisFrequencies = new ArrayList<Float>();
+	private List<Float> zAxisFrequencies = new ArrayList<Float>();
+	
 	private static final String TAG = "master";	
 	
 	public MasterNode(DistributedSystem ds) {
@@ -159,7 +164,8 @@ public final class MasterNode extends Node implements IObserver {
 		for(Socket commandSocket : commandSockets) {
 			try {
 				commandSocket.close();
-			} catch (IOException e) {
+			} 
+			catch (IOException e) {
 			}
 		}
 		
@@ -169,5 +175,24 @@ public final class MasterNode extends Node implements IObserver {
 	@Override
 	public boolean isMaster() {
 		return true;
+	}
+	
+	/* Sets the global modal frequencies of the system. 
+	 * Must be called from the DataAggregatorAsyncTask, after 
+	 * receiving the node peaks and computing the global frequencies 
+	 */ 
+	
+	protected void setModalFrequencies(AccelerationAxis axis, List<Float> frequencies) {
+		switch(axis){
+		case X:
+			xAxisFrequencies = frequencies;
+			break;
+		case Y:
+			yAxisFrequencies = frequencies;
+			break;
+		case Z:
+			zAxisFrequencies = frequencies;
+			break;
+		}
 	}
 }

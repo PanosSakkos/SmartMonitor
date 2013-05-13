@@ -36,6 +36,10 @@ public interface ISmartMonitor {
 	
 	static final int NO_PEAKS = 5;
 	
+	/* The number of the modal frequencies that the system will report after the computation */
+	
+	static final int OUTPUT_PEAKS = 5;
+	
 	/* Number of the FFT points (must be a power of 2) */
 	
 	static final int FFT_Length = 128;
