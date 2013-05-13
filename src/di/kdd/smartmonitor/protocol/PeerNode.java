@@ -6,7 +6,6 @@ import java.net.Socket;
 import java.util.List;
 
 import android.util.Log;
-import di.kdd.smartmonitor.middleware.TimeSynchronization;
 import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 
 public final class PeerNode extends Node implements Runnable {
