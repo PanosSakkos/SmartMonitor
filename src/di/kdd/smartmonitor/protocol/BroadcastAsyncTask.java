@@ -23,7 +23,7 @@ public class BroadcastAsyncTask extends AsyncTask<Void, Void, Void> {
 	protected Void doInBackground(Void... arg0) {
 		for(Socket peer : sockets) {
 			try {
-				DistributedSystemNode.send(peer, message);
+				Node.send(peer, message);
 			}
 			catch(IOException e) {
 				Log.i(TAG, "Failed to broadcast at node");

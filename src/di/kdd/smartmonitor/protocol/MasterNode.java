@@ -14,7 +14,7 @@ import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 import di.kdd.smartmonitor.protocol.exceptions.SamplerException;
 
-public final class MasterNode extends DistributedSystemNode implements IObserver {	
+public final class MasterNode extends Node implements IObserver {	
 	private DistributedSystem ds;
 	private JoinThread joinThread;
 	private List<Socket> commandSockets = new ArrayList<Socket>();

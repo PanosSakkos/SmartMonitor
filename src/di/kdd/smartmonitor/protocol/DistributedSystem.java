@@ -27,7 +27,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 	private ISampler sampler;
 	private List<IObserver> observers = new ArrayList<IObserver>();
 
-	private DistributedSystemNode node;
+	private Node node;
 	
 	private long startSamplingTimestamp;
 	private long stopSamplingTimestamp;

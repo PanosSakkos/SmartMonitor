@@ -45,16 +45,16 @@ public class JoinThread extends Thread {
 				
 				/* Receive JOIN message */
 				
-				DistributedSystemNode.receive(connectionSocket, Tag.JOIN);
+				Node.receive(connectionSocket, Tag.JOIN);
 
 				/* Send PEER_DATA to the node that wants to join the system */
 				
 				message = new Message(Tag.PEER_DATA, peerData.toString());
-				DistributedSystemNode.send(connectionSocket, message);
+				Node.send(connectionSocket, message);
 				
 				/* Send TIME_SYNC message */
 				
-				DistributedSystemNode.send(connectionSocket, new TimeSynchronizationMessage());
+				Node.send(connectionSocket, new TimeSynchronizationMessage());
 
 				/* Update the peer data with the IP address of the new node */
 				

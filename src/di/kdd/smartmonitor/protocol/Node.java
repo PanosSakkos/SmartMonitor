@@ -10,7 +10,7 @@ import di.kdd.smartmonitor.protocol.exceptions.TagException;
 
 import android.util.Log;
 
-public abstract class DistributedSystemNode extends Thread {
+public abstract class Node extends Thread {
 	protected PeerData peerData = new PeerData();
 	
 	private static final String TAG = "node";

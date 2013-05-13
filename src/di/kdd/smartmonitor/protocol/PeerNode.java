@@ -9,7 +9,7 @@ import android.util.Log;
 import di.kdd.smartmonitor.middleware.TimeSynchronization;
 import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 
-public final class PeerNode extends DistributedSystemNode implements Runnable {
+public final class PeerNode extends Node implements Runnable {
 	private Socket joinSocket;
 	private ServerSocket commandsServerSocket;
 
@@ -147,7 +147,7 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 						peaksMessage.addToPaylod(Float.toString(frequency));
 					}
 
-					DistributedSystemNode.send(masterSocket, peaksMessage);
+					Node.send(masterSocket, peaksMessage);
 					
 					Log.i(TAG, "Sent modal frequencies to Master node");
 					break;
