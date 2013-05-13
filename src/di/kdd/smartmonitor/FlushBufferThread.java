@@ -5,7 +5,6 @@ import java.util.List;
 import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
 
 import android.database.sqlite.SQLiteDatabase;
-import android.os.AsyncTask;
 import android.util.Log;
 
 public class FlushBufferThread extends Thread {

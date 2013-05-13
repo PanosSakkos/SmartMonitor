@@ -8,7 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
-import di.kdd.smartmonitor.exceptions.AxisException;
 
 public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObservable {
 	
@@ -180,8 +179,6 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 				
 			zAccelerationsBuffer.add(newAcceleration);			
 			break;
-		default:
-			throw new AxisException();
 		}
 	}
 
@@ -195,7 +192,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 	 */
 	
 	public Acceleration getAccelerationAt(long timestamp, AccelerationAxis axis) throws Exception {
-		Cursor cursor;
+		Cursor cursor = null;
 		Acceleration acceleration;
 		SQLiteDatabase db = this.getReadableDatabase();
 		
@@ -218,8 +215,6 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 									" FROM " + TABLE_Z_ACCELERATIONS + 
 									" WHERE " + COLUMN_TIMESTAMP + " = " + Long.toString(timestamp), null);
 				break;
-			default:
-				throw new AxisException();
 		}
 		
 		if(cursor == null) { 
@@ -243,7 +238,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 	 */
 	
 	public List<Acceleration> getAllAccelerations(AccelerationAxis axis) throws Exception {		
-		Cursor cursor;
+		Cursor cursor = null;
 		SQLiteDatabase db = this.getReadableDatabase();
 		List<Acceleration> accelerations = new ArrayList<Acceleration>();
 		
@@ -262,8 +257,6 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 				cursor = db.rawQuery("SELECT " + COLUMN_ACCELERATION + ", " + COLUMN_TIMESTAMP +  
 											" FROM " + TABLE_Z_ACCELERATIONS, null);
 				break;
-			default:
-				throw new AxisException();
 		}
 		
 		if(cursor == null) {
@@ -290,10 +283,10 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 	 * @throws Exception If the rawQuery fails
 	 */
 	
-	public List<Acceleration> getAccelerationsIn(long from, long to, AccelerationAxis axis) throws Exception {
-		Cursor cursor;
+	public ArrayList<Acceleration> getAccelerationsIn(long from, long to, AccelerationAxis axis) throws Exception {
+		Cursor cursor = null;
 		SQLiteDatabase db = this.getReadableDatabase();
-		List<Acceleration> accelerations = new ArrayList<Acceleration>();
+		ArrayList<Acceleration> accelerations = new ArrayList<Acceleration>();
 				
 		flushAccelerationBuffers();
 
@@ -316,8 +309,6 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 									" WHERE " + COLUMN_TIMESTAMP + " > " + Long.toString(from) + 
 									" AND " + COLUMN_TIMESTAMP + " < " + Long.toString(to), null);
 				break;
-			default:
-				throw new AxisException();
 		}
 		
 		if(cursor == null) {

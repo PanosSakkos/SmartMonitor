@@ -3,17 +3,23 @@ package di.kdd.smartmonitor.protocol;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import android.util.Log;
 
+import di.kdd.smartmonitor.Acceleration;
 import di.kdd.smartmonitor.AccelerationsSQLiteHelper;
+import di.kdd.smartmonitor.Complex;
+import di.kdd.smartmonitor.FFT;
 import di.kdd.smartmonitor.IObservable;
 import di.kdd.smartmonitor.IObserver;
 import di.kdd.smartmonitor.ISampler;
+import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
 import di.kdd.smartmonitor.protocol.ConnectAsyncTask.ConnectionStatus;
 import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
+import di.kdd.smartmonitor.protocol.exceptions.DatabaseException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 import di.kdd.smartmonitor.protocol.exceptions.SamplerException;
 
@@ -23,7 +29,8 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 
 	private DistributedSystemNode node;
 	
-	private long samplingStarted, samplingEnded;
+	private long startSamplingTimestamp;
+	private long stopSamplingTimestamp;
 	
 	/* States */
 	
@@ -87,8 +94,9 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 	public void connectAsMaster() {
 		Log.i(TAG, "Connecting as Master");
 		
-		node = new MasterNode(); 
+		node = new MasterNode(this); 
 		isConnected = true;
+
 		
 		notify("Connected as Master");			
 	}
@@ -140,8 +148,8 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 		((MasterNode) node).startSampling();			
 		
 		sampler.startSamplingService();
-		samplingStarted = System.currentTimeMillis();		
 		isSampling = true;
+		startSamplingTimestamp = System.currentTimeMillis();
 		
 		notify("Started sampling");
 	}
@@ -163,8 +171,8 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 		((MasterNode) node).stopSampling();			
 		
 		sampler.stopSamplingService();
-		samplingEnded = System.currentTimeMillis();		
 		isSampling = false;
+		stopSamplingTimestamp = System.currentTimeMillis();
 
 		notify("Stoped sampling");
 	}
@@ -207,7 +215,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 	}
 		
 	@Override
-	public void computeModalFrequencies(Date from, Date to) throws MasterException, IOException, ConnectException {
+	public void computeModalFrequencies() throws MasterException, ConnectException {
 		if(node == null) {
 			throw new ConnectException();
 		}
@@ -216,14 +224,14 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 			throw new MasterException();
 		}
 		
-		((MasterNode) node).computeModalFrequencies(from, to);
+		((MasterNode) node).computeModalFrequencies();
 		
-		notify("Computed modal frequencies");
+		notify("Computing modal frequencies");
 	}
 
 	@Override
 	public boolean isMaster() {
-		return (node !=null && node.isMaster());
+		return (node != null && node.isMaster());
 	}
 
 	@Override
@@ -251,7 +259,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 		case ConnectedAsMaster:
 			Log.i(TAG, "Connected as Master");
 
-			node = new MasterNode();		
+			node = new MasterNode(this);		
 			isConnected = true;
 			
 			notify("Connected as Master");		
@@ -275,19 +283,23 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 	/* Methods that should be called form the peer node, when he receives a command */
 	
 	protected void startSamplngCommand() {
-		sampler.startSamplingService();
-		samplingStarted = System.currentTimeMillis();		
-		isSampling = true;
-		
-		notify("Started sampling");
+		if(sampler != null) {
+			sampler.startSamplingService();
+			isSampling = true;
+			startSamplingTimestamp = System.currentTimeMillis();
+			
+			notify("Started sampling");
+		}
 	}
 	
 	protected void stopSamplingCommand() {
-		sampler.stopSamplingService();
-		samplingEnded = System.currentTimeMillis();		
-		isSampling = false;
-		
-		notify("Stoped sampling");
+		if(sampler != null && isSampling) {
+			sampler.stopSamplingService();
+			isSampling = false;
+			stopSamplingTimestamp = System.currentTimeMillis();
+			
+			notify("Stoped sampling");
+		}
 	}	
 	
 	protected void deleteDatabaseCommand() {		
@@ -304,5 +316,101 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 			
 			notify("Dumped database");
 		}		
+	}	
+	
+	private float computeSamplingFrequencyInSample(long from, long to, List<Acceleration> accelerations) {		
+		return (float) accelerations.size() / ((float) (to - from) / 1000);		
+	}
+	
+	private List<Float> computeModalFrequenciesInAxis(long from, long to, AccelerationAxis axis) {		
+		List<Float> modalFrequencies = new ArrayList<Float>();
+
+		try {
+			float samplingFrequency;
+			Complex[] fftResults = new Complex[FFT_Length];
+			Double[] output = new Double[FFT_Length / 2];
+			List<Acceleration> accelerations = db.getAccelerationsIn(from, to, axis);
+
+			/* Create FFT's input (Complex number with Real part the acceleration and zero Imaginary part */
+
+			for(int i = 0; i < FFT_Length; i++) {
+				fftResults[i] = new Complex(accelerations.get(i).getAcceleration(), 0);
+			}
+			
+			/* Compute the FFT output */
+			
+			fftResults = FFT.fft(fftResults);
+
+			for(int i = 0; i < FFT_Length / 2; i++) {
+				output[i] = Math.sqrt(Math.pow(fftResults[i].re(), 2) + Math.pow(fftResults[i].im(), 2));
+			}
+			
+			/* Find peaks in the FFT's output, within each window */
+			
+			int numberOfWindows = output.length / PEAK_PEEKING_WINDOW;
+			List<Integer> maxIndices = new ArrayList<Integer>();
+			
+			for(int i = 0; i < numberOfWindows; i++) {
+
+				/* Find the index of the window's max value */
+				
+				int windowStart = PEAK_PEEKING_WINDOW * i;
+				int windowEnd = windowStart + PEAK_PEEKING_WINDOW;
+				
+				int windowMaxIndex = 0;
+				double windowMaxValue = 0.0f;
+				
+				for(int j = windowStart; j <= windowEnd; j++) {
+					if(output[j] > windowMaxValue) {
+						windowMaxIndex = j;
+						windowMaxValue = output[j];
+					}
+				}
+
+				maxIndices.add(windowMaxIndex);
+			}
+			
+			/* Keep the top NO_PEAKS indices */
+			
+			Collections.sort(maxIndices);
+			
+			while(maxIndices.size() > NO_PEAKS) {
+				maxIndices.remove(0);
+			}
+			
+			/* Convert index values of the peaks to frequency bins */
+
+			samplingFrequency = computeSamplingFrequencyInSample(from, to, accelerations);
+
+			for(Integer index : maxIndices) {
+				modalFrequencies.add((float) (index * samplingFrequency) / FFT_Length);
+			}
+						
+		} catch (Exception e) {
+			Log.e(TAG, "Error while retrieving acclerations of axis " + axis.toString() + 
+												" between timestamps: " + e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return modalFrequencies;
+	}
+	
+	protected List<Float> computeModalFrequenciesCommand() throws DatabaseException {
+		ArrayList<Float> modalFrequencies = new ArrayList<Float>();
+		
+		if(db == null) {
+			notify("Cannot compute modal frequencies, database is not set");
+			return null;
+		}
+		
+		/* Compute the modal frequencies of each axis, within the period of sampling */
+		
+		modalFrequencies.addAll(computeModalFrequenciesInAxis(startSamplingTimestamp, stopSamplingTimestamp, AccelerationAxis.X));
+		modalFrequencies.addAll(computeModalFrequenciesInAxis(startSamplingTimestamp, stopSamplingTimestamp, AccelerationAxis.Y));
+		modalFrequencies.addAll(computeModalFrequenciesInAxis(startSamplingTimestamp, stopSamplingTimestamp, AccelerationAxis.Z));
+				
+		notify("Computed modal frequencies");
+		
+		return modalFrequencies;
 	}
 }

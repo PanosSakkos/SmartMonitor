@@ -1,9 +1,11 @@
 package di.kdd.smartmonitor;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import di.kdd.smart.R;
-import di.kdd.smartmonitor.protocol.DistributedSystem;
+import di.kdd.smartmonitor.protocol.ISmartMonitor;
 import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 import di.kdd.smartmonitor.protocol.exceptions.SamplerException;
@@ -19,6 +21,8 @@ public class MasterActivity extends NodeActivity {
 	private Button samplingButton;
 	private Button computeMFreqsButton;
 	private Button plotButton;
+		
+	private boolean running = true;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,10 +48,30 @@ public class MasterActivity extends NodeActivity {
 		
 		samplingButton = (Button) findViewById(R.id.samplingBtn);
 
-		samplingButton.setText("Start Sampling");		
+		samplingButton.setText("Start Sampling");
+		
+		Thread uiUpdater = new Thread(new Runnable() { 
+			public void run() {
+				while(running) {
+					if(distributedSystem.isSampling()) {
+						runOnUiThread(new Runnable() {public void run() { hideButtons(); }});
+					}
+					else {
+						runOnUiThread(new Runnable() {public void run() { revealButtons(); }});
+					}
+					
+					try {
+						Thread.sleep(100);
+					} catch (InterruptedException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+			}});
+
+		uiUpdater.start();
 	}
-	
-	
+		
 	/* Button handlers */
 	
 	/**
@@ -106,7 +130,6 @@ public class MasterActivity extends NodeActivity {
 		Button deleteDbBtn = (Button)findViewById(R.id.deleteDbBtn);
 		deleteDbBtn.setEnabled(false);
 		deleteDbBtn.setAlpha((float) 0.2);
-		
 	}
 	
 	private void revealButtons() {
@@ -134,14 +157,11 @@ public class MasterActivity extends NodeActivity {
 	public void computeModalFrequencies(View _) {
 		try {
 			if(!distributedSystem.isSampling()) {
-				distributedSystem.computeModalFrequencies(null, null);
+				distributedSystem.computeModalFrequencies();
 			}
 			else {
-				Toast.makeText(this, "STOP SAMPLING must be invoked!", Toast.LENGTH_LONG).show();
+				Toast.makeText(this, "Stop sampling before computing the modal frequencies!", Toast.LENGTH_LONG).show();
 			}
-		}
-		catch(IOException e) {
-			Toast.makeText(this, "Failed to command nodes to start sampling", Toast.LENGTH_LONG).show();						
 		}
 		catch(ConnectException e) {
 			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();									

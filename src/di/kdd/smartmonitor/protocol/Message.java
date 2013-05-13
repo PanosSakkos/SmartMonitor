@@ -14,6 +14,9 @@ import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
  */
 
 public class Message implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	private Tag tag;
 	private String payload;
 	
@@ -39,6 +42,19 @@ public class Message implements Serializable {
 		return payload;
 	}
 
+	/***
+	 * Returns the requested string of the payload
+	 * @param index Which string of the payload to return
+	 * @return The String at the @index position of the payload
+	 */
+	
+	public String getPayloadAt(int index) {
+		String delimeter = "\n";
+		String []tokens = payload.split(delimeter);
+		
+		return tokens[index];
+	}
+	
 	/***
 	 * Initialize Message with ignored payload
 	 * @param tag The message's tag
@@ -69,12 +85,25 @@ public class Message implements Serializable {
 	public Message(BufferedReader in) throws IOException {
 		String line;
 		line = in.readLine();
-Log.d("message", line);		
+Log.d("message", line);
 		this.tag = Tag.valueOf(line);
 
 		while((line = in.readLine()) != null) {
 			this.payload += line + '\n';
 		}
+	}
+	
+	/***
+	 * Adds data to the message with the form of a string  
+	 * @param data The data to add to the paylod
+	 */
+	
+	public void addToPaylod(String data) {
+		if(payload == null) {
+			payload = new String();
+		}
+		
+		payload += "\n" + data;
 	}
 	
 	/***

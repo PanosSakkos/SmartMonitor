@@ -28,13 +28,26 @@ public interface ISmartMonitor {
 
 	static final int COMMAND_PORT = 4633;
 	
+	/* Time (in milliseconds) of acceleration sampling */
+	
+	static final int SAMPLING_TIME_SPAN = 10000;
+	
 	/* The (maximum) number of peaks that each peers returns to the Master */
 	
 	static final int NO_PEAKS = 5;
 	
+	/* Number of the FFT points (must be a power of 2) */
+	
+	static final int FFT_Length = 128;
+	
+	/* The window size in which the peaks are found */
+	
+	static final int PEAK_PEEKING_WINDOW = 10;
+
 	/* Message tags */
 	
-	public enum Tag { JOIN, PEER_DATA, NEW_PEER, SYNC, HEARTBEAT, START_SAMPLING, STOP_SAMPLING, SEND_PEAKS , DELETE_DATA, DUMP_DATA };
+	public enum Tag { JOIN, PEER_DATA, NEW_PEER, SYNC, HEARTBEAT, START_SAMPLING, STOP_SAMPLING, SEND_PEAKS , 
+																	AGGREGATE_PEAKS, DELETE_DATA, DUMP_DATA };
 		
 	/***
 	 * Connects to the distributed system.
@@ -105,13 +118,11 @@ public interface ISmartMonitor {
 	/***
 	 * If the message receiver is the Master node, asks for the peaks of the peers
 	 * and computes the building's signature.
-	 * @param from Starting sample time
-	 * @param to Ending sample time
 	 * @throws MasterException If the asked node is not the Master node
 	 * @throws ConnectException When the node is not connected to the system
 	 */
 	
-	public void computeModalFrequencies(Date from, Date to) throws MasterException, IOException, ConnectException;
+	public void computeModalFrequencies() throws MasterException, ConnectException;
 	
 	/***
 	 * Broadcasts command to all nodes, to delete their databases

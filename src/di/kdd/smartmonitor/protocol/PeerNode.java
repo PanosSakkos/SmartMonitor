@@ -3,6 +3,7 @@ package di.kdd.smartmonitor.protocol;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.List;
 
 import android.util.Log;
 import di.kdd.smartmonitor.middleware.TimeSynchronization;
@@ -134,7 +135,21 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 					ds.stopSamplingCommand();
 					break;
 				case SEND_PEAKS:
+					List<Float> modalFrequencies;
+
+					Message peaksMessage = new Message(Tag.AGGREGATE_PEAKS);
+
 					Log.i(TAG, "Received SEND_PEAKS command");
+										
+					modalFrequencies = ds.computeModalFrequenciesCommand();
+					
+					for(Float frequency : modalFrequencies) {
+						peaksMessage.addToPaylod(Float.toString(frequency));
+					}
+
+					DistributedSystemNode.send(masterSocket, peaksMessage);
+					
+					Log.i(TAG, "Sent modal frequencies to Master node");
 					break;
 				case DELETE_DATA:
 					Log.i(TAG, "Received DELETE_DATA command");
@@ -157,6 +172,10 @@ public final class PeerNode extends DistributedSystemNode implements Runnable {
 			}
 			catch(ClassNotFoundException e) {
 				Log.e(TAG, "Error while receiving data");
+				e.printStackTrace();
+			}
+			catch (Exception e) {
+				Log.e(TAG, e.getMessage());
 				e.printStackTrace();
 			}
 		}
