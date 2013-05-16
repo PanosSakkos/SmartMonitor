@@ -19,8 +19,16 @@ public abstract class Node extends Thread {
 	
 	public abstract boolean isMaster();
 
-	public String getMasterIP() {
+	public String getLowestIP() {
 		return peerData.getLowestIP();
+	}
+	
+	public String getNodeIP() {
+		return peerData.getNodeIP();
+	}
+	
+	public void forgetMasterIP() {
+		peerData.forgetMasterIP();
 	}
 	
 	/***

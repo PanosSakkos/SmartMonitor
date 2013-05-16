@@ -10,9 +10,9 @@ import di.kdd.smartmonitor.protocol.exceptions.SamplerException;
 
 public interface ISmartMonitor {
 	
-	/* The period of the heartbeat messages (in seconds) */
+	/* The period of the heartbeat messages (in milliseconds) */
 	
-	static final int HEARTBEAT_PERIOD = 5;
+	static final int HEARTBEAT_PERIOD = 5000;
 	
 	/* The port that the knock knock messages are sent */
 	

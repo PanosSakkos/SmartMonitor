@@ -62,20 +62,15 @@ public class DataAggregatorAsyncTask extends AsyncTask {
 			
 		}
 		
-		FrequencyClustering frequencyClustering; 
+		FrequencyClustering.clusterFrequencies(ISmartMonitor.OUTPUT_PEAKS, xAxisPeaks);
+		master.setModalFrequencies(AccelerationAxis.X, FrequencyClustering.getMeans());
+		
+		FrequencyClustering.clusterFrequencies(ISmartMonitor.OUTPUT_PEAKS, xAxisPeaks);
+		master.setModalFrequencies(AccelerationAxis.Y, FrequencyClustering.getMeans());
 
-		frequencyClustering = new FrequencyClustering(ISmartMonitor.OUTPUT_PEAKS, xAxisPeaks);
-		frequencyClustering.cluster();
-		master.setModalFrequencies(AccelerationAxis.X, frequencyClustering.getMeans());
-		
-		frequencyClustering = new FrequencyClustering(ISmartMonitor.OUTPUT_PEAKS, yAxisPeaks);
-		frequencyClustering.cluster();
-		master.setModalFrequencies(AccelerationAxis.Y, frequencyClustering.getMeans());
-		
-		frequencyClustering = new FrequencyClustering(ISmartMonitor.OUTPUT_PEAKS, zAxisPeaks);
-		frequencyClustering.cluster();
-		master.setModalFrequencies(AccelerationAxis.Z, frequencyClustering.getMeans());
-				
+		FrequencyClustering.clusterFrequencies(ISmartMonitor.OUTPUT_PEAKS, xAxisPeaks);
+		master.setModalFrequencies(AccelerationAxis.Z, FrequencyClustering.getMeans());
+
 		return null;
 	}	
 }

@@ -236,7 +236,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 
 	@Override
 	public String getMasterIP() {
-		return (node != null) ? "None" : node.getMasterIP();
+		return (node != null) ? "None" : node.getLowestIP();
 	}
 	
 	private Socket joinSocket;
@@ -412,5 +412,30 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 		notify("Computed modal frequencies");
 		
 		return modalFrequencies;
+	}
+	
+	/***
+	 * In case the Master node is offline, find the new Master node
+	 * and connect.
+	 */
+	
+	protected void disconnectAndRecover() {
+		
+		/* Master node is down, forget his IP address */
+		
+		node.forgetMasterIP();		
+		
+		if(node.getLowestIP() == node.getNodeIP()) {
+			
+			/* This node has to be the new Master */
+
+			connectAsMaster();
+		}
+		else {
+			
+			/* Connect at the lowest IP address */
+			
+			connectAt(node.getLowestIP());
+		}
 	}
 }

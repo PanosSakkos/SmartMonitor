@@ -3,15 +3,21 @@ package di.kdd.smartmonitor.protocol;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.UnknownHostException;
+import java.util.Date;
 import java.util.List;
+import java.util.Timer;
 
 import android.util.Log;
+import di.kdd.smartmonitor.IObserver;
 import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 
-public final class PeerNode extends Node implements Runnable {
+public final class PeerNode extends Node implements Runnable, IObserver {
 	private Socket joinSocket;
 	private ServerSocket commandsServerSocket;
-
+	private PeerHeartbeatsTimerTask heartbeatsTimerTask;
+	private Timer timer;
+	
 	private TimeSynchronization timeSync = new TimeSynchronization();
 
 	private DistributedSystem ds;
@@ -26,7 +32,7 @@ public final class PeerNode extends Node implements Runnable {
 
 	public PeerNode(DistributedSystem ds, Socket joinSocket) {		
 		this.ds = ds;
-		this.joinSocket = joinSocket;
+		this.joinSocket = joinSocket;		
 
 		/* Start command-serving thread */
 
@@ -44,6 +50,23 @@ public final class PeerNode extends Node implements Runnable {
 
 		android.os.Debug.waitForDebugger();
 
+		/* Start heartbeats timer task */
+
+		try {
+			heartbeatsTimerTask = new PeerHeartbeatsTimerTask(joinSocket.getInetAddress().toString());
+			heartbeatsTimerTask.subscribe(this);
+			timer = new Timer();
+			timer.schedule(heartbeatsTimerTask, new Date(), ISmartMonitor.HEARTBEAT_PERIOD);	
+			
+			Log.i(TAG, "Started heartbeats");
+		}
+		catch (Exception e) {
+			Log.e(TAG, "Failed to connect at heartbeats port at " + joinSocket.getInetAddress().toString());
+			e.printStackTrace();
+			
+			return;
+		}
+		
 		try {
 			commandsServerSocket = new ServerSocket(ISmartMonitor.COMMAND_PORT);		
 			commandsServerSocket.setReuseAddress(true);
@@ -55,6 +78,10 @@ public final class PeerNode extends Node implements Runnable {
 			return;
 		}
 
+		/* Keep Master's IP address */
+		
+		peerData.setMasterIP(joinSocket.getInetAddress().toString());
+		
 		Log.i(TAG, "Joining the system");
 		
 		try {
@@ -194,5 +221,13 @@ public final class PeerNode extends Node implements Runnable {
 	@Override
 	public boolean isMaster() {
 		return false;
+	}
+
+	@Override
+	public void update(String message) {
+		
+		/* Master failed, disconnect and recover */
+		
+		ds.disconnectAndRecover();
 	}
 }

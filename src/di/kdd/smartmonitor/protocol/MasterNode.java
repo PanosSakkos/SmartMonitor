@@ -18,6 +18,7 @@ import di.kdd.smartmonitor.protocol.exceptions.SamplerException;
 public final class MasterNode extends Node implements IObserver {	
 	private DistributedSystem ds;
 	private JoinThread joinThread;
+	private MasterHeartbeatsThread heartbeatsThread;
 	private List<Socket> commandSockets = new ArrayList<Socket>();
 
 	private List<Float> xAxisFrequencies = new ArrayList<Float>();
@@ -32,6 +33,9 @@ public final class MasterNode extends Node implements IObserver {
 		
 		joinThread = new JoinThread(peerData);
 		joinThread.start();
+		
+		heartbeatsThread = new MasterHeartbeatsThread(peerData);
+		heartbeatsThread.start();
 	}
 
 	/* IObserver implementation */
@@ -161,6 +165,10 @@ public final class MasterNode extends Node implements IObserver {
 			joinThread.interrupt();
 		}
 		
+		if(heartbeatsThread != null) {
+			heartbeatsThread.interrupt();
+		}
+		
 		for(Socket commandSocket : commandSockets) {
 			try {
 				commandSocket.close();
@@ -186,12 +194,15 @@ public final class MasterNode extends Node implements IObserver {
 		switch(axis){
 		case X:
 			xAxisFrequencies = frequencies;
+			ds.notify("Got modal frequencies for X axis");
 			break;
 		case Y:
 			yAxisFrequencies = frequencies;
+			ds.notify("Got modal frequencies for Y axis");
 			break;
 		case Z:
 			zAxisFrequencies = frequencies;
+			ds.notify("Got modal frequencies for Z axis");
 			break;
 		}
 	}

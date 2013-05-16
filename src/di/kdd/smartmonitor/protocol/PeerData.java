@@ -18,9 +18,24 @@ import android.util.Log;
 
 public class PeerData implements IObservable {
 	private IObserver masterNodeObserver;
-	private Set<String> peerIPs = new TreeSet<String>();
+	private String nodeIP;
+	private String masterIP;
+	private TreeSet<String> peerIPs = new TreeSet<String>();
 
 	private static final String TAG = "peer data";
+	
+	public String getNodeIP() {
+		return nodeIP;
+	}
+	
+	public void setMasterIP(String masterIP) {
+		
+		if(masterIP.charAt(0) == '/') {
+			masterIP = masterIP.substring(1);
+		}
+
+		this.masterIP = masterIP;
+	}
 	
 	/* IObservable implementation */
 	
@@ -60,6 +75,10 @@ public class PeerData implements IObservable {
 			
 			Log.i(TAG, "Added " + ip);
 			
+			if(nodeIP == null) {
+				nodeIP = ip;
+			}
+			
 			/* Notify the Master node about the new peer's IP address
 			 * in order to broadcast the new IP to the peers.
 			 */
@@ -93,6 +112,12 @@ public class PeerData implements IObservable {
 	 */
 	
 	public synchronized void removePeerIP(String ip) {
+		/* Remove the / character that is added from the socket.getInetAddress method */
+
+		if(ip.charAt(0) == '/') {
+			ip = ip.substring(1);
+		}
+
 		peerIPs.remove(ip);
 		
 		Log.i(TAG, "Removed peer IP addres: " + ip);
@@ -105,9 +130,16 @@ public class PeerData implements IObservable {
 	 */
 	
 	public synchronized String getLowestIP() {
-		return Collections.min(peerIPs);
+		return peerIPs.first();
 	}
-		
+			
+	public synchronized void forgetMasterIP() {
+		Log.i(TAG, "Forgeting Master's IP adddress " + masterIP);
+
+		peerIPs.remove(masterIP);
+		masterIP = null;
+	}
+	
 	/***
 	 * Return the IP addresses of the peers, separated by a new line character
 	 */
