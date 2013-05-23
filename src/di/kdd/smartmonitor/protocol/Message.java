@@ -101,9 +101,11 @@ Log.d("message", line);
 	public void addToPaylod(String data) {
 		if(payload == null) {
 			payload = new String();
+			payload = data;
 		}
-		
-		payload += "\n" + data;
+		else {
+			payload += "\n" + data;			
+		}		
 	}
 	
 	/***

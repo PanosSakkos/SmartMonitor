@@ -17,9 +17,9 @@ public class DumpDatabaseTask extends AsyncTask<Void, Void, Boolean> {
 	
 	/* Names of the dump files */
 	
-	private static final String DUMP_X_FILENAME = "x_dump.txt";
-	private static final String DUMP_Y_FILENAME = "y_dump.txt";
-	private static final String DUMP_Z_FILENAME = "z_dump.txt";		
+	private static final String DUMP_X_FILENAME = "x_accelerations_dump.txt";
+	private static final String DUMP_Y_FILENAME = "y_accelerations_dump.txt";
+	private static final String DUMP_Z_FILENAME = "z_accelerations_dump.txt";		
 
 	private IObserver observer;
 	private AccelerationsSQLiteHelper database;
@@ -32,7 +32,7 @@ public class DumpDatabaseTask extends AsyncTask<Void, Void, Boolean> {
 	}
 	
 	/***
-	 * Creates the BUILD_MON_FOLDER, if it doesn't exist
+	 * Creates the SMART_MONITOR_FOLDER, if it doesn't exist
 	 */
 	
 	private void createSmartMonitorFolder() {

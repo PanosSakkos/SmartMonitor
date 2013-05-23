@@ -3,12 +3,14 @@ package di.kdd.smartmonitor.protocol;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Timer;
 
 import android.util.Log;
 import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 import di.kdd.smartmonitor.protocol.exceptions.TagException;
 
 public class JoinThread extends Thread {
+
 	private PeerData peerData;
 	ServerSocket joinSocket;
 

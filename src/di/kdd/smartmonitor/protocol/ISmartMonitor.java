@@ -2,7 +2,9 @@ package di.kdd.smartmonitor.protocol;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.List;
 
+import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
 import di.kdd.smartmonitor.ISampler;
 import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
 import di.kdd.smartmonitor.protocol.exceptions.MasterException;
@@ -12,7 +14,11 @@ public interface ISmartMonitor {
 	
 	/* The period of the heartbeat messages (in milliseconds) */
 	
-	static final int HEARTBEAT_PERIOD = 5000;
+	static final int HEARTBEATS_PERIOD = 5000;
+	
+	/* Period of time synchronizing (in milliseconds) */
+	
+	static final int TIME_SYNC_PERIOD = 5000;
 	
 	/* The port that the knock knock messages are sent */
 	
@@ -39,15 +45,19 @@ public interface ISmartMonitor {
 	/* The number of the modal frequencies that the system will report after the computation */
 	
 	static final int OUTPUT_PEAKS = 5;
+		
+	/* The number of windows that the peaks will be found in*/
 	
-	/* Number of the FFT points (must be a power of 2) */
-	
-	static final int FFT_Length = 128;
-	
-	/* The window size in which the peaks are found */
-	
-	static final int PEAK_PEEKING_WINDOW = 10;
+	static final int NO_WINDOWS = 10;
 
+	/* If set, dumps the acceleration timeseries and the frequencies */ 
+	
+	static final boolean DUMP = true;
+	
+	static final String DUMP_X_FREQUENCIES_FILENAME = "x_frequencies_dump.txt";
+	static final String DUMP_Y_FREQUENCIES_FILENAME = "y_frequencies_dump.txt";
+	static final String DUMP_Z_FREQUENCIES_FILENAME = "z_frequencies_dump.txt";
+	
 	/* Message tags */
 	
 	public enum Tag { JOIN, PEER_DATA, NEW_PEER, SYNC, HEARTBEAT, START_SAMPLING, STOP_SAMPLING, SEND_PEAKS , 
@@ -127,12 +137,20 @@ public interface ISmartMonitor {
 	 */
 	
 	public void computeModalFrequencies() throws MasterException, ConnectException;
+
+	/***
+	 * Returns the modal frequencies of the requested axis (if they are first computed
+	 * @param axis Axis to return its modal frequencies
+	 * @return Modal frequencies of the target Axis
+	 */
+	
+	public List<Float> getModalFrequencies(AccelerationAxis axis);	
 	
 	/***
 	 * Broadcasts command to all nodes, to delete their databases
 	 * @throws MasterException If the asked node is not the Master node
 	 * @throws ConnectException When the node is not connected to the system
-	 */
+	 */	
 	
 	public void deleteDatabase() throws MasterException, ConnectException;
 	

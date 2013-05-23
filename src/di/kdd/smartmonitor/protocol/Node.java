@@ -4,13 +4,59 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
+import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
 import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 import di.kdd.smartmonitor.protocol.exceptions.TagException;
 
 import android.util.Log;
 
 public abstract class Node extends Thread {
+	protected DistributedSystem ds;
+	
+	/* Modal frequencies for each Axis */
+	
+	protected List<Float> xAxisFrequencies = new ArrayList<Float>();
+	protected List<Float> yAxisFrequencies = new ArrayList<Float>();
+	protected List<Float> zAxisFrequencies = new ArrayList<Float>();
+
+	public List<Float> getAxisFrequencies(AccelerationAxis axis) {
+		switch(axis) {
+		case X:
+			return xAxisFrequencies;
+		case Y:
+			return yAxisFrequencies;
+		case Z:
+			return zAxisFrequencies;
+		default:
+			return null;
+		}		
+	}
+	
+	/* Sets the global modal frequencies of the system. 
+	 * Must be called from the DataAggregatorAsyncTask, after 
+	 * receiving the node peaks and computing the global frequencies 
+	 */ 
+
+	protected void setModalFrequencies(AccelerationAxis axis, List<Float> frequencies) {
+		switch(axis){
+		case X:
+			xAxisFrequencies = frequencies;
+			ds.notify("Got modal frequencies for X axis");
+			break;
+		case Y:
+			yAxisFrequencies = frequencies;
+			ds.notify("Got modal frequencies for Y axis");
+			break;
+		case Z:
+			zAxisFrequencies = frequencies;
+			ds.notify("Got modal frequencies for Z axis");
+			break;
+		}
+	}
+	
 	protected PeerData peerData = new PeerData();
 	
 	private static final String TAG = "node";
@@ -26,7 +72,7 @@ public abstract class Node extends Thread {
 	public String getNodeIP() {
 		return peerData.getNodeIP();
 	}
-	
+
 	public void forgetMasterIP() {
 		peerData.forgetMasterIP();
 	}

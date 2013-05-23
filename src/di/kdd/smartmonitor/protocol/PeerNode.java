@@ -19,8 +19,6 @@ public final class PeerNode extends Node implements Runnable, IObserver {
 	private Timer timer;
 	
 	private TimeSynchronization timeSync = new TimeSynchronization();
-
-	private DistributedSystem ds;
 	
 	private static final String TAG = "peer";
 
@@ -56,7 +54,7 @@ public final class PeerNode extends Node implements Runnable, IObserver {
 			heartbeatsTimerTask = new PeerHeartbeatsTimerTask(joinSocket.getInetAddress().toString());
 			heartbeatsTimerTask.subscribe(this);
 			timer = new Timer();
-			timer.schedule(heartbeatsTimerTask, new Date(), ISmartMonitor.HEARTBEAT_PERIOD);	
+			timer.schedule(heartbeatsTimerTask, new Date(), ISmartMonitor.HEARTBEATS_PERIOD);	
 			
 			Log.i(TAG, "Started heartbeats");
 		}

@@ -36,9 +36,9 @@
             android:id="@+id/ipText"
             android:layout_width="300dp"
             android:layout_height="100dp"
-            android:textAlignment="center"
-            android:text="@string/connect_at_ip" />
-
+            android:layout_weight="0.92"
+            android:text="@string/connect_at_ip"
+            android:textAlignment="center" />
     </LinearLayout>
 
     <Button

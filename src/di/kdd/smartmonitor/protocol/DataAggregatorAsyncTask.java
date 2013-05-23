@@ -25,15 +25,19 @@ public class DataAggregatorAsyncTask extends AsyncTask {
 	protected Object doInBackground(Object... arg0) {
 		List<Message> peakMessages = new ArrayList<Message>();
 		
+		Log.i(TAG, "Aggregating peaks");
+		
 		/* Receive peaks from each node */
 		
 		for(Socket socket : sockets) {
 			try {
 				peakMessages.add(Node.receive(socket));
-			} catch (IOException e) {
+			} 
+			catch (IOException e) {
 				Log.e(TAG, "Failed to receive peaks of a node: " + e.getMessage());
 				e.printStackTrace();
-			} catch (ClassNotFoundException e) {
+			} 
+			catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		}
@@ -45,30 +49,47 @@ public class DataAggregatorAsyncTask extends AsyncTask {
 		List<Float> zAxisPeaks = new ArrayList<Float>();
 		
 		for(Message message : peakMessages) {
-
+			
 			/* Parse peaks for each Axis (X, Y and Z) */
 			
-			for(int i = 0; i < ISmartMonitor.NO_PEAKS; i++) {
+			int i;
+			
+			for(i = 0; i < ISmartMonitor.NO_PEAKS; i++) {
 				xAxisPeaks.add(Float.parseFloat(message.getPayloadAt(i)));
 			}
 			
-			for(int i = ISmartMonitor.NO_PEAKS; i < 2 * ISmartMonitor.NO_PEAKS; i++) {
+			for(; i < 2 * ISmartMonitor.NO_PEAKS; i++) {
 				yAxisPeaks.add(Float.parseFloat(message.getPayloadAt(i)));
 			}
 			
-			for(int i = 0; i < 3 * ISmartMonitor.NO_PEAKS; i++) {
+			for(; i < 3 * ISmartMonitor.NO_PEAKS; i++) {
 				zAxisPeaks.add(Float.parseFloat(message.getPayloadAt(i)));
-			}
-			
+			}			
 		}
 		
+		/* Add this node's peaks */
+
+		int i;
+
+		for(i = 0; i < ISmartMonitor.NO_PEAKS; i++) {
+			xAxisPeaks.add(master.getModalFrequencies().get(i));
+		}
+		
+		for(; i < 2 * ISmartMonitor.NO_PEAKS; i++) {
+			yAxisPeaks.add(master.getModalFrequencies().get(i));
+		}
+
+		for(; i < 3 * ISmartMonitor.NO_PEAKS; i++) {
+			zAxisPeaks.add(master.getModalFrequencies().get(i));
+		}
+
 		FrequencyClustering.clusterFrequencies(ISmartMonitor.OUTPUT_PEAKS, xAxisPeaks);
 		master.setModalFrequencies(AccelerationAxis.X, FrequencyClustering.getMeans());
 		
-		FrequencyClustering.clusterFrequencies(ISmartMonitor.OUTPUT_PEAKS, xAxisPeaks);
+		FrequencyClustering.clusterFrequencies(ISmartMonitor.OUTPUT_PEAKS, yAxisPeaks);
 		master.setModalFrequencies(AccelerationAxis.Y, FrequencyClustering.getMeans());
 
-		FrequencyClustering.clusterFrequencies(ISmartMonitor.OUTPUT_PEAKS, xAxisPeaks);
+		FrequencyClustering.clusterFrequencies(ISmartMonitor.OUTPUT_PEAKS, zAxisPeaks);
 		master.setModalFrequencies(AccelerationAxis.Z, FrequencyClustering.getMeans());
 
 		return null;

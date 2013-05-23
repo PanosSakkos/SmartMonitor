@@ -3,6 +3,7 @@ package di.kdd.smartmonitor.protocol;
 import java.io.IOException;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -16,26 +17,36 @@ import di.kdd.smartmonitor.protocol.exceptions.MasterException;
 import di.kdd.smartmonitor.protocol.exceptions.SamplerException;
 
 public final class MasterNode extends Node implements IObserver {	
-	private DistributedSystem ds;
+
 	private JoinThread joinThread;
 	private MasterHeartbeatsThread heartbeatsThread;
+	
+	private Timer timeSyncTimer;
+	private TimeSynchronizationTimerTask timeSynchronizationTimerTask;
+
 	private List<Socket> commandSockets = new ArrayList<Socket>();
 
-	private List<Float> xAxisFrequencies = new ArrayList<Float>();
-	private List<Float> yAxisFrequencies = new ArrayList<Float>();
-	private List<Float> zAxisFrequencies = new ArrayList<Float>();
+	private List<Float> modalFrequencies;
 	
-	private static final String TAG = "master";	
+	private static final String TAG = "master";		
+		
+	public List<Float> getModalFrequencies() {
+		return modalFrequencies;
+	}
 	
 	public MasterNode(DistributedSystem ds) {
 		peerData.subscribe(this);
 		this.ds = ds;
-		
+
 		joinThread = new JoinThread(peerData);
 		joinThread.start();
 		
 		heartbeatsThread = new MasterHeartbeatsThread(peerData);
 		heartbeatsThread.start();
+		
+		timeSynchronizationTimerTask = new TimeSynchronizationTimerTask(commandSockets);
+		timeSyncTimer = new Timer();
+		timeSyncTimer.schedule(timeSynchronizationTimerTask, new Date(), ISmartMonitor.TIME_SYNC_PERIOD);
 	}
 
 	/* IObserver implementation */
@@ -139,7 +150,7 @@ public final class MasterNode extends Node implements IObserver {
 		broadcastCommand(new Message(Tag.SEND_PEAKS));
 
 		try {
-		ds.computeModalFrequenciesCommand();
+			modalFrequencies = ds.computeModalFrequenciesCommand();
 		}
 		catch (Exception e) {
 			Log.e(TAG, "Error while computing modal frequencies: " + e.getMessage());
@@ -155,6 +166,11 @@ public final class MasterNode extends Node implements IObserver {
 	
 	public void dumpDatabase() {
 		broadcastCommand(new Message(Tag.DUMP_DATA));
+	}
+	
+	public void aggregatePeaks() {
+		DataAggregatorAsyncTask dataAggregator = new DataAggregatorAsyncTask(commandSockets, this);
+		dataAggregator.execute();
 	}
 	
 	@Override
@@ -183,27 +199,5 @@ public final class MasterNode extends Node implements IObserver {
 	@Override
 	public boolean isMaster() {
 		return true;
-	}
-	
-	/* Sets the global modal frequencies of the system. 
-	 * Must be called from the DataAggregatorAsyncTask, after 
-	 * receiving the node peaks and computing the global frequencies 
-	 */ 
-	
-	protected void setModalFrequencies(AccelerationAxis axis, List<Float> frequencies) {
-		switch(axis){
-		case X:
-			xAxisFrequencies = frequencies;
-			ds.notify("Got modal frequencies for X axis");
-			break;
-		case Y:
-			yAxisFrequencies = frequencies;
-			ds.notify("Got modal frequencies for Y axis");
-			break;
-		case Z:
-			zAxisFrequencies = frequencies;
-			ds.notify("Got modal frequencies for Z axis");
-			break;
-		}
-	}
+	}	
 }
