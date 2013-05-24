@@ -139,6 +139,17 @@ public interface ISmartMonitor {
 	public void computeModalFrequencies() throws MasterException, ConnectException;
 
 	/***
+	 * If the message receiver is the Master node, asks for the peaks of the peers
+	 * within the times that are given and computes the building's signature.
+	 * @param from start time, in epoch 
+	 * @param to end time, in epoch
+	 * @throws MasterException
+	 * @throws ConnectException
+	 */
+	
+	public void computeModalFrequencies(long from, long to)  throws MasterException, ConnectException;
+	
+	/***
 	 * Returns the modal frequencies of the requested axis (if they are first computed
 	 * @param axis Axis to return its modal frequencies
 	 * @return Modal frequencies of the target Axis

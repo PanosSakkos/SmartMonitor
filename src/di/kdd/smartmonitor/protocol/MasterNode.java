@@ -157,6 +157,23 @@ public final class MasterNode extends Node implements IObserver {
 		}				
 	}	
 
+	public void computeModalFrequencies(long from, long to) {
+		Message computeModalFrequenciesMessage = new Message(Tag.SEND_PEAKS);
+		computeModalFrequenciesMessage.addToPaylod(Long.toString(from));
+		computeModalFrequenciesMessage.addToPaylod(Long.toString(to));
+		
+		broadcastCommand(computeModalFrequenciesMessage);
+
+		try {
+			modalFrequencies = ds.computeModalFrequenciesCommand(from, to);
+		}
+		catch (Exception e) {
+			Log.e(TAG, "Error while computing modal frequencies: " + e.getMessage());
+			e.printStackTrace();
+		}				
+
+	}	
+	
 	public void deleteDatabase() {
 		broadcastCommand(new Message(Tag.DELETE_DATA));
 	}
@@ -198,5 +215,5 @@ public final class MasterNode extends Node implements IObserver {
 	@Override
 	public boolean isMaster() {
 		return true;
-	}	
+	}
 }

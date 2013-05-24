@@ -236,6 +236,21 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 		notify("Computing modal frequencies");
 	}
 
+	public void computeModalFrequencies(long from, long to) throws MasterException, ConnectException {
+		if(node == null) {
+			throw new ConnectException();
+		}
+
+		if(node.isMaster() == false) {
+			throw new MasterException();
+		}
+		
+		((MasterNode) node).computeModalFrequencies(from, to);
+		
+		notify("Computing modal frequencies");
+	}
+
+	
 	@Override
 	public List<Float> getModalFrequencies(AccelerationAxis axis) {
 		return node.getAxisFrequencies(axis);
@@ -494,6 +509,31 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 		return modalFrequencies;
 	}
 		
+	public List<Float> computeModalFrequenciesCommand(long from, long to) {
+		ArrayList<Float> modalFrequencies = new ArrayList<Float>();
+		
+		if(db == null) {
+			notify("Cannot compute modal frequencies, database is not set");
+			return null;
+		}
+
+		/* Compute the modal frequencies of each axis, within the given times */
+
+		modalFrequencies.addAll(computeModalFrequenciesInAxis(from, to, AccelerationAxis.X));
+		modalFrequencies.addAll(computeModalFrequenciesInAxis(from, to, AccelerationAxis.Y));
+		modalFrequencies.addAll(computeModalFrequenciesInAxis(from, to, AccelerationAxis.Z));
+
+		notify("Computed modal frequencies");
+
+		if(node.isMaster()) {
+			((MasterNode) node).aggregatePeaks();
+			notify("Aggregating peaks");
+		}
+		
+		return modalFrequencies;
+	}
+
+	
 	/***
 	 * In case the Master node is offline, find the new Master node
 	 * and connect.
