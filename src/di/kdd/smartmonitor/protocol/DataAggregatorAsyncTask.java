@@ -6,18 +6,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
+import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 
 import android.os.AsyncTask;
 import android.util.Log;
 
 public class DataAggregatorAsyncTask extends AsyncTask {
-	private List<Socket> sockets;
+	private List<Socket> peerSockets;
 	MasterNode master;
 	
 	private static final String TAG = "data aggregator";
 	
 	public DataAggregatorAsyncTask(List<Socket> sockets, MasterNode master) {
-		this.sockets = sockets;
+		this.peerSockets = sockets;
 		this.master = master;
 	}
 	
@@ -29,9 +30,9 @@ public class DataAggregatorAsyncTask extends AsyncTask {
 		
 		/* Receive peaks from each node */
 		
-		for(Socket socket : sockets) {
+		for(Socket peerSocket : peerSockets) {
 			try {
-				peakMessages.add(Node.receive(socket));
+				peakMessages.add(Node.receive(peerSocket));
 			} 
 			catch (IOException e) {
 				Log.e(TAG, "Failed to receive peaks of a node: " + e.getMessage());
@@ -74,7 +75,7 @@ public class DataAggregatorAsyncTask extends AsyncTask {
 		for(i = 0; i < ISmartMonitor.NO_PEAKS; i++) {
 			xAxisPeaks.add(master.getModalFrequencies().get(i));
 		}
-		
+
 		for(; i < 2 * ISmartMonitor.NO_PEAKS; i++) {
 			yAxisPeaks.add(master.getModalFrequencies().get(i));
 		}
@@ -83,15 +84,48 @@ public class DataAggregatorAsyncTask extends AsyncTask {
 			zAxisPeaks.add(master.getModalFrequencies().get(i));
 		}
 
+		List<Float> xGlobalModalFrequencies;
+		List<Float> yGlobalModalFrequencies;
+		List<Float> zGlobalModalFrequencies;
+		
 		FrequencyClustering.clusterFrequencies(ISmartMonitor.OUTPUT_PEAKS, xAxisPeaks);
-		master.setModalFrequencies(AccelerationAxis.X, FrequencyClustering.getMeans());
+		xGlobalModalFrequencies = FrequencyClustering.getMeans();
+		master.setModalFrequencies(AccelerationAxis.X, xGlobalModalFrequencies);
 		
 		FrequencyClustering.clusterFrequencies(ISmartMonitor.OUTPUT_PEAKS, yAxisPeaks);
-		master.setModalFrequencies(AccelerationAxis.Y, FrequencyClustering.getMeans());
+		yGlobalModalFrequencies = FrequencyClustering.getMeans();
+		master.setModalFrequencies(AccelerationAxis.Y, yGlobalModalFrequencies);
 
 		FrequencyClustering.clusterFrequencies(ISmartMonitor.OUTPUT_PEAKS, zAxisPeaks);
-		master.setModalFrequencies(AccelerationAxis.Z, FrequencyClustering.getMeans());
+		zGlobalModalFrequencies = FrequencyClustering.getMeans();
+		master.setModalFrequencies(AccelerationAxis.Z, zGlobalModalFrequencies);
 
+		/* Replicate modal frequencies to the rest of the system's nodes */
+		
+		Message modalFrequenciesMessage = new Message(Tag.MODAL_FREQUENCIES);
+		
+		for(Float frequency : xGlobalModalFrequencies) {
+			modalFrequenciesMessage.addToPaylod(Float.toString(frequency));
+		}
+		
+		for(Float frequency : yGlobalModalFrequencies) {
+			modalFrequenciesMessage.addToPaylod(Float.toString(frequency));
+		}
+		
+		for(Float frequency : zGlobalModalFrequencies) {
+			modalFrequenciesMessage.addToPaylod(Float.toString(frequency));
+		}
+		
+		for(Socket peerSocket : peerSockets) {
+			try {
+				Node.send(peerSocket, modalFrequenciesMessage);
+			} 
+			catch (IOException e) {
+				Log.e(TAG, "Failed to replicate modal frequencies to a peer node");
+				e.printStackTrace();
+			}
+		}
+		
 		return null;
 	}	
 }

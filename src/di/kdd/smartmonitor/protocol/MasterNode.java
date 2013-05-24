@@ -145,8 +145,7 @@ public final class MasterNode extends Node implements IObserver {
 	 * computes the modal frequencies from all the peaks
 	 */
 	
-	public void computeModalFrequencies(){
-
+	public void computeModalFrequencies() {
 		broadcastCommand(new Message(Tag.SEND_PEAKS));
 
 		try {
@@ -155,9 +154,7 @@ public final class MasterNode extends Node implements IObserver {
 		catch (Exception e) {
 			Log.e(TAG, "Error while computing modal frequencies: " + e.getMessage());
 			e.printStackTrace();
-		}
-		
-		
+		}				
 	}	
 
 	public void deleteDatabase() {
@@ -184,6 +181,8 @@ public final class MasterNode extends Node implements IObserver {
 		if(heartbeatsThread != null) {
 			heartbeatsThread.interrupt();
 		}
+		
+		timeSyncTimer.cancel();
 		
 		for(Socket commandSocket : commandSockets) {
 			try {

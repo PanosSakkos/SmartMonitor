@@ -4,12 +4,14 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 
 import android.util.Log;
 import di.kdd.smartmonitor.IObserver;
+import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
 import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
 
 public final class PeerNode extends Node implements Runnable, IObserver {
@@ -170,10 +172,41 @@ public final class PeerNode extends Node implements Runnable, IObserver {
 					for(Float frequency : modalFrequencies) {
 						peaksMessage.addToPaylod(Float.toString(frequency));
 					}
-
+					
 					Node.send(masterSocket, peaksMessage);
 					
-					Log.i(TAG, "Sent modal frequencies to Master node");
+					Log.i(TAG, "Sent local peaks to Master node");
+					
+					Message modalFrequenciesMessage = Node.receive(masterSocket, Tag.MODAL_FREQUENCIES);
+					
+					List<Float> xAxisModalFrequencies = new ArrayList<Float>();
+					List<Float> yAxisModalFrequencies = new ArrayList<Float>();
+					List<Float> zAxisModalFrequencies = new ArrayList<Float>();
+
+					int i;
+					for(i = 0; i < ISmartMonitor.OUTPUT_PEAKS; i++) {
+						xAxisModalFrequencies.add(Float.parseFloat(modalFrequenciesMessage.getPayloadAt(i)));
+					}
+
+					setModalFrequencies(AccelerationAxis.X, xAxisModalFrequencies);
+					
+					for(; i < 2 * ISmartMonitor.OUTPUT_PEAKS; i++) {
+						yAxisModalFrequencies.add(Float.parseFloat(modalFrequenciesMessage.getPayloadAt(i)));
+					}
+
+					setModalFrequencies(AccelerationAxis.Y, yAxisModalFrequencies);
+
+					for(; i < 3 * ISmartMonitor.OUTPUT_PEAKS; i++) {
+						zAxisModalFrequencies.add(Float.parseFloat(modalFrequenciesMessage.getPayloadAt(i)));
+					}
+
+					setModalFrequencies(AccelerationAxis.Z, zAxisModalFrequencies);
+					
+					Log.i(TAG, "Received global modal frequencies from Master node");		
+					
+					for(int j = 0; j < ISmartMonitor.OUTPUT_PEAKS; j++) {
+						Log.i(TAG, modalFrequenciesMessage.getPayloadAt(j));
+					}
 					break;
 				case DELETE_DATA:
 					Log.i(TAG, "Received DELETE_DATA command");

@@ -14,11 +14,11 @@ public interface ISmartMonitor {
 	
 	/* The period of the heartbeat messages (in milliseconds) */
 	
-	static final int HEARTBEATS_PERIOD = 5000;
+	static final int HEARTBEATS_PERIOD = 50000;
 	
 	/* Period of time synchronizing (in milliseconds) */
 	
-	static final int TIME_SYNC_PERIOD = 5000;
+	static final int TIME_SYNC_PERIOD = 50000;
 	
 	/* The port that the knock knock messages are sent */
 	
@@ -61,7 +61,7 @@ public interface ISmartMonitor {
 	/* Message tags */
 	
 	public enum Tag { JOIN, PEER_DATA, NEW_PEER, SYNC, HEARTBEAT, START_SAMPLING, STOP_SAMPLING, SEND_PEAKS , 
-																	AGGREGATE_PEAKS, DELETE_DATA, DUMP_DATA };
+												AGGREGATE_PEAKS, MODAL_FREQUENCIES, DELETE_DATA, DUMP_DATA };
 		
 	/***
 	 * Connects to the distributed system.
