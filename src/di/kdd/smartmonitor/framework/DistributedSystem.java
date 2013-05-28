@@ -1,4 +1,4 @@
-package di.kdd.smartmonitor.protocol;
+package di.kdd.smartmonitor.framework;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -20,15 +20,12 @@ import di.kdd.smartmonitor.AccelerationsSQLiteHelper;
 import di.kdd.smartmonitor.Complex;
 import di.kdd.smartmonitor.DumpDatabaseTask;
 import di.kdd.smartmonitor.FFT;
-import di.kdd.smartmonitor.IObservable;
-import di.kdd.smartmonitor.IObserver;
-import di.kdd.smartmonitor.ISampler;
 import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
-import di.kdd.smartmonitor.protocol.ConnectAsyncTask.ConnectionStatus;
-import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
-import di.kdd.smartmonitor.protocol.exceptions.DatabaseException;
-import di.kdd.smartmonitor.protocol.exceptions.MasterException;
-import di.kdd.smartmonitor.protocol.exceptions.SamplerException;
+import di.kdd.smartmonitor.framework.ConnectAsyncTask.ConnectionStatus;
+import di.kdd.smartmonitor.framework.exceptions.ConnectException;
+import di.kdd.smartmonitor.framework.exceptions.DatabaseException;
+import di.kdd.smartmonitor.framework.exceptions.MasterException;
+import di.kdd.smartmonitor.framework.exceptions.SamplerException;
 
 public class DistributedSystem implements ISmartMonitor, IObservable, IObserver {
 	private ISampler sampler;
@@ -144,7 +141,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 	}
 	
 	@Override
-	public void startSampling() throws MasterException, ConnectException, SamplerException, IOException {		
+	public void startSampling() throws MasterException, ConnectException, SamplerException {		
 		if(node == null) {
 			throw new ConnectException();
 		}
@@ -167,7 +164,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 	}
 
 	@Override
-	public void stopSampling() throws MasterException, ConnectException, SamplerException, IOException {
+	public void stopSampling() throws MasterException, ConnectException, SamplerException {
 		if(node == null) {
 			throw new ConnectException();
 		}
@@ -189,6 +186,11 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 		notify("Stoped sampling");
 	}
 	
+	@Override
+	public boolean isSampling() {
+		return isSampling;
+	}
+		
 	@Override
 	public void deleteDatabase() throws MasterException, ConnectException {
 		if(node == null) {
@@ -221,11 +223,6 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 		notify("Dumped database");		
 	}
 	
-	@Override
-	public boolean isSampling() {
-		return isSampling;
-	}
-		
 	@Override
 	public void computeModalFrequencies() throws MasterException, ConnectException {
 		if(node == null) {

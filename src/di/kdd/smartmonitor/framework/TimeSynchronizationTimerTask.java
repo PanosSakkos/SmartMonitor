@@ -1,4 +1,4 @@
-package di.kdd.smartmonitor.protocol;
+package di.kdd.smartmonitor.framework;
 
 import java.io.IOException;
 import java.net.Socket;

@@ -1,4 +1,4 @@
-package di.kdd.smartmonitor.protocol;
+package di.kdd.smartmonitor.framework;
 
 import java.io.IOException;
 import java.util.Collections;
@@ -6,8 +6,6 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
-import di.kdd.smartmonitor.IObservable;
-import di.kdd.smartmonitor.IObserver;
 
 import android.util.Log;
 

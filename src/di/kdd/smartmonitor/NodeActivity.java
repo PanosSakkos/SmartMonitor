@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Looper;
 import android.widget.Toast;
-import di.kdd.smartmonitor.protocol.DistributedSystem;
+import di.kdd.smartmonitor.framework.DistributedSystem;
+import di.kdd.smartmonitor.framework.IObserver;
+import di.kdd.smartmonitor.framework.ISampler;
 
 public abstract class NodeActivity extends Activity implements IObserver, ISampler {
 

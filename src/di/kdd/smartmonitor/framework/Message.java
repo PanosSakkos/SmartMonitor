@@ -1,4 +1,4 @@
-package di.kdd.smartmonitor.protocol;
+package di.kdd.smartmonitor.framework;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 import android.util.Log;
 
-import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
+import di.kdd.smartmonitor.framework.ISmartMonitor.Tag;
 
 /***
  * The message that is exchanged in every communication under

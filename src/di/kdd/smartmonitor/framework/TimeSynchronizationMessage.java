@@ -1,6 +1,6 @@
-package di.kdd.smartmonitor.protocol;
+package di.kdd.smartmonitor.framework;
 
-import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
+import di.kdd.smartmonitor.framework.ISmartMonitor.Tag;
 
 
 public class TimeSynchronizationMessage extends Message {

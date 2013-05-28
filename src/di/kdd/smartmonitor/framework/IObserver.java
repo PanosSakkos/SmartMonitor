@@ -1,4 +1,4 @@
-package di.kdd.smartmonitor;
+package di.kdd.smartmonitor.framework;
 
 public interface IObserver {
 	

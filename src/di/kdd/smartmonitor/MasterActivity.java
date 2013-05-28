@@ -5,10 +5,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import di.kdd.smart.R;
-import di.kdd.smartmonitor.protocol.ISmartMonitor;
-import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
-import di.kdd.smartmonitor.protocol.exceptions.MasterException;
-import di.kdd.smartmonitor.protocol.exceptions.SamplerException;
+import di.kdd.smartmonitor.framework.ISmartMonitor;
+import di.kdd.smartmonitor.framework.exceptions.ConnectException;
+import di.kdd.smartmonitor.framework.exceptions.MasterException;
+import di.kdd.smartmonitor.framework.exceptions.SamplerException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -98,9 +98,6 @@ public class MasterActivity extends NodeActivity {
 				samplingButton.setText("Stop Sampling");
 				hideButtons();
 			}
-		}
-		catch(IOException e) {
-			Toast.makeText(this, "Failed to command nodes to start sampling", Toast.LENGTH_LONG).show();						
 		}
 		catch(SamplerException e) {
 			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();												

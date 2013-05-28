@@ -1,4 +1,4 @@
-package di.kdd.smartmonitor.protocol;
+package di.kdd.smartmonitor.framework;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -8,8 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
-import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
-import di.kdd.smartmonitor.protocol.exceptions.TagException;
+import di.kdd.smartmonitor.framework.ISmartMonitor.Tag;
+import di.kdd.smartmonitor.framework.exceptions.TagException;
 
 import android.util.Log;
 

@@ -1,13 +1,11 @@
-package di.kdd.smartmonitor.protocol;
+package di.kdd.smartmonitor.framework;
 
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.TimerTask;
 
-import di.kdd.smartmonitor.IObservable;
-import di.kdd.smartmonitor.IObserver;
-import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
+import di.kdd.smartmonitor.framework.ISmartMonitor.Tag;
 
 import android.util.Log;
 

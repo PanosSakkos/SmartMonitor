@@ -1,4 +1,4 @@
-package di.kdd.smartmonitor.protocol;
+package di.kdd.smartmonitor.framework;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -10,9 +10,8 @@ import java.util.List;
 import java.util.Timer;
 
 import android.util.Log;
-import di.kdd.smartmonitor.IObserver;
 import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
-import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
+import di.kdd.smartmonitor.framework.ISmartMonitor.Tag;
 
 public final class PeerNode extends Node implements Runnable, IObserver {
 	private Socket joinSocket;

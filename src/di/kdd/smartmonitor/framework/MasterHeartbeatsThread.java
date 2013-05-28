@@ -1,11 +1,11 @@
-package di.kdd.smartmonitor.protocol;
+package di.kdd.smartmonitor.framework;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
-import di.kdd.smartmonitor.protocol.exceptions.TagException;
+import di.kdd.smartmonitor.framework.ISmartMonitor.Tag;
+import di.kdd.smartmonitor.framework.exceptions.TagException;
 
 import android.util.Log;
 

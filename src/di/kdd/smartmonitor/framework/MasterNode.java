@@ -1,4 +1,4 @@
-package di.kdd.smartmonitor.protocol;
+package di.kdd.smartmonitor.framework;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -10,11 +10,10 @@ import java.util.TimerTask;
 
 import android.util.Log;
 import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
-import di.kdd.smartmonitor.IObserver;
-import di.kdd.smartmonitor.protocol.ISmartMonitor.Tag;
-import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
-import di.kdd.smartmonitor.protocol.exceptions.MasterException;
-import di.kdd.smartmonitor.protocol.exceptions.SamplerException;
+import di.kdd.smartmonitor.framework.ISmartMonitor.Tag;
+import di.kdd.smartmonitor.framework.exceptions.ConnectException;
+import di.kdd.smartmonitor.framework.exceptions.MasterException;
+import di.kdd.smartmonitor.framework.exceptions.SamplerException;
 
 public final class MasterNode extends Node implements IObserver {	
 
@@ -105,19 +104,20 @@ public final class MasterNode extends Node implements IObserver {
 				if(ds.isSampling()) {
 					ds.stopSampling();
 				}
-			} catch (MasterException e) {
+			} 
+			catch (MasterException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (ConnectException e) {
+			} 
+			catch (ConnectException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (SamplerException e) {
+			} 
+			catch (SamplerException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			} 
+
 			timer.cancel();
 		}		
 	}

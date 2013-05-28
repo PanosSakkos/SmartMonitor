@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
 import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
+import di.kdd.smartmonitor.framework.IObserver;
 
 public class DumpDatabaseTask extends AsyncTask<Void, Void, Boolean> {
 	/* The folder that the dump files are placed under */

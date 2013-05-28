@@ -1,14 +1,13 @@
-package di.kdd.smartmonitor.protocol;
+package di.kdd.smartmonitor.framework;
 
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
 import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
-import di.kdd.smartmonitor.ISampler;
-import di.kdd.smartmonitor.protocol.exceptions.ConnectException;
-import di.kdd.smartmonitor.protocol.exceptions.MasterException;
-import di.kdd.smartmonitor.protocol.exceptions.SamplerException;
+import di.kdd.smartmonitor.framework.exceptions.ConnectException;
+import di.kdd.smartmonitor.framework.exceptions.MasterException;
+import di.kdd.smartmonitor.framework.exceptions.SamplerException;
 
 public interface ISmartMonitor {
 	
@@ -112,7 +111,7 @@ public interface ISmartMonitor {
 	 * @throws IOException When a socket communication fails
 	 */
 	
-	public void startSampling() throws MasterException, ConnectException, SamplerException, IOException;
+	public void startSampling() throws MasterException, ConnectException, SamplerException;
 
 	/***
 	 * Broadcast a STOP_SAMPLING command to all the peers and 
@@ -123,7 +122,7 @@ public interface ISmartMonitor {
 	 * @throws IOException When a socket communication fails
 	 */
 	
-	public void stopSampling() throws MasterException, ConnectException, SamplerException, IOException;
+	public void stopSampling() throws MasterException, ConnectException, SamplerException;
 
 	/***
 	 * Asks the node if is in sampling state

@@ -1,4 +1,4 @@
-package di.kdd.smartmonitor.protocol.exceptions;
+package di.kdd.smartmonitor.framework.exceptions;
 
 public class SamplerException extends Exception {
 
