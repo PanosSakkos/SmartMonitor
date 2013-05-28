@@ -28,9 +28,7 @@ public interface ISmartMonitor {
 
 	static final int HEARBEATS_PORT = 4632;
 	
-	/* The port which the Master sends commands 
-	 * (including the Master's heartbeats 
-	 */
+	/* The port which the Master sends commands */
 
 	static final int COMMAND_PORT = 4633;
 	
@@ -99,6 +97,11 @@ public interface ISmartMonitor {
 	/* Sets the ISampler that will start and stop the sampling process in the node */
 	
 	public void setSampler(ISampler sampler);
+	
+	
+	/* Removes the Sampler that is set to the distributed system, if any */
+	
+	public void removeSampler();
 	
 	/***
 	 * Broadcast a START_SAMPLING command to all the peers and 

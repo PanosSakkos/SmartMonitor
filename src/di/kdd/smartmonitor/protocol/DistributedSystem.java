@@ -139,6 +139,11 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 	}
 	
 	@Override
+	public void removeSampler() {
+		this.sampler = null;
+	}
+	
+	@Override
 	public void startSampling() throws MasterException, ConnectException, SamplerException, IOException {		
 		if(node == null) {
 			throw new ConnectException();
