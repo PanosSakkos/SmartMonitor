@@ -132,6 +132,20 @@ public interface ISmartMonitor {
 	public boolean isSampling();
 	
 	/***
+	 * Returns if the node is Master of the distributed network.
+	 * @return if it's Master or not
+	 */
+	
+	public boolean isMaster();
+	
+	/***
+	 * Returns the IP address of the Master node
+	 * @return Master's IP address
+	 */
+	
+	public String getMasterIP();	
+
+	/***
 	 * If the message receiver is the Master node, asks for the peaks of the peers
 	 * and computes the building's signature.
 	 * @throws MasterException If the asked node is not the Master node
@@ -173,19 +187,5 @@ public interface ISmartMonitor {
 	 * @throws ConnectException When the node is not connected to the system
 	 */
 	
-	public void dumpDatabase() throws MasterException, ConnectException;
-	
-	/***
-	 * Returns if the node is Master of the distributed network.
-	 * @return if it's Master or not
-	 */
-	
-	public boolean isMaster();
-	
-	/***
-	 * Returns the IP address of the Master node
-	 * @return Master's IP address
-	 */
-	
-	public String getMasterIP();	
+	public void dumpDatabase() throws MasterException, ConnectException;	
 }
