@@ -161,10 +161,9 @@ public final class PeerNode extends Node implements Runnable, IObserver {
 					break;
 				case SEND_RESULTS:
 					List<Float> modalFrequencies;
+					Log.i(TAG, "Received SEND_RESULTS command");
 
-					Message peaksMessage = new Message(Tag.AGGREGATE_PEAKS);
-
-					Log.i(TAG, "Received SEND_PEAKS command");
+					Message peaksMessage = new Message(Tag.SEND_RESULTS);
 										
 					modalFrequencies = ds.computeModalFrequenciesCommand();
 					
@@ -174,9 +173,10 @@ public final class PeerNode extends Node implements Runnable, IObserver {
 					
 					Node.send(masterSocket, peaksMessage);
 					
-					Log.i(TAG, "Sent local peaks to Master node");
-					
-					Message modalFrequenciesMessage = Node.receive(masterSocket, Tag.MODAL_FREQUENCIES);
+					Log.i(TAG, "Sent local peaks to Master node");										
+					break;
+				case REPLICATE_RESULTS:
+					Log.i(TAG, "Received REPLICATE_RESULTS command");
 					
 					List<Float> xAxisModalFrequencies = new ArrayList<Float>();
 					List<Float> yAxisModalFrequencies = new ArrayList<Float>();
@@ -184,28 +184,25 @@ public final class PeerNode extends Node implements Runnable, IObserver {
 
 					int i;
 					for(i = 0; i < ISmartMonitor.OUTPUT_PEAKS; i++) {
-						xAxisModalFrequencies.add(Float.parseFloat(modalFrequenciesMessage.getPayloadAt(i)));
+						xAxisModalFrequencies.add(Float.parseFloat(message.getPayloadAt(i)));
 					}
 
 					setModalFrequencies(AccelerationAxis.X, xAxisModalFrequencies);
 					
 					for(; i < 2 * ISmartMonitor.OUTPUT_PEAKS; i++) {
-						yAxisModalFrequencies.add(Float.parseFloat(modalFrequenciesMessage.getPayloadAt(i)));
+						yAxisModalFrequencies.add(Float.parseFloat(message.getPayloadAt(i)));
 					}
 
 					setModalFrequencies(AccelerationAxis.Y, yAxisModalFrequencies);
 
 					for(; i < 3 * ISmartMonitor.OUTPUT_PEAKS; i++) {
-						zAxisModalFrequencies.add(Float.parseFloat(modalFrequenciesMessage.getPayloadAt(i)));
+						zAxisModalFrequencies.add(Float.parseFloat(message.getPayloadAt(i)));
 					}
 
 					setModalFrequencies(AccelerationAxis.Z, zAxisModalFrequencies);
 					
 					Log.i(TAG, "Received global modal frequencies from Master node");		
 					
-					for(int j = 0; j < ISmartMonitor.OUTPUT_PEAKS; j++) {
-						Log.i(TAG, modalFrequenciesMessage.getPayloadAt(j));
-					}
 					break;
 				case DELETE_DATA:
 					Log.i(TAG, "Received DELETE_DATA command");

@@ -7,6 +7,7 @@ import java.util.List;
 
 import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
 import di.kdd.smartmonitor.framework.ISmartMonitor.Tag;
+import di.kdd.smartmonitor.framework.exceptions.TagException;
 
 import android.os.AsyncTask;
 import android.util.Log;
@@ -32,12 +33,17 @@ public class DataAggregatorAsyncTask extends AsyncTask {
 		
 		for(Socket peerSocket : peerSockets) {
 			try {
-				peakMessages.add(Node.receive(peerSocket));
+				Message peakMessage = Node.receive(peerSocket, Tag.SEND_RESULTS);
+				peakMessages.add(peakMessage);
 			} 
 			catch (IOException e) {
 				Log.e(TAG, "Failed to receive peaks of a node: " + e.getMessage());
 				e.printStackTrace();
 			} 
+			catch(TagException e) {
+				Log.e(TAG, "Didn't receive message with SEND_RESULTS Tag");
+				e.printStackTrace();
+			}
 		}
 
 		/* Parse peaks from messages */
@@ -99,7 +105,7 @@ public class DataAggregatorAsyncTask extends AsyncTask {
 
 		/* Replicate modal frequencies to the rest of the system's nodes */
 		
-		Message modalFrequenciesMessage = new Message(Tag.MODAL_FREQUENCIES);
+		Message modalFrequenciesMessage = new Message(Tag.REPLICATE_RESULTS);
 		
 		for(Float frequency : xGlobalModalFrequencies) {
 			modalFrequenciesMessage.addToPaylod(Float.toString(frequency));
