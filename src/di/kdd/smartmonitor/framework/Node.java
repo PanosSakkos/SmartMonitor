@@ -99,11 +99,16 @@ public abstract class Node extends Thread {
 	 * @throws IOException
 	 */
 	
-	protected static Message receive(Socket socket) throws IOException, ClassNotFoundException {
+	protected static Message receive(Socket socket) throws IOException {
 		Log.i(TAG, "Receiving from " + socket.getInetAddress());
 		
-		ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
-		return (Message) in.readObject();
+		try {
+			ObjectInputStream in = new ObjectInputStream(socket.getInputStream());
+			return (Message) in.readObject();
+		}
+		catch(ClassNotFoundException e) {
+			return null;
+		}
 	}
 	
 	/***
@@ -116,22 +121,28 @@ public abstract class Node extends Thread {
 	 * the received message
 	 */
 	
-	protected static Message receive(Socket socket, Tag tag) throws IOException, TagException, ClassNotFoundException {
+	protected static Message receive(Socket socket, Tag tag) throws IOException, TagException {
 		Message message;
 		ObjectInputStream in;
 		
 		Log.i(TAG, "Receiving from " + socket.getInetAddress() + " with desired Tag: " + tag.toString());
 		
-		in = new ObjectInputStream(socket.getInputStream());
-		message = (Message) in.readObject();
-
-		/* Check received message Tag */
-		
-		if(message.getTag() != tag) {
-			throw new TagException();
+		try {
+			in = new ObjectInputStream(socket.getInputStream());
+			message = (Message) in.readObject();
+	
+			/* Check received message Tag */
+			
+			if(message.getTag() != tag) {
+				throw new TagException();
+			}
+			
+			return message;
 		}
-		
-		return message;
+		catch(ClassNotFoundException e) {
+			return null;
+		}
+
 	}
 
 }

@@ -38,9 +38,6 @@ public class DataAggregatorAsyncTask extends AsyncTask {
 				Log.e(TAG, "Failed to receive peaks of a node: " + e.getMessage());
 				e.printStackTrace();
 			} 
-			catch (ClassNotFoundException e) {
-				e.printStackTrace();
-			}
 		}
 
 		/* Parse peaks from messages */

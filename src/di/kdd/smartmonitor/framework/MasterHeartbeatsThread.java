@@ -54,9 +54,6 @@ public class MasterHeartbeatsThread extends Thread {
 					Log.e(TAG, "Received invalid Message Tag");
 					e.printStackTrace();
 				}
-				catch (ClassNotFoundException e) {
-					e.printStackTrace();
-				} 
 			}
  		}
 	}

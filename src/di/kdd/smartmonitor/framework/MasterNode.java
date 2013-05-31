@@ -146,7 +146,7 @@ public final class MasterNode extends Node implements IObserver {
 	 */
 	
 	public void computeModalFrequencies() {
-		broadcastCommand(new Message(Tag.SEND_PEAKS));
+		broadcastCommand(new Message(Tag.SEND_RESULTS));
 
 		try {
 			modalFrequencies = ds.computeModalFrequenciesCommand();
@@ -158,7 +158,7 @@ public final class MasterNode extends Node implements IObserver {
 	}	
 
 	public void computeModalFrequencies(long from, long to) {
-		Message computeModalFrequenciesMessage = new Message(Tag.SEND_PEAKS);
+		Message computeModalFrequenciesMessage = new Message(Tag.SEND_RESULTS);
 		computeModalFrequenciesMessage.addToPaylod(Long.toString(from));
 		computeModalFrequenciesMessage.addToPaylod(Long.toString(to));
 		

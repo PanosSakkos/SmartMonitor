@@ -159,7 +159,7 @@ public final class PeerNode extends Node implements Runnable, IObserver {
 
 					ds.stopSamplingCommand();
 					break;
-				case SEND_PEAKS:
+				case SEND_RESULTS:
 					List<Float> modalFrequencies;
 
 					Message peaksMessage = new Message(Tag.AGGREGATE_PEAKS);
@@ -224,10 +224,6 @@ public final class PeerNode extends Node implements Runnable, IObserver {
 			}
 			catch(IOException e) {
 				Log.e(TAG, "Error while listening to commands from Master node");
-				e.printStackTrace();
-			}
-			catch(ClassNotFoundException e) {
-				Log.e(TAG, "Error while receiving data");
 				e.printStackTrace();
 			}
 			catch (Exception e) {
