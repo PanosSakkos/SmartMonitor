@@ -1,4 +1,5 @@
-package di.kdd.smartmonitor;
+package di.kdd.smartmonitor.framework;
+
 
 /*************************************************************************
  *  Compilation:  javac FFT.java

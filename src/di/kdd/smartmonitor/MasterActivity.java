@@ -5,7 +5,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import di.kdd.smart.R;
+import di.kdd.smartmonitor.framework.AccelerationsSQLiteHelper;
 import di.kdd.smartmonitor.framework.ISmartMonitor;
+import di.kdd.smartmonitor.framework.SamplingService;
 import di.kdd.smartmonitor.framework.exceptions.ConnectException;
 import di.kdd.smartmonitor.framework.exceptions.MasterException;
 import di.kdd.smartmonitor.framework.exceptions.SamplerException;

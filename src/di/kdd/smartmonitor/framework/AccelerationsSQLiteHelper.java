@@ -1,4 +1,4 @@
-package di.kdd.smartmonitor;
+package di.kdd.smartmonitor.framework;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
-import di.kdd.smartmonitor.framework.IObservable;
-import di.kdd.smartmonitor.framework.IObserver;
+import di.kdd.smartmonitor.framework.Acceleration.AccelerationAxis;
 
 public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObservable {
 	

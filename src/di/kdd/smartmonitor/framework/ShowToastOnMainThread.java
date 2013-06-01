@@ -1,4 +1,4 @@
-package di.kdd.smartmonitor;
+package di.kdd.smartmonitor.framework;
 
 import android.content.Context;
 import android.widget.Toast;

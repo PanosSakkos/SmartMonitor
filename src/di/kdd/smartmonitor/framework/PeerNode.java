@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Timer;
 
 import android.util.Log;
-import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
+import di.kdd.smartmonitor.framework.Acceleration.AccelerationAxis;
 import di.kdd.smartmonitor.framework.ISmartMonitor.Tag;
 
 public final class PeerNode extends Node implements Runnable, IObserver {

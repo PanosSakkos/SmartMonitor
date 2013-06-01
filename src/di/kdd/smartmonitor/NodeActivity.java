@@ -4,9 +4,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Looper;
 import android.widget.Toast;
+import di.kdd.smartmonitor.framework.AccelerationsSQLiteHelper;
 import di.kdd.smartmonitor.framework.DistributedSystem;
 import di.kdd.smartmonitor.framework.IObserver;
 import di.kdd.smartmonitor.framework.ISampler;
+import di.kdd.smartmonitor.framework.SamplingService;
+import di.kdd.smartmonitor.framework.ShowToastOnMainThread;
 
 public abstract class NodeActivity extends Activity implements IObserver, ISampler {
 

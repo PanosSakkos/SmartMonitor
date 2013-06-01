@@ -13,7 +13,9 @@ import org.achartengine.renderer.XYMultipleSeriesRenderer;
 import org.achartengine.renderer.XYSeriesRenderer;
 
 import di.kdd.smart.R;
-import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
+import di.kdd.smartmonitor.framework.Acceleration;
+import di.kdd.smartmonitor.framework.AccelerationsSQLiteHelper;
+import di.kdd.smartmonitor.framework.Acceleration.AccelerationAxis;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;

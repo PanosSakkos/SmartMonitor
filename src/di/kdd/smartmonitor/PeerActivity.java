@@ -1,6 +1,7 @@
 package di.kdd.smartmonitor;
 
 import di.kdd.smart.R;
+import di.kdd.smartmonitor.framework.AccelerationsSQLiteHelper;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;

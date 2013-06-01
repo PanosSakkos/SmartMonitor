@@ -1,4 +1,4 @@
-package di.kdd.smartmonitor;
+package di.kdd.smartmonitor.framework;
 
 import java.io.File;
 import java.io.FileWriter;
@@ -8,8 +8,7 @@ import java.util.List;
 import android.os.AsyncTask;
 import android.os.Environment;
 import android.util.Log;
-import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
-import di.kdd.smartmonitor.framework.IObserver;
+import di.kdd.smartmonitor.framework.Acceleration.AccelerationAxis;
 
 public class DumpDatabaseTask extends AsyncTask<Void, Void, Boolean> {
 	/* The folder that the dump files are placed under */

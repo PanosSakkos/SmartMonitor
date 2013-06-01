@@ -1,8 +1,8 @@
-package di.kdd.smartmonitor;
+package di.kdd.smartmonitor.framework;
 
 import java.util.List;
 
-import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
+import di.kdd.smartmonitor.framework.Acceleration.AccelerationAxis;
 
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;

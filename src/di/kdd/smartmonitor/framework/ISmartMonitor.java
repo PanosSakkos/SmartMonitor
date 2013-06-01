@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
+import di.kdd.smartmonitor.framework.Acceleration.AccelerationAxis;
 import di.kdd.smartmonitor.framework.exceptions.ConnectException;
 import di.kdd.smartmonitor.framework.exceptions.MasterException;
 import di.kdd.smartmonitor.framework.exceptions.SamplerException;

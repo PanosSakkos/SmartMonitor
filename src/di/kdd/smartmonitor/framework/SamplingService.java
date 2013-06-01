@@ -1,4 +1,4 @@
-package di.kdd.smartmonitor;
+package di.kdd.smartmonitor.framework;
 
 import android.app.Service;
 import android.content.Context;
@@ -9,7 +9,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.util.Log;
-import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
+import di.kdd.smartmonitor.framework.Acceleration.AccelerationAxis;
 
 public class SamplingService extends Service implements SensorEventListener {
 	

@@ -5,7 +5,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 
-import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
+import di.kdd.smartmonitor.framework.Acceleration.AccelerationAxis;
 import di.kdd.smartmonitor.framework.ISmartMonitor.Tag;
 import di.kdd.smartmonitor.framework.exceptions.TagException;
 

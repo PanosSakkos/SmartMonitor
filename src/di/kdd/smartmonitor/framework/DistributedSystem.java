@@ -15,12 +15,7 @@ import java.lang.Byte;
 import android.os.Environment;
 import android.util.Log;
 
-import di.kdd.smartmonitor.Acceleration;
-import di.kdd.smartmonitor.AccelerationsSQLiteHelper;
-import di.kdd.smartmonitor.Complex;
-import di.kdd.smartmonitor.DumpDatabaseTask;
-import di.kdd.smartmonitor.FFT;
-import di.kdd.smartmonitor.Acceleration.AccelerationAxis;
+import di.kdd.smartmonitor.framework.Acceleration.AccelerationAxis;
 import di.kdd.smartmonitor.framework.ConnectAsyncTask.ConnectionStatus;
 import di.kdd.smartmonitor.framework.exceptions.ConnectException;
 import di.kdd.smartmonitor.framework.exceptions.DatabaseException;
