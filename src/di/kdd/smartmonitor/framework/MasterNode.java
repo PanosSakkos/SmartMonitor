@@ -83,7 +83,7 @@ public final class MasterNode extends Node implements IObserver {
 	 * @param message The message to broadcast
 	 */
 	
-	private void broadcastCommand(Message message) {
+	protected void broadcastCommand(Message message) {
 		Log.i(TAG, "Broadcasting " + message.toString());
 		
 		BroadcastAsyncTask broadcastAsyncTask = new BroadcastAsyncTask(commandSockets, message);

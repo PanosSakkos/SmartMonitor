@@ -6,6 +6,8 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
+import di.kdd.smartmonitor.framework.ISmartMonitor.Tag;
+
 
 import android.util.Log;
 
@@ -119,6 +121,15 @@ public class PeerData implements IObservable {
 		peerIPs.remove(ip);
 		
 		Log.i(TAG, "Removed peer IP addres: " + ip);
+		
+		/* If this node is the Master, inform the Peer nodes for the failure in order to
+		 * update their states.
+		 */
+		
+		if(masterNodeObserver != null) {
+			((MasterNode) masterNodeObserver).broadcastCommand(new Message(Tag.FAILED_PEER, ip));
+		}
+		
 	}
 	
 	/***
