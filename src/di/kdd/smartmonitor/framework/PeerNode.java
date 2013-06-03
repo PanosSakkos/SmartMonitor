@@ -153,6 +153,7 @@ public final class PeerNode extends Node implements Runnable, IObserver {
 					Log.i(TAG, "Received FAILED_PEER command");	
 					
 					peerData.removePeerIP(message.getPayload());
+					break;
 				case START_SAMPLING:
 					Log.i(TAG, "Received START_SAMPLING command");
 
