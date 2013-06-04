@@ -19,8 +19,6 @@ public final class PeerNode extends Node implements Runnable, IObserver {
 	private PeerHeartbeatsTimerTask heartbeatsTimerTask;
 	private Timer timer;
 	
-	private TimeSynchronization timeSync = new TimeSynchronization();
-	
 	private static final String TAG = "peer";
 
 	/***
@@ -142,7 +140,7 @@ public final class PeerNode extends Node implements Runnable, IObserver {
 				case SYNC:
 					Log.i(TAG, "Received SYNC command");
 
-					timeSync.timeReference(Long.parseLong(message.getPayload()));
+					TimeSynchronization.timeReference(Long.parseLong(message.getPayload()));
 					break;
 				case NEW_PEER:
 					Log.i(TAG, "Received NEW_PEER command");	

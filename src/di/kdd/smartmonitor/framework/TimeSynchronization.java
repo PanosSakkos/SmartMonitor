@@ -1,23 +1,16 @@
 package di.kdd.smartmonitor.framework;
 
-import android.util.Log;
-
 public class TimeSynchronization {
-	private long timeDifference;
+	private static long timeDifferenceSum = 0;
+	private static long differencesCounted = 0;
 	
 	private static final String TAG = "time synchronization";
-	
-	public TimeSynchronization() {
-		timeDifference = 0;
+		
+	public static void timeReference(long time) {
+		timeDifferenceSum += System.currentTimeMillis() - time;	
 	}
 	
-	public void timeReference(long time) {
-		timeDifference = System.currentTimeMillis() - time;
-	
-		Log.i(TAG, "New time difference " + Long.toString(timeDifference));
-	}
-	
-	public long getTime() {
-		return System.currentTimeMillis() + timeDifference;
+	public static long getTime() {
+		return System.currentTimeMillis() + (timeDifferenceSum / differencesCounted);
 	}
 }
