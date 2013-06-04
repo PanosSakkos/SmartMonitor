@@ -7,7 +7,8 @@ public class TimeSynchronization {
 	private static final String TAG = "time synchronization";
 		
 	public static void timeReference(long time) {
-		timeDifferenceSum += System.currentTimeMillis() - time;	
+		timeDifferenceSum += System.currentTimeMillis() - time;
+		differencesCounted++;
 	}
 	
 	public static long getTime() {
