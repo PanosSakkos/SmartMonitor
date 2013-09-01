@@ -21,7 +21,13 @@ public abstract class Node extends Thread {
 	protected List<Float> xAxisFrequencies = new ArrayList<Float>();
 	protected List<Float> yAxisFrequencies = new ArrayList<Float>();
 	protected List<Float> zAxisFrequencies = new ArrayList<Float>();
+	protected PeerData peerData = new PeerData();
 
+	private static final String TAG = "Node";
+	
+	
+	
+	
 	public List<Float> getAxisFrequencies(AccelerationAxis axis) {
 		switch(axis) {
 		case X:
@@ -44,22 +50,18 @@ public abstract class Node extends Thread {
 		switch(axis){
 		case X:
 			xAxisFrequencies = frequencies;
-			ds.notify("Got modal frequencies for X axis");
 			break;
 		case Y:
 			yAxisFrequencies = frequencies;
-			ds.notify("Got modal frequencies for Y axis");
 			break;
 		case Z:
 			zAxisFrequencies = frequencies;
-			ds.notify("Got modal frequencies for Z axis");
 			break;
 		}
 	}
 	
-	protected PeerData peerData = new PeerData();
 	
-	private static final String TAG = "node";
+	
 	
 	public abstract void disconnect();
 	
@@ -75,6 +77,10 @@ public abstract class Node extends Thread {
 
 	public void forgetMasterIP() {
 		peerData.forgetMasterIP();
+	}
+	
+	public void setMasterIP(String ip) {
+		peerData.setMasterIP(ip);
 	}
 	
 	/***

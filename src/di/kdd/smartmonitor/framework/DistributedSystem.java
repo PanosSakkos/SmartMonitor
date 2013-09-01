@@ -12,9 +12,13 @@ import java.util.Date;
 import java.util.List;
 import java.lang.Byte;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Environment;
 import android.util.Log;
 
+import di.kdd.smart.R;
+import di.kdd.smartmonitor.MasterActivity;
 import di.kdd.smartmonitor.framework.Acceleration.AccelerationAxis;
 import di.kdd.smartmonitor.framework.ConnectAsyncTask.ConnectionStatus;
 import di.kdd.smartmonitor.framework.exceptions.ConnectException;
@@ -29,16 +33,19 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 	private Node node;
 	
 	private long startSamplingTimestamp;
+
 	private long stopSamplingTimestamp;
+	private float samplingFrequency;
 	
 	/* States */
-	
 	private boolean isConnected;
 	private boolean isSampling;
 	
-	private static final String TAG = "distributed system";
+	private static String TAG = "DistributedSystem";
 	
 	private AccelerationsSQLiteHelper db;
+	
+	private Context context;
 	
 	public void setDatabase(AccelerationsSQLiteHelper db) {
 		this.db = db;
@@ -48,12 +55,13 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 
 	private static DistributedSystem ds;
 	
-	private DistributedSystem() {
+	private DistributedSystem(Context context) {
+		this.context = context;
 	}
 	
-	public static DistributedSystem getInstance() {
+	public static DistributedSystem getInstance(Context context) {
 		if(ds == null) {
-			ds = new DistributedSystem();
+			ds = new DistributedSystem(context);
 		}
 		
 		return ds;
@@ -91,13 +99,17 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 
 	@Override
 	public void connectAsMaster() {
-		Log.i(TAG, "Connecting as Master");
-		
-		node = new MasterNode(this); 
-		isConnected = true;
-
-		
-		notify("Connected as Master");			
+		if (!isMaster()){
+			Log.i(TAG, "Connecting as Master");
+			node = new MasterNode(this); 
+			setTAGIp(node.getNodeIP());
+			isConnected = true;
+			notify("Connected as Master");	
+		}
+	}
+	
+	public void setTAGIp (String ip){
+		this.TAG += " " + ip;
 	}
 
 	@Override
@@ -178,7 +190,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 		isSampling = false;
 		stopSamplingTimestamp = System.currentTimeMillis();
 
-		notify("Stoped sampling");
+		notify("Stopped sampling");
 	}
 	
 	@Override
@@ -227,7 +239,11 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 		if(node.isMaster() == false) {
 			throw new MasterException();
 		}
-		
+			
+		xModalFreqs = null;
+		yModalFreqs = null;
+		zModalFreqs = null;
+	
 		((MasterNode) node).computeModalFrequencies();
 		
 		notify("Computing modal frequencies");
@@ -283,7 +299,8 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 		case ConnectedAsMaster:
 			Log.i(TAG, "Connected as Master");
 
-			node = new MasterNode(this);		
+			node = new MasterNode(this);
+			setTAGIp(node.getNodeIP());
 			isConnected = true;
 			
 			notify("Connected as Master");		
@@ -292,6 +309,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 			Log.i(TAG, "Connected as Peer");
 
 			node = new PeerNode(this, joinSocket);
+			setTAGIp(node.getNodeIP());
 			isConnected = true;
 			
 			notify("Connected as Peer");		
@@ -306,7 +324,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 	
 	/* Methods that should be called form the peer node, when he receives a command */
 	
-	protected void startSamplngCommand() {
+	protected void startSamplingCommand() {
 		if(sampler != null) {
 			sampler.startSamplingService();
 			isSampling = true;
@@ -322,7 +340,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 			isSampling = false;
 			stopSamplingTimestamp = System.currentTimeMillis();
 			
-			notify("Stoped sampling");
+			notify("Stopped sampling");
 		}
 	}	
 	
@@ -342,25 +360,46 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 		}		
 	}	
 	
-	private float computeSamplingFrequencyInSample(long from, long to, List<Acceleration> accelerations) {		
-		return (float) accelerations.size() / ((float) (to - from) / 1000);		
+	private float computeSamplingFrequencyInSample(long from, long to, int size) {		
+		return (float)size / ((float) (to - from) / 1000);		
 	}
 	
+	private ModalComputationResults xModalFreqs;
+	private ModalComputationResults yModalFreqs;
+	private ModalComputationResults zModalFreqs;
+	
+	
+	public ModalComputationResults getxModalFreqs() {
+		return xModalFreqs;
+	}
+
+	public ModalComputationResults getyModalFreqs() {
+		return yModalFreqs;
+	}
+
+	public ModalComputationResults getzModalFreqs() {
+		return zModalFreqs;
+	}
+
+
 	private List<Float> computeModalFrequenciesInAxis(long from, long to, AccelerationAxis axis) {		
 		List<Float> modalFrequencies = new ArrayList<Float>();
 
+
+		
 		try {
 			int fftLength;
-			float samplingFrequency;
 			Double[] output;
 			Complex[] fftResults;
 
 			List<Acceleration> accelerations = db.getAccelerationsIn(from, to, axis);
 			
+			List<Acceleration> originalAccelerations =  cloneList(accelerations);
 			/* Find the closest power of 2 to the size of accelerations 
 			 * (FFT must run on data with size being a power of 2)
 			 */
 
+			Log.i(TAG, "Accelerations size: " + accelerations.size());
 			int closestPowerOfTwo = 1;
 			
 			while(closestPowerOfTwo <= accelerations.size()) {
@@ -369,10 +408,13 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 
 			fftLength = closestPowerOfTwo / 2;
 			
-			Log.i(TAG, "FFT length: " + fftLength);
+			Log.i(TAG, "FFT length: " + fftLength +" Axis: " + axis.toString());
+			
+			
+			/* Keep initialSize for future computation of sampling frequency */
+			int initialSize = accelerations.size();
 			
 			/* Keep only the useful accelerations */
-			
 			while(accelerations.size() > fftLength) {
 				accelerations.remove(accelerations.size() - 1);
 			}
@@ -446,7 +488,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 			Collections.sort(maxIndices);
 			
 			while(maxIndices.size() > NO_PEAKS) {
-				maxIndices.remove(0);
+				maxIndices.remove(maxIndices.size()-1);
 			}
 			
 			Log.i(TAG, "Found peaks at: ");
@@ -457,7 +499,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 			
 			/* Convert index values of the peaks to frequency bins */
 			
-			samplingFrequency = computeSamplingFrequencyInSample(from, to, accelerations);
+			samplingFrequency = computeSamplingFrequencyInSample(from, to, initialSize);
 
 			Log.i(TAG, "Sampling frequency: " + Float.toString(samplingFrequency));
 			
@@ -473,16 +515,35 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 
 			Log.i(TAG, "Computed modal frequencies of axis " + axis.toString());
 			
+			switch (axis){
+			case X:
+				xModalFreqs = new ModalComputationResults(output, modalFrequencies, originalAccelerations, axis);
+				break;
+			case Y:
+				yModalFreqs = new ModalComputationResults(output, modalFrequencies, originalAccelerations, axis);
+				break;
+			case Z:
+				zModalFreqs = new ModalComputationResults(output, modalFrequencies, originalAccelerations, axis);
+				break;
+				
+			}
+			
 		} catch (Exception e) {
 			Log.e(TAG, "Error while computing modal frequencies of axis " + axis.toString() + 
 					" between timestamps: " + Long.toString(from) + " and " + Long.toString(to) + ": " + e.getMessage());
 			e.printStackTrace();
 		}
 		
+		
 		return modalFrequencies;
 	}
 
+	public float getSamplingFrequency() {
+		return samplingFrequency;
+	}
+
 	protected List<Float> computeModalFrequenciesCommand() throws DatabaseException {
+		
 		ArrayList<Float> modalFrequencies = new ArrayList<Float>();
 		
 		if(db == null) {
@@ -499,7 +560,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 		notify("Computed modal frequencies");
 
 		if(node.isMaster()) {
-			((MasterNode) node).aggregatePeaks();
+			((MasterNode) node).aggregatePeaks(modalFrequencies);
 			notify("Aggregating peaks");
 		}
 		
@@ -523,7 +584,7 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 		notify("Computed modal frequencies");
 
 		if(node.isMaster()) {
-			((MasterNode) node).aggregatePeaks();
+			((MasterNode) node).aggregatePeaks(modalFrequencies);
 			notify("Aggregating peaks");
 		}
 		
@@ -539,20 +600,23 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 	protected void disconnectAndRecover() {
 		
 		/* Master node is down, forget his IP address */
-		
-		node.forgetMasterIP();		
-		
-		if(node.getLowestIP() == node.getNodeIP()) {
-			
-			/* This node has to be the new Master */
+		node.forgetMasterIP();	
+		node.disconnect();
 
+		
+		if(node.getLowestIP().equals(node.getNodeIP())) {
+			/* This node has to be the new Master */
 			connectAsMaster();
+			
+			Intent intent=new Intent();
+			intent.setClass(this.context, MasterActivity.class); 
+			context.startActivity(intent);
+			
 		}
 		else {
-			
 			/* Connect at the lowest IP address */
-			
 			connectAt(node.getLowestIP());
+			
 		}
 	}	
 
@@ -594,4 +658,17 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 			e.printStackTrace();
 		}
 	}
+	
+	
+	public long getStartSamplingTimestamp() {
+		return startSamplingTimestamp;
+	}
+	
+	private List<Acceleration> cloneList(List<Acceleration> list) {
+	    List<Acceleration> clone = new ArrayList<Acceleration>(list.size());
+	    for(Acceleration item: list) 
+	    	clone.add(new Acceleration(item));
+	    return clone;
+	}
+
 }

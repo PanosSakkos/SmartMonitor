@@ -16,7 +16,7 @@ public class DataAggregatorAsyncTask extends AsyncTask {
 	private List<Socket> peerSockets;
 	MasterNode master;
 	
-	private static final String TAG = "data aggregator";
+	private static final String TAG = "DataAggregatorTask";
 	
 	public DataAggregatorAsyncTask(List<Socket> sockets, MasterNode master) {
 		this.peerSockets = sockets;
@@ -103,6 +103,8 @@ public class DataAggregatorAsyncTask extends AsyncTask {
 		zGlobalModalFrequencies = FrequencyClustering.getMeans();
 		master.setModalFrequencies(AccelerationAxis.Z, zGlobalModalFrequencies);
 
+		master.completedComputation();
+		
 		/* Replicate modal frequencies to the rest of the system's nodes */
 		
 		Message modalFrequenciesMessage = new Message(Tag.REPLICATE_RESULTS);

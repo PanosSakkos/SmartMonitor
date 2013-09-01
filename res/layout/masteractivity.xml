@@ -1,76 +1,238 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrlView2"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/background"
-    android:orientation="vertical"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="100dp" >
-
-    <TextView
-        android:id="@+id/textView1"
-        style="@style/ButtonLargeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/master_masterActivityHdr"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <Button
-        android:id="@+id/samplingBtn"
-        style="@style/ButtonSmallText"
-        android:layout_width="fill_parent"
-        android:layout_height="100dp"
-        android:background="@drawable/orange_menu_btn"
-        android:onClick="samplingButtonHandler"
-        android:text="@string/master_SamplingText" />
-
-    <Button
-        android:id="@+id/computeModalFreqsBtn"
-        style="@style/ButtonSmallText"
-        android:layout_width="fill_parent"
-        android:layout_height="100dp"
-        android:background="@drawable/orange_menu_btn"
-        android:onClick="computeModalFrequencies"
-        android:text="@string/master_computeModalFreqs" />
-
-    <Button
-        android:id="@+id/plotBtn"
-        style="@style/ButtonSmallText"
-        android:layout_width="fill_parent"
-        android:layout_height="100dp"
-        android:background="@drawable/orange_menu_btn"
-        android:onClick="plot"
-        android:text="@string/plottingBtnTxt" />
+    android:background="@drawable/background" >
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layoutForScroll2"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:orientation="horizontal" 
-        android:layout_marginTop="50dip">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="20dp" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/masterNodeControlsLabelId"
+                style="@style/ButtonLargeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/master_masterActivityHdr"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/NodeIPLabelId"
+                    style="@style/ButtonLargeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/node_ipLabel"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/NodeIPValueId"
+                    style="@style/ButtonLargeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/node_ipValue"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:baselineAligned="false"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="5dp"
+                android:layout_weight="3" >
+
+                <Button
+                    android:id="@+id/samplingBtn"
+                    style="@style/ButtonSmallText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@drawable/orange_menu_btn"
+                    android:onClick="samplingButtonHandler"
+                    android:text="@string/master_SamplingText" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="3" >
+
+                <Button
+                    android:id="@+id/plotBtn"
+                    style="@style/ButtonSmallText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/orange_menu_btn"
+                    android:onClick="plot"
+                    android:text="@string/plottingBtnTxt" />
+            </RelativeLayout>
+        </LinearLayout>
 
         <Button
-            android:id="@+id/exportToFileBtn"
+            android:id="@+id/computeModalFreqsBtn"
             style="@style/ButtonSmallText"
-            android:layout_width="100dip" 
-       		android:layout_height="wrap_content"
-       		android:layout_margin="10dip"
-            android:background="@drawable/red_menu_btn"
-            android:onClick="exportToFile"
-            android:text="@string/exportToFileBtnTxt" 
-            android:layout_weight="1"/>
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="20dip"
+            android:background="@drawable/orange_menu_btn"
+            android:onClick="computeModalFrequencies"
+            android:text="@string/master_computeModalFreqs" />
 
-        <Button
-            android:id="@+id/deleteDbBtn"
-            style="@style/ButtonSmallText"
-            android:layout_width="100dip" 
-       		android:layout_height="wrap_content"
-       		android:layout_margin="10dip"
-            android:background="@drawable/red_menu_btn"
-            android:onClick="deleteDatabase"
-            android:text="@string/deleteDbBtnTxt" 
-            android:layout_weight="1"/>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="100dip"
+            android:layout_marginTop="20dip"
+            android:baselineAligned="false"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="5dp"
+                android:layout_weight="3" >
+
+                <Button
+                    android:id="@+id/exportToFileBtn"
+                    style="@style/ButtonSmallText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/red_menu_btn"
+                    android:onClick="exportToFile"
+                    android:text="@string/exportToFileBtnTxt" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="3" >
+
+                <Button
+                    android:id="@+id/deleteDbBtn"
+                    style="@style/ButtonSmallText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="50dp"
+                    android:background="@drawable/red_menu_btn"
+                    android:onClick="deleteDatabase"
+                    android:text="@string/deleteDbBtnTxt" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/nodeFreqsLabelId"
+            style="@style/ButtonLargeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/node_nodeActivityMFreqs"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="30dip"
+            android:layout_marginTop="20dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/nodeXaxisLabelId"
+                style="@style/ButtonLargeText"
+                android:layout_width="100dip"
+                android:layout_height="wrap_content"
+                android:text="@string/node_nodeActivityXAxis"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/nodeYaxisLabelId"
+                style="@style/ButtonLargeText"
+                android:layout_width="100dip"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:text="@string/node_nodeActivityYAxis"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/nodeZaxisLabelId"
+                style="@style/ButtonLargeText"
+                android:layout_width="100dip"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:text="@string/node_nodeActivityZAxis"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="10dip"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="100dip"
+                android:layout_height="260dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal" >
+
+                <ListView
+                    android:id="@+id/XaxisList"
+                    android:layout_width="0dip"
+                    android:layout_height="260dp"
+                    android:layout_weight="0.27" >
+                </ListView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="100dip"
+                android:layout_height="260dp"
+                android:layout_marginLeft="10dip"
+                android:baselineAligned="false"
+                android:orientation="horizontal" >
+
+                <ListView
+                    android:id="@+id/YaxisList"
+                    android:layout_width="0dp"
+                    android:layout_height="260dp"
+                    android:layout_weight="0.27" >
+                </ListView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="100dip"
+                android:layout_height="260dp"
+                android:layout_marginLeft="10dip"
+                android:baselineAligned="false"
+                android:orientation="horizontal" >
+
+                <ListView
+                    android:id="@+id/ZaxisList"
+                    android:layout_width="0dip"
+                    android:layout_height="260dp"
+                    android:layout_weight="0.27" >
+                </ListView>
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
-</LinearLayout>
+</ScrollView>

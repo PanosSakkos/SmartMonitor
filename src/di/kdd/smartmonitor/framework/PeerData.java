@@ -1,10 +1,16 @@
 package di.kdd.smartmonitor.framework;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.Collections;
+import java.util.Enumeration;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
+
+import org.apache.http.conn.util.InetAddressUtils;
 
 import di.kdd.smartmonitor.framework.ISmartMonitor.Tag;
 
@@ -22,7 +28,30 @@ public class PeerData implements IObservable {
 	private String masterIP;
 	private TreeSet<String> peerIPs = new TreeSet<String>();
 
-	private static final String TAG = "peer data";
+	private static final String TAG = "PeerData";
+	
+	public PeerData(){
+		nodeIP = PeerData.getLocalIpAddress();
+	}
+	
+	public static String getLocalIpAddress() {
+	    try {
+	        for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+	            NetworkInterface intf = en.nextElement();
+	            for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+	                InetAddress inetAddress = enumIpAddr.nextElement();
+	                if (!inetAddress.isLoopbackAddress() && InetAddressUtils.isIPv4Address(inetAddress.getHostAddress().toString())) {
+	                    return inetAddress.getHostAddress().toString();
+	                }
+	            }
+	        }
+	    } catch (SocketException ex) {
+//	        Log.e(LOG_TAG, ex.toString());
+	    }
+	    return null;
+	}
+	
+	
 	
 	public String getNodeIP() {
 		return nodeIP;
@@ -87,6 +116,9 @@ public class PeerData implements IObservable {
 		}
 	}
 	
+	
+
+	
 	/***
 	 * Given a BufferedReader of a socket input stream, parses the payload 
 	 * per line and stores the IP addresses that finds
@@ -120,7 +152,7 @@ public class PeerData implements IObservable {
 
 		peerIPs.remove(ip);
 		
-		Log.i(TAG, "Removed peer IP addres: " + ip);
+		Log.i(TAG, "Removed peer IP-address: " + ip);
 		
 		/* If this node is the Master, inform the Peer nodes for the failure in order to
 		 * update their states.

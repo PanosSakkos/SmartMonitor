@@ -1,6 +1,7 @@
 package di.kdd.smartmonitor.framework;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -31,7 +32,7 @@ public class MasterHeartbeatsThread extends Thread {
 		
 		@Override
 		public void run() {
-			android.os.Debug.waitForDebugger();
+			//android.os.Debug.waitForDebugger();
 
 			while(!this.isInterrupted()) {
 				try {
@@ -42,8 +43,7 @@ public class MasterHeartbeatsThread extends Thread {
 				catch (IOException e) {
 
 					/* Node failed to send a heartbeat 
-					 * and it's considered fallen 
-					 */
+					 * and it's considered fallen */
 					
 					Log.i(TAG, "Failed to receive heartbeat from " + heartbeatsSocket.getInetAddress().toString());
 					
@@ -60,13 +60,12 @@ public class MasterHeartbeatsThread extends Thread {
 	
 	@Override
 	public void run() {		
-		android.os.Debug.waitForDebugger();
+		//android.os.Debug.waitForDebugger();
 
 		ServerSocket heartbeatsServerSocket;
 		
 		/* Accept heartbeat connections and issue a new 
-		 * thread to listen to them 
-		 */
+		 * thread to listen to them */
 		
 		try {
 			heartbeatsServerSocket = new ServerSocket(ISmartMonitor.HEARBEATS_PORT);
@@ -85,8 +84,12 @@ public class MasterHeartbeatsThread extends Thread {
 			try {
 				Socket heartbeatsSocket = heartbeatsServerSocket.accept();
 				
-				Log.i(TAG, "Accepted heartbeats connection from " + heartbeatsServerSocket.getInetAddress().toString());
+				InetAddress address = heartbeatsServerSocket.getInetAddress();
 				
+				if (address.isAnyLocalAddress())
+					continue;
+				Log.i(TAG, "Accepted heartbeats connection from " + address.toString());
+				Log.i(TAG, "HostName:  " + address.getHostName());
 				HeartbeatsThread heartbeatsThread = new HeartbeatsThread(heartbeatsSocket, peerData);
 				heartbeatsThread.start();
 			} 

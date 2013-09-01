@@ -1,7 +1,6 @@
 package di.kdd.smartmonitor.framework;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 
 import di.kdd.smartmonitor.framework.Acceleration.AccelerationAxis;

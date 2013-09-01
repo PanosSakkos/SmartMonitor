@@ -1,8 +1,11 @@
 package di.kdd.smartmonitor;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import org.achartengine.GraphicalView;
 
 import di.kdd.smart.R;
 import di.kdd.smartmonitor.framework.AccelerationsSQLiteHelper;
@@ -15,6 +18,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -24,13 +29,14 @@ public class MasterActivity extends NodeActivity {
 	private Button computeMFreqsButton;
 	private Button plotButton;
 		
+	
 	private boolean running = true;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.masteractivity);
-		
+		    
 		accelerationsDb = new AccelerationsSQLiteHelper(this.getApplicationContext());
 		accelerationsDb.subscribe(this);
 		
@@ -39,11 +45,15 @@ public class MasterActivity extends NodeActivity {
 		distributedSystem.setDatabase(accelerationsDb);
 		
 		distributedSystem.connectAsMaster();
-		
+
 		computeMFreqsButton = (Button) findViewById(R.id.computeModalFreqsBtn);		
 		plotButton = (Button) findViewById(R.id.plotBtn);
 
+		TextView t =(TextView)findViewById(R.id.NodeIPValueId); 
+	    t.setText(getLocalIpAddress());
+		
 		hideButtons();
+		hideModal();
 		
 		plotButton.setEnabled(true);
 		plotButton.setAlpha((float) 1);
@@ -52,14 +62,15 @@ public class MasterActivity extends NodeActivity {
 
 		samplingButton.setText("Start Sampling");
 		
+		
 		Thread uiUpdater = new Thread(new Runnable() { 
 			public void run() {
 				while(running) {
 					if(distributedSystem.isSampling()) {
-						runOnUiThread(new Runnable() {public void run() { hideButtons(); }});
+						runOnUiThread(new Runnable() {public void run() { samplingButton.setText("Stop Sampling"); hideButtons(); hideModal(); }});
 					}
 					else {
-						runOnUiThread(new Runnable() {public void run() { revealButtons(); }});
+						runOnUiThread(new Runnable() {public void run() { samplingButton.setText("Start Sampling"); revealButtons(); revealModal();}});
 					}
 					
 					try {
@@ -86,19 +97,22 @@ public class MasterActivity extends NodeActivity {
 		try {			
 			if(distributedSystem.isSampling()) {
 				distributedSystem.stopSampling();
-				Toast.makeText(this, "Accelerometer Listener Service Destroyed!", Toast.LENGTH_LONG).show();
+//				Toast.makeText(this, "Accelerometer Listener Service Destroyed!", Toast.LENGTH_LONG).show();
 				
 				/* Update UI elements */
 				samplingButton.setText("Start Sampling");
 				revealButtons();
+				revealModal();
 			}
 			else {
 				distributedSystem.startSampling();
-				Toast.makeText(this, "Accelerometer Listener Service Created", Toast.LENGTH_LONG).show();
+				//Toast.makeText(this, "Accelerometer Listener Service Created", Toast.LENGTH_LONG).show();
 				
 				/* Update UI elements */
 				samplingButton.setText("Stop Sampling");
 				hideButtons();
+				hideModal();
+
 			}
 		}
 		catch(SamplerException e) {
@@ -116,12 +130,7 @@ public class MasterActivity extends NodeActivity {
 	
 	
 	private void hideButtons() {
-		computeMFreqsButton.setEnabled(false);
-		computeMFreqsButton.setAlpha((float) 0.2);
-		
-		plotButton.setEnabled(false);
-		plotButton.setAlpha((float) 0.2);
-		
+
 		Button exportBtn = (Button)findViewById(R.id.exportToFileBtn);
 		exportBtn.setEnabled(false);
 		exportBtn.setAlpha((float) 0.2);
@@ -131,12 +140,23 @@ public class MasterActivity extends NodeActivity {
 		deleteDbBtn.setAlpha((float) 0.2);
 	}
 	
+	
+	private void hidePlot() {
+		plotButton.setEnabled(false);
+		plotButton.setAlpha((float) 0.2);
+
+	}
+	
+	
+	private void hideModal() {
+		computeMFreqsButton.setEnabled(false);
+		computeMFreqsButton.setAlpha((float) 0.2);
+
+	}
+	
+	
+	
 	private void revealButtons() {
-		computeMFreqsButton.setEnabled(true);
-		computeMFreqsButton.setAlpha((float) 1);
-		
-		plotButton.setEnabled(true);
-		plotButton.setAlpha((float) 1);
 		
 		Button exportBtn = (Button)findViewById(R.id.exportToFileBtn);
 		exportBtn.setEnabled(true);
@@ -147,6 +167,18 @@ public class MasterActivity extends NodeActivity {
 		deleteDbBtn.setAlpha((float) 1);
 		
 	}
+	
+	private void revealPlot() {
+	
+		plotButton.setEnabled(true);
+		plotButton.setAlpha((float) 1);
+
+	}
+	
+	private void revealModal() {
+		computeMFreqsButton.setEnabled(true);
+		computeMFreqsButton.setAlpha((float) 1);
+	}
 
 	/**
 	 * Handler of the computeModalFrequencies button. 
@@ -154,6 +186,7 @@ public class MasterActivity extends NodeActivity {
 	 */	
 	
 	public void computeModalFrequencies(View _) {
+		
 		try {
 			if(!distributedSystem.isSampling()) {
 				distributedSystem.computeModalFrequencies();
@@ -168,25 +201,10 @@ public class MasterActivity extends NodeActivity {
 		catch(MasterException e) {
 			Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();			
 		}
+		
 	}	
 
-	/**
-	 * Handler of the plot button.
-	 * Calls the plotting activity 
-	 * @param ignored
-	 */	
-	
-	public void plot(View _) {
-		if(!distributedSystem.isSampling()) {
-			
-			Intent intent = new Intent(this, PlotActivity.class);
-	        startActivity(intent);
-		}
-		else {
-			Toast.makeText(this, "STOP SAMPLING must be invoked!", Toast.LENGTH_LONG).show();
-		}
-	}	
-	
+
 	/***
 	 * Dumps the stored Accelerations into 3 files, one for each Axis
 	 * @param ignored

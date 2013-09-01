@@ -3,7 +3,6 @@ package di.kdd.smartmonitor.framework;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
 
 import android.util.Log;
 
@@ -15,7 +14,7 @@ public class FrequencyClustering {
 	public static void clusterFrequencies(int k, List<Float> frequencies) {		
 		ArrayList<ArrayList<Float>> clusters;
 
-		android.os.Debug.waitForDebugger();
+		//android.os.Debug.waitForDebugger();
 		
 		means = new Float[k];
 

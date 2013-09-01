@@ -33,5 +33,10 @@ public class Acceleration {
 		this.timestamp = timestamp;
 		this.acceleration = acceleration;
 	}
+	
+	public Acceleration(Acceleration acc) {
+        this.timestamp = acc.timestamp;
+        this.acceleration = acc.acceleration;
+    }
 
 }

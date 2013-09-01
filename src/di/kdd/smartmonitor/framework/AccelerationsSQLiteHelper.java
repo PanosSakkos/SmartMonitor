@@ -17,13 +17,13 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 
 	/* Three tables, on for each acceleration axis, with the acceleration and the timestamp */
 	
-	protected final String TABLE_X_ACCELERATIONS = "x_accelerations";
-	protected final String TABLE_Y_ACCELERATIONS = "y_accelerations";
-	protected final String TABLE_Z_ACCELERATIONS = "z_accelerations";
+	static final String TABLE_X_ACCELERATIONS = "x_accelerations";
+	static final String TABLE_Y_ACCELERATIONS = "y_accelerations";
+	static final String TABLE_Z_ACCELERATIONS = "z_accelerations";
 
-	private final String COLUMN_ID = "id";
-	protected final String COLUMN_ACCELERATION = "acceleration";
-	protected final String COLUMN_TIMESTAMP = "timestamp";
+	static final String COLUMN_ID = "id";
+	static final String COLUMN_ACCELERATION = "acceleration";
+	static final String COLUMN_TIMESTAMP = "timestamp";
 
 	/* SQLite commands to create each Table of the database */
 	
@@ -72,6 +72,10 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 		Log.i(TAG, "Opened " + DATABASE_NAME + " v" + DATABASE_VERSION);
 	}
 
+	public Context getContext() {
+		return context;
+	}
+
 	@Override
 	public void onCreate(SQLiteDatabase db) {	
 		Log.i(TAG, "Creating database " + DATABASE_NAME + " v" + DATABASE_VERSION);
@@ -117,8 +121,8 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 	 */
 	
 	private void flushXAccelerationsBuffer() {
-		Thread xFlushThread = new FlushBufferThread(this, AccelerationAxis.X, xAccelerationsBuffer);
-		xFlushThread.start();		
+		Thread xflushThread = new FlushBufferThread(this, xAccelerationsBuffer, null, null);
+		xflushThread.start();	
 	}
 	
 	/***
@@ -126,8 +130,8 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 	 */
 
 	private void flushYAccelerationsBuffer() {
-		Thread yFlushThread = new FlushBufferThread(this, AccelerationAxis.Y, yAccelerationsBuffer);
-		yFlushThread.start();		
+		Thread yflushThread = new FlushBufferThread(this, null, yAccelerationsBuffer, null);
+		yflushThread.start();	
 	}
 	
 	/***
@@ -135,8 +139,8 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 	 */
 
 	private void flushZAccelerationsBuffer() {
-		Thread zFlushThread = new FlushBufferThread(this, AccelerationAxis.Z, zAccelerationsBuffer);
-		zFlushThread.start();		
+		Thread zflushThread = new FlushBufferThread(this, null , null, zAccelerationsBuffer);
+		zflushThread.start();	
 	}
 	
 	/***
@@ -144,9 +148,8 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 	 */
 	
 	public void flushAccelerationBuffers() {
-		flushXAccelerationsBuffer();
-		flushYAccelerationsBuffer();
-		flushZAccelerationsBuffer();
+		Thread flushThread = new FlushBufferThread(this, xAccelerationsBuffer, yAccelerationsBuffer, zAccelerationsBuffer);
+		flushThread.start();	
 	}
 	
 	/***
@@ -289,6 +292,7 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 		ArrayList<Acceleration> accelerations = new ArrayList<Acceleration>();
 				
 		flushAccelerationBuffers();
+		
 
 		switch(axis) {
 			case X:
@@ -352,8 +356,11 @@ public class AccelerationsSQLiteHelper extends SQLiteOpenHelper implements IObse
 		yAccelerationsBuffer.clear();
 		zAccelerationsBuffer.clear();
 
+		/* Close the database connection before deleting the DB */
+		this.close();
 		context.deleteDatabase(DATABASE_NAME);		
 
+		
 		Log.i(TAG, "Deleted database");
 	}
 }

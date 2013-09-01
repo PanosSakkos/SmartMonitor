@@ -47,7 +47,7 @@ public class DumpDatabaseTask extends AsyncTask<Void, Void, Boolean> {
 	
 	@Override
 	protected Boolean doInBackground(Void ... _) {
-		android.os.Debug.waitForDebugger();
+	//	android.os.Debug.waitForDebugger();
 
 		try {			
 			File dumpFile;

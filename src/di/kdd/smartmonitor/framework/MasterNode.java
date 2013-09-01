@@ -27,7 +27,7 @@ public final class MasterNode extends Node implements IObserver {
 
 	private List<Float> modalFrequencies;
 	
-	private static final String TAG = "master";		
+	private static final String TAG = "MasterNode";		
 		
 	public List<Float> getModalFrequencies() {
 		return modalFrequencies;
@@ -45,6 +45,7 @@ public final class MasterNode extends Node implements IObserver {
 		
 		timeSynchronizationTimerTask = new TimeSynchronizationTimerTask(commandSockets);
 		timeSyncTimer = new Timer();
+		
 		timeSyncTimer.schedule(timeSynchronizationTimerTask, new Date(), ISmartMonitor.TIME_SYNC_PERIOD);
 	}
 
@@ -67,8 +68,7 @@ public final class MasterNode extends Node implements IObserver {
 			Socket commandSocket = new Socket(ip, ISmartMonitor.COMMAND_PORT);
 			commandSockets.add(commandSocket);
 			
-			/* Notify peers about the new peer that joined the network */
-			
+			/* Notify peers about the new peer that joined the network */		
 			Message message = new Message(Tag.NEW_PEER, ip);			
 			broadcastCommand(message);
 		}
@@ -168,7 +168,7 @@ public final class MasterNode extends Node implements IObserver {
 			modalFrequencies = ds.computeModalFrequenciesCommand(from, to);
 		}
 		catch (Exception e) {
-			Log.e(TAG, "Error while computing modal frequencies: " + e.getMessage());
+			Log.e(TAG+ " " + this.getNodeIP(), "Error while computing modal frequencies: " + e.getMessage());
 			e.printStackTrace();
 		}				
 
@@ -182,14 +182,15 @@ public final class MasterNode extends Node implements IObserver {
 		broadcastCommand(new Message(Tag.DUMP_DATA));
 	}
 	
-	public void aggregatePeaks() {
+	public void aggregatePeaks(ArrayList<Float> modalFrequencies) {
+		this.modalFrequencies = modalFrequencies; 
 		DataAggregatorAsyncTask dataAggregator = new DataAggregatorAsyncTask(commandSockets, this);
 		dataAggregator.execute();
 	}
 	
 	@Override
 	public void disconnect() {
-		Log.i(TAG, "Disconnecting");
+		Log.i(TAG+ " " + this.getNodeIP(), "Disconnecting");
 		
 		if(joinThread != null) {
 			joinThread.interrupt();
@@ -215,5 +216,9 @@ public final class MasterNode extends Node implements IObserver {
 	@Override
 	public boolean isMaster() {
 		return true;
+	}
+
+	public void completedComputation() {
+		ds.notify("Got modal frequencies");
 	}
 }

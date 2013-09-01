@@ -3,7 +3,6 @@ package di.kdd.smartmonitor.framework;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Timer;
 
 import android.util.Log;
 import di.kdd.smartmonitor.framework.ISmartMonitor.Tag;
@@ -25,7 +24,7 @@ public class JoinThread extends Thread {
 		Message message;
 		Socket connectionSocket = null;
 		
-		android.os.Debug.waitForDebugger();
+		//android.os.Debug.waitForDebugger();
 		
 		try {
 			joinSocket = new ServerSocket(ISmartMonitor.JOIN_PORT);
@@ -49,7 +48,6 @@ public class JoinThread extends Thread {
 				Node.receive(connectionSocket, Tag.JOIN);
 
 				/* Send PEER_DATA to the node that wants to join the system */
-				
 				message = new Message(Tag.PEER_DATA, peerData.toString());
 				Node.send(connectionSocket, message);
 				

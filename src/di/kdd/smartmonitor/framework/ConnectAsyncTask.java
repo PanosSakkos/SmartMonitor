@@ -1,7 +1,11 @@
 package di.kdd.smartmonitor.framework;
 
 import java.io.IOException;
+import java.net.ConnectException;
+import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketAddress;
+import java.net.UnknownHostException;
 
 
 import android.os.AsyncTask;
@@ -58,7 +62,7 @@ public class ConnectAsyncTask extends AsyncTask<Void, Void, Socket> implements I
 		Socket socket;
 		String ipPrefix = "192.168.1."; //TODO FIXME
 		
-		android.os.Debug.waitForDebugger();
+	//	android.os.Debug.waitForDebugger();
 
 		if(ip == null) {		
 			/* Look for the Master in the first 255 local IP addresses */
@@ -75,30 +79,36 @@ public class ConnectAsyncTask extends AsyncTask<Void, Void, Socket> implements I
 					Log.i(TAG, "Failed to connect at " + tempIP);
 					continue;
 				}
-	
 				/* Master found */
-				
 				return socket;
 			}
 			
 			/* No response, this is the first node of the distributed system and the Master */
-	
 			return null;
 		}
 		else {
+			
 			/* Send JOIN request at specific IP address */
+			socket = new Socket();
+			for (int i = 0; i < 15; i++) {
+				try {
+					Log.i(TAG, "Trying to connect to :" + ip + " Attempt: " + i);
+					Thread.sleep(3000);
+					socket.connect(new InetSocketAddress(ip,
+							ISmartMonitor.JOIN_PORT), 3000);
 
-			try {
-				socket = new Socket(ip, ISmartMonitor.JOIN_PORT);
-				
+				} catch (IOException e) {
+					Log.i(TAG, "Failed to connect at " + ip);
+					continue;
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				return socket;
 			}
-			catch(IOException e) {
-				Log.e(TAG, "Failed to connect at " + ip);
-				e.printStackTrace();
 
-				return null;
-			}
+			/* No response */
+			return null;
 		}
 	}	
 

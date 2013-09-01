@@ -20,6 +20,12 @@ public class SamplingService extends Service implements SensorEventListener {
 
 	private static final String TAG = "listener service";
 
+	private int xCount = 0;
+	private int yCount = 0;
+	private int zCount = 0;
+	private int eventsCount = 0;
+
+	
 	/***
 	 * Handler of the accelerometer values.
 	 * Stores the non-zero values of acceleration into the SQLite database
@@ -29,23 +35,28 @@ public class SamplingService extends Service implements SensorEventListener {
 	public void onSensorChanged(SensorEvent event) {
 		long timestamp = System.currentTimeMillis();
 
+		eventsCount++;
+
 		try {
 			/* Ignore 0 values */
-			
+
 			if(event.values[0] != 0) {
-				Acceleration xAcceleration = new Acceleration(event.values[0], timestamp);
-				accelerationsDb.storeAcceleration(xAcceleration, AccelerationAxis.X);				
+				accelerationsDb.storeAcceleration(new Acceleration(event.values[0], timestamp), AccelerationAxis.X);	
+				xCount++;
 			}
 	
 			if(event.values[1] != 0) {
-				Acceleration yAcceleration = new Acceleration(event.values[1], timestamp);
-				accelerationsDb.storeAcceleration(yAcceleration, AccelerationAxis.Y);			
+				accelerationsDb.storeAcceleration(new Acceleration(event.values[1], timestamp), AccelerationAxis.Y);		
+				yCount++;
 			}
 	
 			if(event.values[2] != 0) {
-				Acceleration zAcceleration = new Acceleration(event.values[2], timestamp);
-				accelerationsDb.storeAcceleration(zAcceleration, AccelerationAxis.Z);						
-			}		
+				accelerationsDb.storeAcceleration(new Acceleration(event.values[2], timestamp), AccelerationAxis.Z);	
+				zCount++;
+			}	
+			
+			System.out.println("Event " + eventsCount);
+			
 		}
 		catch(Exception e) {
 			e.printStackTrace();
@@ -83,7 +94,14 @@ public class SamplingService extends Service implements SensorEventListener {
 		accelerationsDb.flushAccelerationBuffers();
 //		accelerationsDb.close();
 
+		
 		Log.i(TAG, "Destroyed sampling service");
+		Log.i(TAG, "X: " + xCount );
+		Log.i(TAG, "Y: " + yCount );
+		Log.i(TAG, "Z: " + zCount );
+		Log.i(TAG, "Events: " + eventsCount );
+		Log.i(TAG, "Destroyed sampling service");
+		xCount = 0; yCount = 0; zCount = 0; eventsCount = 0;
 	}
 	
 	@Override

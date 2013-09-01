@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingTop="100dp" 
+    android:paddingTop="20dp" 
     android:isScrollContainer="true">
 
      <TextView
@@ -16,9 +16,6 @@
                 android:layout_height="wrap_content"
                 android:text="@string/plot_plotActivityHdr"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
-    
-
-   
 
             <LinearLayout
                 android:id="@+id/chartXaxis"
@@ -31,7 +28,7 @@
                 android:id="@+id/chartYaxis"
                 android:layout_width="fill_parent"
                 android:layout_height="0dip"
-                android:layout_marginTop="50dip"
+                android:layout_marginTop="10dip"
                 android:layout_weight="1"
                 android:orientation="horizontal" />
 
@@ -39,7 +36,7 @@
                 android:id="@+id/chartZaxis"
                 android:layout_width="fill_parent"
                 android:layout_height="0dip"
-                android:layout_marginTop="50dip"
+                android:layout_marginTop="10dip"
                 android:layout_weight="1"
                 android:orientation="horizontal" />
 

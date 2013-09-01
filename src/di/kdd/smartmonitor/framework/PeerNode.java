@@ -19,7 +19,7 @@ public final class PeerNode extends Node implements Runnable, IObserver {
 	private PeerHeartbeatsTimerTask heartbeatsTimerTask;
 	private Timer timer;
 	
-	private static final String TAG = "peer";
+	private static final String TAG = "PeerNode";
 
 	/***
 	 * Sends a JOIN message to the Master node and if it gets accepted,
@@ -32,7 +32,6 @@ public final class PeerNode extends Node implements Runnable, IObserver {
 		this.joinSocket = joinSocket;		
 
 		/* Start command-serving thread */
-
 		new Thread(this).start();
 	}
 
@@ -45,7 +44,7 @@ public final class PeerNode extends Node implements Runnable, IObserver {
 		Message message;
 		Socket masterSocket;
 
-		android.os.Debug.waitForDebugger();
+		//android.os.Debug.waitForDebugger();
 
 		/* Start heartbeats timer task */
 
@@ -65,8 +64,10 @@ public final class PeerNode extends Node implements Runnable, IObserver {
 		}
 		
 		try {
-			commandsServerSocket = new ServerSocket(ISmartMonitor.COMMAND_PORT);		
-			commandsServerSocket.setReuseAddress(true);
+			if (commandsServerSocket==null){
+				commandsServerSocket = new ServerSocket(ISmartMonitor.COMMAND_PORT);		
+				commandsServerSocket.setReuseAddress(true);
+			}
 		}
 		catch(IOException e) {
 			Log.e(TAG, "Failed to bind command server socket");
@@ -88,8 +89,8 @@ public final class PeerNode extends Node implements Runnable, IObserver {
 			send(joinSocket, message);	
 	
 			/* Receive PEER_DATA */
-			
 			message = receive(joinSocket, Tag.PEER_DATA);
+			peerData.addPeersFromMessage(message);	
 			
 			/* Receive TIME_SYNC */
 	
@@ -155,7 +156,7 @@ public final class PeerNode extends Node implements Runnable, IObserver {
 				case START_SAMPLING:
 					Log.i(TAG, "Received START_SAMPLING command");
 
-					ds.startSamplngCommand();
+					ds.startSamplingCommand();
 					break;
 				case STOP_SAMPLING:
 					Log.i(TAG, "Received STOP_SAMPLING command");
@@ -204,6 +205,8 @@ public final class PeerNode extends Node implements Runnable, IObserver {
 
 					setModalFrequencies(AccelerationAxis.Z, zAxisModalFrequencies);
 					
+					ds.notify("Got modal frequencies!");
+					
 					Log.i(TAG, "Received global modal frequencies from Master node");		
 					
 					break;
@@ -251,9 +254,7 @@ public final class PeerNode extends Node implements Runnable, IObserver {
 
 	@Override
 	public void update(String message) {
-		
 		/* Master failed, disconnect and recover */
-		
 		ds.disconnectAndRecover();
 	}
 }

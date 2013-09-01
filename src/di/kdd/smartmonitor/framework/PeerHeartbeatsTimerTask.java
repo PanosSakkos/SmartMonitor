@@ -14,7 +14,7 @@ public class PeerHeartbeatsTimerTask extends TimerTask implements IObservable {
 	private String masterIP;
 	private Socket heartbeatSocket;
 	
-	private static final String TAG = "peer heartbeats timer task";
+	private static final String TAG = "PeerHeartBeatsTimerTask";
 	
 	public PeerHeartbeatsTimerTask(String masterIP) {
 
@@ -31,8 +31,7 @@ public class PeerHeartbeatsTimerTask extends TimerTask implements IObservable {
 	public void run() {
 		
 		/* Try to write to the heartbeat socket,
-		 * in case of failure, Master is down 
-		 */
+		 * in case of failure, Master is down */
 				
 		try {
 			heartbeatSocket = new Socket(masterIP, ISmartMonitor.HEARBEATS_PORT);

@@ -5,6 +5,7 @@ import di.kdd.smartmonitor.framework.AccelerationsSQLiteHelper;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class PeerActivity extends NodeActivity {
@@ -20,6 +21,9 @@ public class PeerActivity extends NodeActivity {
 		distributedSystem.subscribe(this);
 		distributedSystem.setSampler(this);
 		distributedSystem.setDatabase(accelerationsDb);
+		
+		TextView t =(TextView)findViewById(R.id.NodeIPValueId); 
+	    t.setText(getLocalIpAddress());
 	}
 	
 	/* Button handlers */
