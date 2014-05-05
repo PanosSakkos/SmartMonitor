@@ -46,6 +46,9 @@ public class DistributedSystem implements ISmartMonitor, IObservable, IObserver 
 	private AccelerationsSQLiteHelper db;
 	
 	private Context context;
+
+    public static long localTime;
+    public static long sateliteTime;
 	
 	public void setDatabase(AccelerationsSQLiteHelper db) {
 		this.db = db;
