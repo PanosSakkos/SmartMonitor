@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger>
+
+    <dataSet config="main" >
+        <source path="/Users/panos/dev/git/SmartMonitor/app/src/main/res" >
+            <file
+                name="background"
+                path="/Users/panos/dev/git/SmartMonitor/app/src/main/res/drawable/background.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="orange_menu_btn"
+                path="/Users/panos/dev/git/SmartMonitor/app/src/main/res/drawable/orange_menu_btn.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="red_menu_btn"
+                path="/Users/panos/dev/git/SmartMonitor/app/src/main/res/drawable/red_menu_btn.xml"
+                qualifiers=""
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/Users/panos/dev/git/SmartMonitor/app/src/main/res/drawable-hdpi/ic_launcher.png"
+                qualifiers="hdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/Users/panos/dev/git/SmartMonitor/app/src/main/res/drawable-ldpi/ic_launcher.png"
+                qualifiers="ldpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/Users/panos/dev/git/SmartMonitor/app/src/main/res/drawable-mdpi/ic_launcher.png"
+                qualifiers="mdpi"
+                type="drawable" />
+            <file
+                name="ic_launcher"
+                path="/Users/panos/dev/git/SmartMonitor/app/src/main/res/drawable-xhdpi/ic_launcher.png"
+                qualifiers="xhdpi"
+                type="drawable" />
+            <file
+                name="activity_main"
+                path="/Users/panos/dev/git/SmartMonitor/app/src/main/res/layout/activity_main.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="masteractivity"
+                path="/Users/panos/dev/git/SmartMonitor/app/src/main/res/layout/masteractivity.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="modalactivity"
+                path="/Users/panos/dev/git/SmartMonitor/app/src/main/res/layout/modalactivity.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="peeractivity"
+                path="/Users/panos/dev/git/SmartMonitor/app/src/main/res/layout/peeractivity.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="plotactivity"
+                path="/Users/panos/dev/git/SmartMonitor/app/src/main/res/layout/plotactivity.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="activity_main"
+                path="/Users/panos/dev/git/SmartMonitor/app/src/main/res/menu/activity_main.xml"
+                qualifiers=""
+                type="menu" />
+            <file
+                path="/Users/panos/dev/git/SmartMonitor/app/src/main/res/values/strings.xml"
+                qualifiers="" >
+                <string name="peer_peerActivityHdr" >Peer Node Controls
+                </string>
+                <string name="main_connectMaster" >Master
+                </string>
+                <string name="node_nodeActivityZAxis" >z-Axis
+                </string>
+                <string name="exportToFileBtnTxt" >Export to file
+                </string>
+                <string name="main_connectAsLabel" >Connect as:
+                </string>
+                <string name="main_disconnect" >Disconnect
+                </string>
+                <string name="main_deleteDatabase" >Delete database
+                </string>
+                <string name="node_nodeActivityXAxis" >x-Axis
+                </string>
+                <string name="peer_connect" >Automatic Connect (slow)
+                </string>
+                <string name="main_ipHint" >10.0.0.28
+                </string>
+                <string name="main_peerControlsLabel" >Peer Controls:
+                </string>
+                <string name="master_SamplingText" >Start Sampling
+                </string>
+                <string name="master_masterActivityHdr" >Master Node Controls
+                </string>
+                <string name="node_nodeActivityMFreqs" >Modal Frequencies
+                </string>
+                <string name="menu_settings" >Settings
+                </string>
+                <string name="master_computeModalFreqs" >Compute Modal Frequencies
+                </string>
+                <string name="main_exportToFile" >Export To File
+                </string>
+                <string name="main_stopSampling" >Stop Sampling
+                </string>
+                <string name="main_connect" >Connect
+                </string>
+                <string name="node_ipValue" ></string>
+                <string name="node_nodeActivityYAxis" >y-Axis
+                </string>
+                <string name="plot_plotActivityHdr" >Plots
+                </string>
+                <string name="main_masterControlsLabel" >Master Controls:
+                </string>
+                <string name="main_connectAt" >Connect At
+                </string>
+                <string name="connect_at_ip" >10.0.0.28
+                </string>
+                <string name="plottingBtnTxt" >Real-time Plot
+                </string>
+                <string name="node_ipLabel" >IP Address:
+                </string>
+                <string name="app_name" >SmartMonitor
+                </string>
+                <string name="peer_connect_at" >Connect at:
+                </string>
+                <string name="deleteDbBtnTxt" >Delete DB
+                </string>
+                <string name="main_connectPeer" >Peer
+                </string>
+                <string name="main_connectAsMaster" >Connect as Master
+                </string>
+            </file>
+            <file
+                path="/Users/panos/dev/git/SmartMonitor/app/src/main/res/values/styles.xml"
+                qualifiers="" >
+
+                <style name="ButtonSmallText" >
+                    <item name="android:layout_width">
+fill_parent
+                    </item>
+                    <item name="android:layout_height">
+wrap_content
+                    </item>
+                    <item name="android:textColor">
+#ffffff
+                    </item>
+                    <item name="android:gravity">
+center
+                    </item>
+                    <item name="android:textSize">
+20sp
+                    </item>
+                    <item name="android:textStyle">
+bold
+                    </item>
+                    <item name="android:shadowColor">
+#000000
+                    </item>
+                    <item name="android:shadowDx">
+1
+                    </item>
+                    <item name="android:shadowDy">
+1
+                    </item>
+                    <item name="android:shadowRadius">
+2
+                    </item>
+                </style>
+
+                <style
+                    name="AppBaseTheme"
+                    parent="android:Theme.Light" >
+
+                    <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+                    -->
+                </style>
+
+                <style name="ButtonLargeText" >
+                    <item name="android:layout_width">
+fill_parent
+                    </item>
+                    <item name="android:layout_height">
+wrap_content
+                    </item>
+                    <item name="android:textColor">
+#ffffff
+                    </item>
+                    <item name="android:gravity">
+center
+                    </item>
+                    <item name="android:textSize">
+20sp
+                    </item>
+                    <item name="android:textStyle">
+bold
+                    </item>
+                    <item name="android:shadowColor">
+#000000
+                    </item>
+                    <item name="android:shadowDx">
+1
+                    </item>
+                    <item name="android:shadowDy">
+1
+                    </item>
+                    <item name="android:shadowRadius">
+2
+                    </item>
+                </style>
+
+                <style
+                    name="AppTheme"
+                    parent="AppBaseTheme" >
+
+                    <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+                </style>
+            </file>
+            <file
+                path="/Users/panos/dev/git/SmartMonitor/app/src/main/res/values-v11/styles.xml"
+                qualifiers="v11" >
+
+                <style
+                    name="AppBaseTheme"
+                    parent="android:Theme.Holo.Light" >
+
+                    <!-- API 11 theme customizations can go here. -->
+                </style>
+            </file>
+            <file
+                path="/Users/panos/dev/git/SmartMonitor/app/src/main/res/values-v14/styles.xml"
+                qualifiers="v14" >
+
+                <style
+                    name="AppBaseTheme"
+                    parent="android:Theme.Holo.Light.DarkActionBar" >
+
+                    <!-- API 14 theme customizations can go here. -->
+                </style>
+            </file>
+        </source>
+        <source path="/Users/panos/dev/git/SmartMonitor/app/build/res/rs/debug" />
+        <source path="/Users/panos/dev/git/SmartMonitor/app/build/res/generated/debug" />
+    </dataSet>
+    <dataSet config="debug" >
+        <source path="/Users/panos/dev/git/SmartMonitor/app/src/debug/res" />
+    </dataSet>
+
+</merger>

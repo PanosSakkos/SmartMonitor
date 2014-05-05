@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SmartMonitor</string>
+    <string name="menu_settings">Settings</string>
+    <string name="main_connect">Connect</string>
+    <string name="main_disconnect">Disconnect</string>
+   
+    <string name="main_stopSampling">Stop Sampling</string>
+    <string name="main_exportToFile">Export To File</string>
+    <string name="main_deleteDatabase">Delete database</string>
+    <string name="main_connectAsMaster">Connect as Master</string>
+    <string name="main_connectAt">Connect At</string>
+  
+    
+    <string name="main_connectAsLabel">Connect as:</string>
+    <string name="main_connectMaster">Master</string>
+    <string name="main_connectPeer">Peer</string>
+    
+    
+    <string name="main_masterControlsLabel">Master Controls:</string>
+    
+    
+    <string name="main_peerControlsLabel">Peer Controls:</string>
+    <string name="main_ipHint">10.0.0.28</string>
+    
+    <string name="plottingBtnTxt">Real-time Plot</string>
+    
+    <string name="master_masterActivityHdr">Master Node Controls</string>
+    
+    <string name="node_nodeActivityMFreqs">Modal Frequencies</string>
+    <string name="node_nodeActivityXAxis">x-Axis</string>
+    <string name="node_nodeActivityYAxis">y-Axis</string>
+    <string name="node_nodeActivityZAxis">z-Axis</string>
+    
+    
+    <string name="node_ipLabel">IP Address:</string>
+    <string name="node_ipValue"></string>
+    
+    <string name="master_SamplingText">Start Sampling</string>
+    <string name="master_computeModalFreqs">Compute Modal Frequencies</string>
+    
+    <string name="peer_peerActivityHdr">Peer Node Controls</string>
+    <string name="peer_connect_at">Connect at:</string>
+    <string name="peer_connect">Automatic Connect (slow)</string>
+
+    <string name="plot_plotActivityHdr">Plots</string>
+    
+    <string name="exportToFileBtnTxt">Export to file</string>
+    <string name="deleteDbBtnTxt">Delete DB</string>
+    <string name="connect_at_ip">10.0.0.28</string>
+    
+</resources>

@@ -1,0 +1,214 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrlView2"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" 
+      android:background="@drawable/background">
+
+    <LinearLayout
+        android:id="@+id/layoutForScroll2"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+      
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="20dp" >
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/masterNodeControlsLabelId"
+                style="@style/ButtonLargeText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/peer_peerActivityHdr"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/NodeIPLabelId"
+                    style="@style/ButtonLargeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/node_ipLabel"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
+                    android:id="@+id/NodeIPValueId"
+                    style="@style/ButtonLargeText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/node_ipValue"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dip"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/connectAtBtn"
+                style="@style/ButtonSmallText"
+                android:layout_width="150dp"
+                android:layout_height="50dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/orange_menu_btn"
+                android:onClick="connectAt"
+                android:text="@string/peer_connect_at" />
+
+            <EditText
+                android:id="@+id/ipText"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="0.92"
+                android:text="@string/connect_at_ip"
+                android:textAlignment="center" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dip"
+            android:baselineAligned="false"
+            android:orientation="horizontal" >
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="5dp"
+                android:layout_weight="3" >
+
+                <Button
+                    android:id="@+id/connectBtn"
+                    style="@style/ButtonSmallText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="70dp"
+                    android:layout_marginTop="0dp"
+                    android:background="@drawable/orange_menu_btn"
+                    android:onClick="connect"
+                    android:text="@string/peer_connect" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_weight="3" >
+
+                <Button
+                    android:id="@+id/plotBtn"
+                    style="@style/ButtonSmallText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="70dp"
+                    android:background="@drawable/orange_menu_btn"
+                    android:onClick="plot"
+                    android:text="@string/plottingBtnTxt" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/nodeFreqsLabelId"
+            style="@style/ButtonLargeText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/node_nodeActivityMFreqs"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="30dip"
+            android:layout_marginTop="10dip"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/nodeXaxisLabelId"
+                style="@style/ButtonLargeText"
+                android:layout_width="100dip"
+                android:layout_height="wrap_content"
+                android:text="@string/node_nodeActivityXAxis"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/nodeYaxisLabelId"
+                style="@style/ButtonLargeText"
+                android:layout_width="100dip"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:text="@string/node_nodeActivityYAxis"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/nodeZaxisLabelId"
+                style="@style/ButtonLargeText"
+                android:layout_width="100dip"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
+                android:text="@string/node_nodeActivityZAxis"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginTop="10dip"
+            android:orientation="horizontal" >
+
+            <LinearLayout
+                android:layout_width="100dip"
+                android:layout_height="260dp"
+                android:baselineAligned="false"
+                android:orientation="horizontal" >
+
+                <ListView
+                    android:id="@+id/XaxisList"
+                    android:layout_width="0dip"
+                    android:layout_height="260dp"
+                    android:layout_weight="0.27" >
+                </ListView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="100dip"
+                android:layout_height="260dp"
+                android:layout_marginLeft="10dip"
+                android:baselineAligned="false"
+                android:orientation="horizontal" >
+
+                <ListView
+                    android:id="@+id/YaxisList"
+                    android:layout_width="0dp"
+                    android:layout_height="260dp"
+                    android:layout_weight="0.27" >
+                </ListView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="100dip"
+                android:layout_height="260dp"
+                android:layout_marginLeft="10dip"
+                android:baselineAligned="false"
+                android:orientation="horizontal" >
+
+                <ListView
+                    android:id="@+id/ZaxisList"
+                    android:layout_width="0dip"
+                    android:layout_height="260dp"
+                    android:layout_weight="0.27" >
+                </ListView>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView><!-- From: file:/Users/panos/dev/git/SmartMonitor/app/src/main/res/layout/peeractivity.xml -->

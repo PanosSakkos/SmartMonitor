@@ -1,0 +1,234 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* .gitignore
+* .idea/
+* .idea/.name
+* .idea/compiler.xml
+* .idea/copyright/
+* .idea/copyright/profiles_settings.xml
+* .idea/encodings.xml
+* .idea/misc.xml
+* .idea/modules.xml
+* .idea/scopes/
+* .idea/scopes/scope_settings.xml
+* .idea/vcs.xml
+* .idea/workspace.xml
+* README.md
+* app/
+* app/build.gradle
+* app/libs/
+* app/libs/achartengine-1.0.0.jar
+* app/src/
+* app/src/main/
+* app/src/main/AndroidManifest.xml
+* app/src/main/java/
+* app/src/main/java/di/
+* app/src/main/java/di/kdd/
+* app/src/main/java/di/kdd/smartmonitor/
+* app/src/main/java/di/kdd/smartmonitor/AccelerometerData.java
+* app/src/main/java/di/kdd/smartmonitor/MainActivity.java
+* app/src/main/java/di/kdd/smartmonitor/MasterActivity.java
+* app/src/main/java/di/kdd/smartmonitor/ModalActivity.java
+* app/src/main/java/di/kdd/smartmonitor/NodeActivity.java
+* app/src/main/java/di/kdd/smartmonitor/PeerActivity.java
+* app/src/main/java/di/kdd/smartmonitor/PlotActivity.java
+* app/src/main/java/di/kdd/smartmonitor/framework/
+* app/src/main/java/di/kdd/smartmonitor/framework/Acceleration.java
+* app/src/main/java/di/kdd/smartmonitor/framework/AccelerationsSQLiteHelper.java
+* app/src/main/java/di/kdd/smartmonitor/framework/BroadcastAsyncTask.java
+* app/src/main/java/di/kdd/smartmonitor/framework/Complex.java
+* app/src/main/java/di/kdd/smartmonitor/framework/ConnectAsyncTask.java
+* app/src/main/java/di/kdd/smartmonitor/framework/DataAggregatorAsyncTask.java
+* app/src/main/java/di/kdd/smartmonitor/framework/DistributedSystem.java
+* app/src/main/java/di/kdd/smartmonitor/framework/DumpDatabaseTask.java
+* app/src/main/java/di/kdd/smartmonitor/framework/FFT.java
+* app/src/main/java/di/kdd/smartmonitor/framework/FlushBufferThread.java
+* app/src/main/java/di/kdd/smartmonitor/framework/FrequencyClustering.java
+* app/src/main/java/di/kdd/smartmonitor/framework/IObservable.java
+* app/src/main/java/di/kdd/smartmonitor/framework/IObserver.java
+* app/src/main/java/di/kdd/smartmonitor/framework/ISampler.java
+* app/src/main/java/di/kdd/smartmonitor/framework/ISmartMonitor.java
+* app/src/main/java/di/kdd/smartmonitor/framework/JoinThread.java
+* app/src/main/java/di/kdd/smartmonitor/framework/MasterHeartbeatsThread.java
+* app/src/main/java/di/kdd/smartmonitor/framework/MasterNode.java
+* app/src/main/java/di/kdd/smartmonitor/framework/Message.java
+* app/src/main/java/di/kdd/smartmonitor/framework/ModalComputationResults.java
+* app/src/main/java/di/kdd/smartmonitor/framework/Node.java
+* app/src/main/java/di/kdd/smartmonitor/framework/PeerData.java
+* app/src/main/java/di/kdd/smartmonitor/framework/PeerHeartbeatsTimerTask.java
+* app/src/main/java/di/kdd/smartmonitor/framework/PeerNode.java
+* app/src/main/java/di/kdd/smartmonitor/framework/SamplingService.java
+* app/src/main/java/di/kdd/smartmonitor/framework/ShowToastOnMainThread.java
+* app/src/main/java/di/kdd/smartmonitor/framework/StableArrayAdapter.java
+* app/src/main/java/di/kdd/smartmonitor/framework/TimeSynchronization.java
+* app/src/main/java/di/kdd/smartmonitor/framework/TimeSynchronizationMessage.java
+* app/src/main/java/di/kdd/smartmonitor/framework/TimeSynchronizationTimerTask.java
+* app/src/main/java/di/kdd/smartmonitor/framework/exceptions/
+* app/src/main/java/di/kdd/smartmonitor/framework/exceptions/ConnectException.java
+* app/src/main/java/di/kdd/smartmonitor/framework/exceptions/DatabaseException.java
+* app/src/main/java/di/kdd/smartmonitor/framework/exceptions/MasterException.java
+* app/src/main/java/di/kdd/smartmonitor/framework/exceptions/SamplerException.java
+* app/src/main/java/di/kdd/smartmonitor/framework/exceptions/TagException.java
+* app/src/main/res/
+* app/src/main/res/.DS_Store
+* app/src/main/res/drawable-hdpi/
+* app/src/main/res/drawable-hdpi/ic_launcher.png
+* app/src/main/res/drawable-ldpi/
+* app/src/main/res/drawable-ldpi/ic_launcher.png
+* app/src/main/res/drawable-mdpi/
+* app/src/main/res/drawable-mdpi/ic_launcher.png
+* app/src/main/res/drawable-xhdpi/
+* app/src/main/res/drawable-xhdpi/ic_launcher.png
+* app/src/main/res/drawable/
+* app/src/main/res/drawable/background.xml
+* app/src/main/res/drawable/orange_menu_btn.xml
+* app/src/main/res/drawable/red_menu_btn.xml
+* app/src/main/res/layout/
+* app/src/main/res/layout/activity_main.xml
+* app/src/main/res/layout/masteractivity.xml
+* app/src/main/res/layout/modalactivity.xml
+* app/src/main/res/layout/peeractivity.xml
+* app/src/main/res/layout/plotactivity.xml
+* app/src/main/res/menu/
+* app/src/main/res/menu/activity_main.xml
+* app/src/main/res/values-v11/
+* app/src/main/res/values-v11/styles.xml
+* app/src/main/res/values-v14/
+* app/src/main/res/values-v14/styles.xml
+* app/src/main/res/values/
+* app/src/main/res/values/colors.xml
+* app/src/main/res/values/strings.xml
+* app/src/main/res/values/styles.xml
+* build.gradle
+* doc/
+* doc/allclasses-frame.html
+* doc/allclasses-noframe.html
+* doc/constant-values.html
+* doc/deprecated-list.html
+* doc/di/
+* doc/di/kdd/
+* doc/di/kdd/MiddlewareServices/
+* doc/di/kdd/MiddlewareServices/DataAggregation.html
+* doc/di/kdd/MiddlewareServices/class-use/
+* doc/di/kdd/MiddlewareServices/class-use/DataAggregation.html
+* doc/di/kdd/MiddlewareServices/package-frame.html
+* doc/di/kdd/MiddlewareServices/package-summary.html
+* doc/di/kdd/MiddlewareServices/package-tree.html
+* doc/di/kdd/MiddlewareServices/package-use.html
+* doc/di/kdd/buildmon/
+* doc/di/kdd/buildmon/Acceleration.AccelerationAxis.html
+* doc/di/kdd/buildmon/Acceleration.html
+* doc/di/kdd/buildmon/AccelerationsSQLiteHelper.html
+* doc/di/kdd/buildmon/BuildConfig.html
+* doc/di/kdd/buildmon/BuildMonSensorListener.html
+* doc/di/kdd/buildmon/MainActivity.html
+* doc/di/kdd/buildmon/R.attr.html
+* doc/di/kdd/buildmon/R.drawable.html
+* doc/di/kdd/buildmon/R.html
+* doc/di/kdd/buildmon/R.id.html
+* doc/di/kdd/buildmon/R.layout.html
+* doc/di/kdd/buildmon/R.menu.html
+* doc/di/kdd/buildmon/R.string.html
+* doc/di/kdd/buildmon/R.style.html
+* doc/di/kdd/buildmon/class-use/
+* doc/di/kdd/buildmon/class-use/Acceleration.AccelerationAxis.html
+* doc/di/kdd/buildmon/class-use/Acceleration.html
+* doc/di/kdd/buildmon/class-use/AccelerationsSQLiteHelper.html
+* doc/di/kdd/buildmon/class-use/BuildConfig.html
+* doc/di/kdd/buildmon/class-use/BuildMonSensorListener.html
+* doc/di/kdd/buildmon/class-use/MainActivity.html
+* doc/di/kdd/buildmon/class-use/R.attr.html
+* doc/di/kdd/buildmon/class-use/R.drawable.html
+* doc/di/kdd/buildmon/class-use/R.html
+* doc/di/kdd/buildmon/class-use/R.id.html
+* doc/di/kdd/buildmon/class-use/R.layout.html
+* doc/di/kdd/buildmon/class-use/R.menu.html
+* doc/di/kdd/buildmon/class-use/R.string.html
+* doc/di/kdd/buildmon/class-use/R.style.html
+* doc/di/kdd/buildmon/package-frame.html
+* doc/di/kdd/buildmon/package-summary.html
+* doc/di/kdd/buildmon/package-tree.html
+* doc/di/kdd/buildmon/package-use.html
+* doc/di/kdd/protocol/
+* doc/di/kdd/protocol/IProtocol.html
+* doc/di/kdd/protocol/class-use/
+* doc/di/kdd/protocol/class-use/IProtocol.html
+* doc/di/kdd/protocol/package-frame.html
+* doc/di/kdd/protocol/package-summary.html
+* doc/di/kdd/protocol/package-tree.html
+* doc/di/kdd/protocol/package-use.html
+* doc/help-doc.html
+* doc/index-files/
+* doc/index-files/index-1.html
+* doc/index-files/index-10.html
+* doc/index-files/index-11.html
+* doc/index-files/index-12.html
+* doc/index-files/index-2.html
+* doc/index-files/index-3.html
+* doc/index-files/index-4.html
+* doc/index-files/index-5.html
+* doc/index-files/index-6.html
+* doc/index-files/index-7.html
+* doc/index-files/index-8.html
+* doc/index-files/index-9.html
+* doc/index.html
+* doc/overview-frame.html
+* doc/overview-summary.html
+* doc/overview-tree.html
+* doc/package-list
+* doc/resources/
+* doc/resources/inherit.gif
+* doc/stylesheet.css
+* gradle/
+* gradle/wrapper/
+* gradle/wrapper/gradle-wrapper.jar
+* gradle/wrapper/gradle-wrapper.properties
+* gradlew
+* gradlew.bat
+* ic_launcher-web.png
+* proguard-project.txt
+* settings.gradle
+
+Replaced Jars with Dependencies:
+--------------------------------
+The importer recognized the following .jar files as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the .jar file in your project was of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the jar replacement in the import wizard and try again:
+
+android-support-v4.jar => com.android.support:support-v4:+
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* AndroidManifest.xml => app/src/main/AndroidManifest.xml
+* libs/achartengine-1.0.0.jar => app/libs/achartengine-1.0.0.jar
+* res/ => app/src/main/res/
+* src/ => app/src/main/java/
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)
